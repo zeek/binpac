@@ -1,0 +1,160 @@
+#!/bin/sh
+# Convenience wrapper for easily viewing/setting options that
+# the project's CMake scripts will recognize
+
+# check for `cmake` command
+type -P cmake &>/dev/null || {
+    echo "\
+This package requires CMake, please install it first, then you may
+use this configure script to access CMake equivalent functionality.\
+" >&2;
+    exit 1;
+}
+
+usage="\
+Usage: $0 [OPTION]... [VAR=VALUE]...
+
+  Build Directory:
+    --builddir=DIR         place build files in directory [build]
+
+  Installation Directories:
+    --prefix=PREFIX        installation directory [/usr/local/bro]
+
+  Optional Features:
+    --enable-debug         compile with debugging symbols
+    --enable-release       compile with optimizations
+
+  Required Packages in Non-Standard Locations:
+    --with-openssl=PATH    path to OpenSSL install root
+    --with-bind=PATH       path to BIND install root
+    --with-pcap=PATH       path to libpcap install root
+
+  Influential Environment Variables (only on first invocation
+  per build directory):
+    CC                     C compiler command
+    CFLAGS                 C compiler flags
+    CXX                    C++ compiler command
+    CXXFLAGS               C++ compiler flags
+"
+
+sourcedir=`dirname $0`
+if [ "$sourcedir" == "." ]; then
+    sourcedir=`pwd`
+fi
+
+# set defaults
+builddir=build
+prefix=/usr/local/binpac
+debug=false
+release=false
+
+# parse arguments
+while [ $# -ne 0 ]; do
+    case "$1" in
+        -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+        *) optarg= ;;
+    esac
+
+    case "$1" in
+        --help|-h)
+            echo "${usage}" 1>&2
+            exit 1
+            ;;
+        --builddir=*)
+            builddir=$optarg
+            ;;
+        --prefix=*)
+            prefix=$optarg
+            ;;
+        --enable-debug)
+            debug=true
+            ;;
+        --enable-release)
+            release=true
+            ;;
+        --with-openssl=*)
+            openssl_root=$optarg
+            ;;
+        --with-bind=*)
+            bind_root=$optarg
+            ;;
+        --with-pcap=*)
+            pcap_root=$optarg
+            ;;
+        *)
+            echo "Invalid option '$1'.  Try $0 --help to see available options."
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# Create build directory
+mkdir -p $builddir
+
+# Create a build options file in the build directory w/ selected options
+BuildOptionsFile=$builddir/BuildOptions.cmake
+
+cat > $BuildOptionsFile << EOF
+#######################################################################
+#
+#                       BinPAC - Build Setup
+#
+#######################################################################
+
+#######################################################################
+# Installation Directories
+#######################################################################
+
+set(CMAKE_INSTALL_PREFIX $prefix
+    CACHE STRING "installation directory" FORCE)
+
+#######################################################################
+# Optional Features
+#######################################################################
+
+set(ENABLE_DEBUG $debug
+    CACHE STRING "compile with debugging symbols" FORCE)
+
+set(ENABLE_RELEASE $release
+    CACHE STRING "use compiler optimizations" FORCE)
+
+#######################################################################
+# Packages in Non-Standard Locations
+#   Uncomment/edit options below in order to aid the CMake
+#   configuration scripts in finding dependencies that are installed
+#   in atypical locations.
+#######################################################################
+
+EOF
+
+# Function to set a CMake cache variable that act as a hint for
+# finding packages in non-standard locations.
+#   $1 argument is the name of the CMake hint variable
+#   $2 argument is path to use as the hint variable's value
+#      if empty, then a dummy value is used and the option
+#      is commented out of the build options file
+add_search_path_hint () {
+if [ -z "$2" ]; then 
+    comment="#"
+    path=/insert/your/path/here
+else
+    comment=""
+    path=$2
+fi
+cat >> $BuildOptionsFile << EOF
+${comment}set($1 $path
+${comment}    CACHE STRING "Non-Standard install root" FORCE)
+
+EOF
+}
+
+add_search_path_hint OPENSSL_ROOT_DIR ${openssl_root}
+add_search_path_hint BIND_ROOT_DIR ${bind_root}
+add_search_path_hint PCAP_ROOT_DIR ${pcap_root}
+
+echo "Build Directory : $builddir"
+echo "Build Options   : $BuildOptionsFile"
+echo "Source Directory: $sourcedir"
+cd $builddir
+cmake $sourcedir

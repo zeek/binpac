@@ -20,25 +20,18 @@ before you begin with the installation:
 Installation
 ============
 
-To build and install into /usr/local:
+To build and install into /usr/local/binpac:
 
-    > mkdir build
+    > ./configure
     > cd build
-    > cmake ..
     > make
     > make install
 
 This will perform an out-of-source build into the build directory using the
-default build options and then install binaries into /usr/local/bin
+default build options and then install binaries into /usr/local/binpac/bin
 
-To change the install prefix or other build options, copy the
-BuildOptions.cmake file from the top-level source directory into the
-build directory and then modify it using a preferred text editor:
+You can specify a different installation directory with
 
-    > mkdir build
-    > cd build
-    > cp ../BuildOptions.cmake .
-    > <edit BuildOptions.cmake>
-    > cmake ..
-    > make
-    > make install
+   > ./configure --prefix=<dir>.
+
+Run "./configure --help" for more options.
