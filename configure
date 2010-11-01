@@ -3,7 +3,7 @@
 # the project's CMake scripts will recognize
 
 # check for `cmake` command
-type -P cmake &>/dev/null || {
+type cmake > /dev/null 2>&1 || {
     echo "\
 This package requires CMake, please install it first, then you may
 use this configure script to access CMake equivalent functionality.\
@@ -38,7 +38,7 @@ Usage: $0 [OPTION]... [VAR=VALUE]...
 "
 
 sourcedir=`dirname $0`
-if [ "$sourcedir" == "." ]; then
+if [ "$sourcedir" = "." ]; then
     sourcedir=`pwd`
 fi
 
