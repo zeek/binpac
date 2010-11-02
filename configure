@@ -42,11 +42,21 @@ if [ "$sourcedir" = "." ]; then
     sourcedir=`pwd`
 fi
 
+# Function to append a CMake cache entry definition to the
+# CMakeCacheEntries variable
+#   $1 is the cache entry variable name
+#   $2 is the cache entry variable type
+#   $3 is the cache entry variable value
+append_cache_entry () {
+    CMakeCacheEntries="$CMakeCacheEntries -D $1:$2=$3"
+}
+
 # set defaults
 builddir=build
-prefix=/usr/local/binpac
-debug=false
-release=false
+CMakeCacheEntries=""
+append_cache_entry CMAKE_INSTALL_PREFIX PATH   /usr/local/bro
+append_cache_entry ENABLE_DEBUG         BOOL   false
+append_cache_entry ENABLE_RELEASE       BOOL   false
 
 # parse arguments
 while [ $# -ne 0 ]; do
@@ -64,22 +74,22 @@ while [ $# -ne 0 ]; do
             builddir=$optarg
             ;;
         --prefix=*)
-            prefix=$optarg
+            append_cache_entry CMAKE_INSTALL_PREFIX PATH   $optarg
             ;;
         --enable-debug)
-            debug=true
+            append_cache_entry ENABLE_DEBUG         BOOL   true
             ;;
         --enable-release)
-            release=true
+            append_cache_entry ENABLE_RELEASE       BOOL   true
             ;;
         --with-openssl=*)
-            openssl_root=$optarg
+            append_cache_entry OpenSSL_ROOT_DIR PATH $optarg
             ;;
         --with-bind=*)
-            bind_root=$optarg
+            append_cache_entry BIND_ROOT_DIR PATH $optarg
             ;;
         --with-pcap=*)
-            pcap_root=$optarg
+            append_cache_entry PCAP_ROOT_DIR PATH $optarg
             ;;
         *)
             echo "Invalid option '$1'.  Try $0 --help to see available options."
@@ -92,69 +102,7 @@ done
 # Create build directory
 mkdir -p $builddir
 
-# Create a build options file in the build directory w/ selected options
-BuildOptionsFile=$builddir/BuildOptions.cmake
-
-cat > $BuildOptionsFile << EOF
-#######################################################################
-#
-#                       BinPAC - Build Setup
-#
-#######################################################################
-
-#######################################################################
-# Installation Directories
-#######################################################################
-
-set(CMAKE_INSTALL_PREFIX $prefix
-    CACHE STRING "installation directory" FORCE)
-
-#######################################################################
-# Optional Features
-#######################################################################
-
-set(ENABLE_DEBUG $debug
-    CACHE STRING "compile with debugging symbols" FORCE)
-
-set(ENABLE_RELEASE $release
-    CACHE STRING "use compiler optimizations" FORCE)
-
-#######################################################################
-# Packages in Non-Standard Locations
-#   Uncomment/edit options below in order to aid the CMake
-#   configuration scripts in finding dependencies that are installed
-#   in atypical locations.
-#######################################################################
-
-EOF
-
-# Function to set a CMake cache variable that act as a hint for
-# finding packages in non-standard locations.
-#   $1 argument is the name of the CMake hint variable
-#   $2 argument is path to use as the hint variable's value
-#      if empty, then a dummy value is used and the option
-#      is commented out of the build options file
-add_search_path_hint () {
-if [ -z "$2" ]; then 
-    comment="#"
-    path=/insert/your/path/here
-else
-    comment=""
-    path=$2
-fi
-cat >> $BuildOptionsFile << EOF
-${comment}set($1 $path
-${comment}    CACHE STRING "Non-Standard install root" FORCE)
-
-EOF
-}
-
-add_search_path_hint OPENSSL_ROOT_DIR ${openssl_root}
-add_search_path_hint BIND_ROOT_DIR ${bind_root}
-add_search_path_hint PCAP_ROOT_DIR ${pcap_root}
-
 echo "Build Directory : $builddir"
-echo "Build Options   : $BuildOptionsFile"
 echo "Source Directory: $sourcedir"
 cd $builddir
-cmake $sourcedir
+cmake $CMakeCacheEntries $sourcedir
