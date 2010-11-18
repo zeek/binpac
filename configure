@@ -21,8 +21,7 @@ Usage: $0 [OPTION]... [VAR=VALUE]...
     --prefix=PREFIX        installation directory [/usr/local]
 
   Optional Features:
-    --enable-debug         compile with debugging symbols
-    --enable-release       compile with optimizations
+    --enable-debug         compile in debugging mode
 
   Required Packages in Non-Standard Locations:
     --with-openssl=PATH    path to OpenSSL install root
@@ -56,7 +55,6 @@ builddir=build
 CMakeCacheEntries=""
 append_cache_entry CMAKE_INSTALL_PREFIX PATH   /usr/local
 append_cache_entry ENABLE_DEBUG         BOOL   false
-append_cache_entry ENABLE_RELEASE       BOOL   false
 
 # parse arguments
 while [ $# -ne 0 ]; do
@@ -78,9 +76,6 @@ while [ $# -ne 0 ]; do
             ;;
         --enable-debug)
             append_cache_entry ENABLE_DEBUG         BOOL   true
-            ;;
-        --enable-release)
-            append_cache_entry ENABLE_RELEASE       BOOL   true
             ;;
         --with-openssl=*)
             append_cache_entry OpenSSL_ROOT_DIR PATH $optarg
