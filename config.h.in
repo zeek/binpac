@@ -1,0 +1,2 @@
+/* Version number of package */
+#define BINPAC_VERSION "@BINPAC_VERSION@"
