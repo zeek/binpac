@@ -4,6 +4,8 @@ Prerequisites
 BinPAC relies on the following libraries and tools, which need to be
 installed before you begin:
 
+    * A C/C++ compiler
+
     * Flex (Fast Lexical Analyzer)
        Flex is already installed on most systems, so with luck you can
        skip having to install it yourself.
@@ -11,7 +13,7 @@ installed before you begin:
     * Bison (GNU Parser Generator)
        Bison is also already installed on many system.
 
-    * CMake 2.8 or greater
+    * CMake 2.6 or greater
        CMake is a cross-platform, open-source build system, typically
        not installed by default.  See http://www.cmake.org for more
        information regarding CMake and the installation steps below for
