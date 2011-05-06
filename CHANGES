@@ -1,0 +1,12 @@
+0.2 | 2011-04-18 12:50:21 -0700
+
+  * Converting build process to CMake (Jon Siwek).
+
+  * Fixing crash with undefined case expressions. (Robin Sommer)
+
+    Found by Emmanuele Zambon.
+
+  * A command line -q flag to quiet the output, plus a fix for a small
+    compiler warning. (Seth Hall)
+
+  * Initial import of Bro's binpac subdirectory from SVN r7088. (Jon Siwek)
