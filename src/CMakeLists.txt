@@ -18,6 +18,7 @@ set(binpac_SRCS
     pac_array.cc
     pac_attr.cc
     pac_btype.cc
+    pac_dbg.cc
     pac_case.cc
     pac_conn.cc
     pac_context.cc
