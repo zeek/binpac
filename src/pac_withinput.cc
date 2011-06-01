@@ -20,10 +20,10 @@ WithInputField::~WithInputField()
 	delete input_;
 	}
 
-bool WithInputField::DoTraverse(DataDepVisitor *visitor)
-	{ 
-	return Field::DoTraverse(visitor) &&
-	       input()->Traverse(visitor); 
+bool WithInputField::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
+	{
+	return Field::TraverseDataDependency(visitor, env) &&
+	       input()->Traverse(visitor, env); 
 	}
 
 bool WithInputField::RequiresAnalyzerContext() const 

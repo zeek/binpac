@@ -222,9 +222,9 @@ void RecordType::DoMarkIncrementalInput()
 		}
 	}
 
-bool RecordType::DoTraverse(DataDepVisitor *visitor)
+bool RecordType::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
 	{
-	return Type::DoTraverse(visitor);
+	return Type::TraverseDataDependency(visitor, env);
 	}
 
 bool RecordType::ByteOrderSensitive() const
@@ -509,9 +509,9 @@ bool RecordDataField::GenBoundaryCheck(Output* out_cc, Env* env)
 	return true;
 	}
 
-bool RecordDataField::DoTraverse(DataDepVisitor *visitor)
+bool RecordDataField::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
 	{ 
-	return Field::DoTraverse(visitor);
+	return Field::TraverseDataDependency(visitor, env);
 	}
 
 bool RecordDataField::RequiresAnalyzerContext() const 
@@ -672,9 +672,11 @@ bool RecordPaddingField::GenBoundaryCheck(Output* out_cc, Env* env)
 	return true;
 	}
 
-bool RecordPaddingField::DoTraverse(DataDepVisitor *visitor)
-	{ 
-	return Field::DoTraverse(visitor) && 
-	       (! expr_ || expr_->Traverse(visitor));
+bool RecordPaddingField::TraverseDataDependency(DataDepVisitor *visitor,
+                                                Env *env)
+	{
+          // TODO(rpang): add dependency on the previous field.
+	return Field::TraverseDataDependency(visitor, env) && 
+	       (! expr_ || expr_->Traverse(visitor, env));
 	}
 

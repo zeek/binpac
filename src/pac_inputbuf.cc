@@ -10,11 +10,12 @@ InputBuffer::InputBuffer(Expr *expr)
 	{
 	}
 
-bool InputBuffer::DoTraverse(DataDepVisitor *visitor)
+bool InputBuffer::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
 	{
-	if ( expr_ && ! expr_->Traverse(visitor) )
-		return false;
-	return true;
+        if ( expr_ )
+          return expr_->Traverse(visitor, env);
+        else
+          return true;
 	}
 
 bool InputBuffer::RequiresAnalyzerContext() const

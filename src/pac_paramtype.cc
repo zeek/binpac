@@ -110,21 +110,22 @@ bool ParameterizedType::ByteOrderSensitive() const
 	return ReferredDataType(true)->RequiresByteOrder();
 	}
 
-bool ParameterizedType::DoTraverse(DataDepVisitor *visitor)
-	{
-	if ( ! Type::DoTraverse(visitor) )
-		return false;
+bool ParameterizedType::TraverseDataDependency(DataDepVisitor *visitor,
+                                               Env *env) {
+  if ( ! Type::TraverseDataDependency(visitor, env) )
+    return false;
 
-	foreach(i, ExprList, args_)
-		if ( ! (*i)->Traverse(visitor) )
-			return false;
+  foreach(i, ExprList, args_) {
+    if ( ! (*i)->Traverse(visitor, env) )
+      return false;
+  }
 
-	Type *ty = ReferredDataType(false);
-	if ( ty && ! ty->Traverse(visitor) )
-		return false;
+  Type *ty = ReferredDataType(false);
+  if ( ty && ! ty->Traverse(visitor, env) )
+    return false;
 
-	return true;
-	}
+  return true;
+}
 
 bool ParameterizedType::RequiresAnalyzerContext()
 	{
@@ -227,7 +228,7 @@ void ParameterizedType::DoGenParseCode(Output* out_cc, Env* env,
 			env->RValue(end_of_data));
 		}
 
-	if ( RequiresAnalyzerContext::compute(ref_type) )
+	if ( RequiresAnalyzerContext::Compute(ref_type, env) )
 		{
 		parse_params += strfmt(", %s", env->RValue(analyzer_context_id));
 		}

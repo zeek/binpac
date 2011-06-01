@@ -13,6 +13,7 @@
 
 const char *StringType::kStringTypeName = "bytestring";
 const char *StringType::kConstStringTypeName = "const_bytestring";
+Expr *StringType::kNopChunkedExpr = 0;
 
 StringType::StringType(StringTypeEnum anystr)
 	: Type(STRING), type_(ANYSTR), str_(0), regex_(0)
@@ -105,7 +106,9 @@ void StringType::ProcessAttr(Attr *a)
 					"&chunked can be applied"
 					" to only type bytestring");
 				}
-			attr_chunked_ = true;
+			attr_chunked_ = a->expr();
+                        if (!attr_chunked_) attr_chunked_ = kNopChunkedExpr;
+                        fprintf(stderr, "attr_chunked = %s", attr_chunked_->orig());
 			SetBoundaryChecked();
 			}
 			break;
@@ -283,8 +286,12 @@ void StringType::DoGenParseCode(Output* out_cc, Env* env,
 		out_cc->println("// check for negative sizes");
 		out_cc->println("if ( %s < 0 )",
 			str_size.c_str());
+                out_cc->inc_indent();
+                out_cc->println("{");
 		out_cc->println("throw ExceptionInvalidStringLength(\"%s\", %s);",
 			Location(), str_size.c_str());
+                out_cc->println("}");
+                out_cc->dec_indent();
 		out_cc->println("%s.init(%s, %s);",
 			env->LValue(value_var()),
 			data.ptr_expr(),
@@ -403,9 +410,9 @@ void StringType::GenDynamicSizeAnyStr(Output* out_cc, Env* env,
 	env->SetEvaluated(string_length_var());
 	}
 
-bool StringType::DoTraverse(DataDepVisitor *visitor)
+bool StringType::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
 	{ 
-	if ( ! Type::DoTraverse(visitor) )
+	if ( ! Type::TraverseDataDependency(visitor, env) )
 		return false;
 
 	switch ( type_ )
@@ -422,4 +429,5 @@ bool StringType::DoTraverse(DataDepVisitor *visitor)
 void StringType::static_init()
 	{
 	Type::AddPredefinedType("bytestring", new StringType(ANYSTR));
+        kNopChunkedExpr = new Expr(new ConstString("\"NopPerChunk\""));
 	}

@@ -19,7 +19,6 @@
 #include "pac_varfield.h"
 #include "pac_withinput.h"
 
-
 Type::type_map_t Type::type_map_;
 
 Type::Type(TypeType tot) 
@@ -52,7 +51,7 @@ Type::Type(TypeType tot)
 	attrs_ = new AttrList();
 	attr_byteorder_expr_ = 0;
 	attr_checks_ = new ExprList();
-	attr_chunked_ = false;
+	attr_chunked_ = 0;
 	attr_exportsourcedata_ = false;
 	attr_if_expr_ = 0;
 	attr_length_expr_ = 0;
@@ -324,14 +323,18 @@ void Type::GenPubDecls(Output* out_h, Env* env)
 	if ( DefineValueVar() )
 		{
 		if ( attr_if_expr_ )
+			{
 		        out_h->println("%s %s const { BINPAC_ASSERT(%s); return %s; }",
 			        DataTypeConstRefStr().c_str(), 
 			        env->RValue(value_var()),
 			        env->RValue(has_value_var()), lvalue());
+			}
 		else
+			{
 		        out_h->println("%s %s const { return %s; }",
 			        DataTypeConstRefStr().c_str(), 
 			        env->RValue(value_var()), lvalue());
+			}
 		}
 
 	foreach (i, FieldList, fields_)
@@ -552,21 +555,40 @@ void Type::GenParseCode(Output* out_cc, Env* env, const DataPtr& data, int flags
 		}
 	}
 
-void Type::GenBufferingLoop(Output* out_cc, Env* env, int flags)
-	{
-	out_cc->println("while ( ! %s && %s->ready() )", 
-		env->LValue(parsing_complete_var()),
-		env->LValue(flow_buffer_id));
+void Type::GenBufferingLoop(Output* out_cc, Env* env, int flags) {
+  out_cc->println("while ( true )");
 
-	out_cc->inc_indent();
-	out_cc->println("{");
+  out_cc->inc_indent();
+  out_cc->println("{");
 
-	Env buffer_env(env, this);
-	GenParseBuffer(out_cc, &buffer_env, flags);
+  out_cc->println("// Has per-chunk expression?");
+  if (attr_chunked()) {
+    // Evaluate per-chunk expression.
+    Env chunk_env(env, this);
+    ExprList *chunk_begin_end = new ExprList;
+    chunk_begin_end->push_back(new Expr(Expr::EXPR_MEMBER,
+                                        new Expr(flow_buffer_id->clone()),
+                                        new Expr(new ID("chunk_begin"))));
+    chunk_begin_end->push_back(new Expr(Expr::EXPR_MEMBER,
+                                        new Expr(flow_buffer_id->clone()),
+                                        new Expr(new ID("chunk_end"))));
+    chunk_env.AddMacro(chunk_macro_id,
+                       new Expr(Expr::EXPR_CALL,
+                                new Expr(new ID("const_bytestring")),
+                                new Expr(chunk_begin_end)));
+    attr_chunked()->EvalExpr(out_cc, &chunk_env);
+  }
 
-	out_cc->println("}");
-	out_cc->dec_indent();
-	}
+  out_cc->println("if ( %s || ! %s->ready() ) break;", 
+                  env->LValue(parsing_complete_var()),
+                  env->LValue(flow_buffer_id));
+
+  Env buffer_env(env, this);
+  GenParseBuffer(out_cc, &buffer_env, flags);
+
+  out_cc->println("}");
+  out_cc->dec_indent();
+}
 
 void Type::GenParseBuffer(Output* out_cc, Env* env, int flags)
 	{
@@ -739,6 +761,10 @@ void Type::GenParseCode3(Output* out_cc, Env* env, const DataPtr& data, int flag
 		out_cc->println("if ( %s )", parsing_complete(env).c_str());
 		out_cc->inc_indent();
 		out_cc->println("{");
+                AddDebugMsg(out_cc,
+                            fmt("parsing of %s.%s is complete.",
+                                decl_id()->Name(),
+                                lvalue()));
 		}
 
 	out_cc->println("// Evaluate 'let' and 'withinput' fields");
@@ -914,19 +940,24 @@ bool Type::NeedsBufferingStateVar() const
 		}
 	}
 
-bool Type::DoTraverse(DataDepVisitor *visitor)
+bool Type::TraverseDataDependency(DataDepVisitor *visitor, Env *env)
 	{
 	foreach (i, FieldList, fields_)
 		{
-		if ( ! (*i)->Traverse(visitor) )
+		if ( ! (*i)->Traverse(visitor, env_) )
 			return false;
 		}
 
 	foreach(i, AttrList, attrs_)
 		{
-		if ( ! (*i)->Traverse(visitor) )
+		if ( ! (*i)->Traverse(visitor, env_) )
 			return false;
 		}
+
+        // TODO: add flow buffer to dependency if input needs to be
+        // buffered.
+
+        // Add input buffer if this is a parsed type.
 
 	return true;
 	}
@@ -1029,12 +1060,14 @@ const ID *Type::has_value_var() const
 		return 0;
 	}
 
-int Type::InitialBufferLength() const
-	{
-	if ( ! attr_length_expr_ )
-		return 0;
-	return attr_length_expr_->MinimalHeaderSize(env());
-	}
+int Type::InitialBufferLength() const {
+  if ( ! attr_length_expr_ ) return 0;
+  int initial_buffer_length = attr_length_expr_->MinimalHeaderSize(env());
+  if (initial_buffer_length < 0) {
+    throw Exception(this, "cannot determine initial buffer length");
+  }
+  return initial_buffer_length;
+}
 
 bool Type::CompatibleTypes(Type *type1, Type *type2)
 	{

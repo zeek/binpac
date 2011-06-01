@@ -65,7 +65,7 @@ protected:
 	const ID *elem_input_var() const;
 
 protected:
-	bool DoTraverse(DataDepVisitor *visitor);
+  virtual bool TraverseDataDependency(DataDepVisitor *visitor, Env *env);
 
 private:
 	Type *elemtype_;

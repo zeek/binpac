@@ -2,6 +2,7 @@
 
 #include <unistd.h>
 #include <ctype.h>
+#include <getopt.h>
 
 #include "pac_common.h"
 #include "pac_decl.h"
@@ -13,7 +14,9 @@
 #include "pac_utils.h"
 #include "pac_exception.h"
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 extern int yydebug;
 extern int yyparse();
@@ -21,9 +24,9 @@ extern void switch_to_file(FILE* fp_input);
 string input_filename;
 
 bool FLAGS_pac_debug = false;
-bool FLAGS_quiet = false;
 string FLAGS_output_directory;
 vector<string> FLAGS_include_directories;
+bool FLAGS_add_debug_messages = false;
 
 Output* header_output = 0;
 Output* source_output = 0;
@@ -186,14 +189,13 @@ int compile(const char* filename)
 
 void usage()
 	{
-#ifdef BINPAC_VERSION
-	fprintf(stderr, "binpac version %s\n", BINPAC_VERSION);
+#ifdef VERSION
+	fprintf(stderr, "binpac version %s\n", VERSION);
 #endif
 	fprintf(stderr, "usage: binpac [options] <pac files>\n");
 	fprintf(stderr, "     <pac files>           | pac-language input files\n");
 	fprintf(stderr, "     -d <dir>              | use given directory for compiler output\n");
 	fprintf(stderr, "     -D                    | enable debugging output\n");
-	fprintf(stderr, "     -q                    | stay quiet\n");
 	fprintf(stderr, "     -h                    | show command line help\n");
 	fprintf(stderr, "     -I <dir>              | include <dir> in input file search path\n");
 	exit(1);
@@ -204,37 +206,49 @@ int main(int argc, char* argv[])
 #ifdef HAVE_MALLOC_OPTIONS
 	extern char *malloc_options;
 #endif
+
+        /* options descriptor */
+        static struct option longopts[] = {
+          { "debug", no_argument, NULL, 'D' },
+          { "includedir", required_argument, NULL, 'I' },
+          { "add_debug_messages", no_argument, NULL, 'M'},
+          { "outputdir", required_argument, NULL, 'd' },
+          { "help", no_argument, NULL, 'h' },
+          // Add debug messages to generated parsers. Will affect
+          // parser performance.
+          { NULL, 0, NULL, 0 }
+        };
+
 	int o;
-	while ( (o = getopt(argc, argv, "DqI:d:h")) != -1 )
-		{
-		switch(o)
-			{
-			case 'D': 
-				yydebug = 1;
-				FLAGS_pac_debug = true;
+	while ((o = getopt_long(argc, argv, "DI:d:h", longopts, NULL)) != -1) {
+          switch(o)
+          {
+            case 'D': 
+              yydebug = 1;
+              FLAGS_pac_debug = true;
 #ifdef HAVE_MALLOC_OPTIONS
-				malloc_options = "A";
+              malloc_options = "A";
 #endif
-				break;
-				
-			case 'q':
-				FLAGS_quiet = true;
-				break;
+              break;
 
-			case 'I':
-				// Add to FLAGS_include_directories
-				add_to_include_directories(optarg);
-				break;
+            case 'I':
+              // Add to FLAGS_include_directories
+              add_to_include_directories(optarg);
+              break;
 
-			case 'd': 
-				FLAGS_output_directory = optarg;
-				break;
+            case 'M':
+              FLAGS_add_debug_messages = true;
+              break;
 
-			case 'h':
-				usage();
-				break;
-			}
-		}
+            case 'd': 
+              FLAGS_output_directory = optarg;
+              break;
+
+            case 'h':
+              usage();
+              break;
+          }
+        }
 
 	// Strip the trailing '/'s
 	while ( ! FLAGS_output_directory.empty() &&

@@ -11,7 +11,7 @@ public:
 	Number(const char* arg_s, int arg_n)
 		: s(arg_s), n(arg_n) {}
 	const char* Str() const 	{ return s.c_str(); }
-	int Num() const 		{ return n; }
+	const int Num() const 		{ return n; }
 
 protected:
 	const string s;

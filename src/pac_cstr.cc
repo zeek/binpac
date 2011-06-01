@@ -63,8 +63,7 @@ int expand_escape(const char*& s)
 
 		// Look at most 2 characters, so that "\x0ddir" -> "^Mdir".
 		for ( int len = 0; len < 2 && isascii(*s) && isxdigit(*s);
-		      ++s, ++len)
-			;
+		      ++s, ++len);
 
 		int result;
 		if ( sscanf(start, "%2x", &result) != 1 )

@@ -6,19 +6,20 @@
 
 class Expr;
 
-class InputBuffer : public Object, public DataDepElement
-{
-public:
-	InputBuffer(Expr *expr);
+// InputBuffer represents the input data specified by a &withinput
+// attribute.
+class InputBuffer : public Object, public DataDepElement {
+ public:
+  InputBuffer(Expr *expr);
 
-	bool RequiresAnalyzerContext() const;
-	DataPtr GenDataBeginEnd(Output *out_cc, Env *env);
+  bool RequiresAnalyzerContext() const;
+  DataPtr GenDataBeginEnd(Output *out_cc, Env *env);
 
-protected:
-	bool DoTraverse(DataDepVisitor *visitor);
+ protected:
+  virtual bool TraverseDataDependency(DataDepVisitor *visitor, Env *env);
 
-private:
-	Expr *expr_;
+ private:
+  Expr *expr_;
 };
 
 #endif // pac_inputbuf_h

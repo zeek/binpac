@@ -5,10 +5,16 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <string>
+
+using std::string;
 
 extern bool FLAGS_pac_debug;
 
 #define ASSERT(x)	assert(x)
 #define DEBUG_MSG(x...)	if ( FLAGS_pac_debug ) fprintf(stderr, x)
+
+class Output;
+void AddDebugMsg(Output *out_cc, const string &msg);
 
 #endif /* pac_dbg_h */

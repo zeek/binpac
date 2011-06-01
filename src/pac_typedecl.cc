@@ -94,10 +94,9 @@ void TypeDecl::GenCode(Output* out_h, Output* out_cc)
 	if ( type_->tot() == Type::EXTERN || type_->tot() == Type::STRING )
 		return;
 
-	if ( ! FLAGS_quiet )
-		fprintf(stderr, "Generating code for %s\n", class_name().c_str());
+	fprintf(stderr, "Generating code for %s\n", class_name().c_str());
 
-	if ( RequiresAnalyzerContext::compute(type_) )
+	if ( RequiresAnalyzerContext::Compute(type_, env_) )
 		{
 		DEBUG_MSG("%s requires analyzer context\n", 
 			id()->Name());
@@ -126,8 +125,7 @@ void TypeDecl::GenCode(Output* out_h, Output* out_cc)
 	out_h->println("");
 	out_h->print("class %s", class_name().c_str());
 	bool first = true;
-	vector<string>::iterator i;
-	for ( i = base_classes.begin(); i != base_classes.end(); ++i )
+	foreach(i, vector<string>, &base_classes)
 		{
 		if ( first )
 			{
@@ -250,7 +248,7 @@ string TypeDecl::ParseFuncPrototype(Env* env)
 			env->LValue(end_of_data));
 		}
 
-	if ( RequiresAnalyzerContext::compute(type_) )
+	if ( RequiresAnalyzerContext::Compute(type_, env_) )
 		{
 		Type *param_type = analyzer_context()->param_type();
 		params += fmt(", %s %s", 

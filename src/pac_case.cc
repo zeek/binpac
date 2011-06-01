@@ -378,11 +378,10 @@ void CaseField::GenParseCode(Output* out_cc, Env* env,
 	out_cc->dec_indent();
 	}
 
-bool CaseField::DoTraverse(DataDepVisitor *visitor)
-	{ 
-	return Field::DoTraverse(visitor) &&
-	       type()->Traverse(visitor); 
-	}
+bool CaseField::TraverseDataDependency(DataDepVisitor *visitor, Env *env) { 
+  return Field::TraverseDataDependency(visitor, env) &&
+    type()->Traverse(visitor, env); 
+}
 
 bool CaseField::RequiresAnalyzerContext() const 
 	{ 

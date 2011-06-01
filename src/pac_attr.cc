@@ -1,12 +1,11 @@
 #include "pac_attr.h"
 #include "pac_expr.h"
 
-bool Attr::DoTraverse(DataDepVisitor *visitor)
-	{
-	if ( expr_ && ! expr_->Traverse(visitor) )
-		return false;
-	return true;
-	}
+bool Attr::TraverseDataDependency(DataDepVisitor *visitor, Env *env) {
+  if ( expr_ && ! expr_->Traverse(visitor, env) )
+    return false;
+  return true;
+}
 
 bool Attr::RequiresAnalyzerContext() const
 	{

@@ -61,7 +61,7 @@
 %type <embedded_code> embedded_code
 %type <enumlist> enumlist enumlist1
 %type <enumitem> enumitem
-%type <expr> expr caseindex optinit optlinebreaker
+%type <expr> expr caseindex optinit optexpr
 %type <exprlist> exprlist optexprlist optargs
 %type <field> withinputfield letfield
 %type <fieldlist> letfieldlist
@@ -992,9 +992,9 @@ attr		:	TOK_ATTR_BYTEORDER '=' expr
 				{
 				$$ = new Attr(ATTR_CHECK, $2);
 				}
-		|	TOK_ATTR_CHUNKED
+		|	TOK_ATTR_CHUNKED optexpr
 				{
-				$$ = new Attr(ATTR_CHUNKED);
+				$$ = new Attr(ATTR_CHUNKED, $2);
 				}
 		|	TOK_ATTR_EXPORTSOURCEDATA
 				{
@@ -1020,7 +1020,7 @@ attr		:	TOK_ATTR_BYTEORDER '=' expr
 				{
 				$$ = new Attr(ATTR_MULTILINE, $3);
 				}
-		|	TOK_ATTR_ONELINE optlinebreaker
+		|	TOK_ATTR_ONELINE optexpr
 				{
 				$$ = new Attr(ATTR_ONELINE, $2);
 				}
@@ -1050,7 +1050,7 @@ attr		:	TOK_ATTR_BYTEORDER '=' expr
 				}
 		;
 
-optlinebreaker	:	/* nothing */
+optexpr		:	/* nothing */
 				{
 				$$ = 0;
 				}

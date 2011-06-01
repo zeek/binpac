@@ -158,8 +158,8 @@ void FlowDecl::GenEOFFunc(Output *out_h, Output *out_cc)
 
 	if ( dataunit_->type() == AnalyzerDataUnit::FLOWUNIT )
 		{
-		out_cc->println("%s->set_eof();", 
-			env_->LValue(flow_buffer_id));
+		out_cc->println("%s->SetEOF();", 
+                                env_->LValue(flow_buffer_id));
 		out_cc->println("%s(0, 0);", kNewData);
 		}
 	
@@ -235,7 +235,9 @@ void FlowDecl::GenProcessFunc(Output *out_h, Output *out_cc)
 		out_cc->println("%s->DiscardData();",
 			env_->LValue(flow_buffer_id));
 		}
-	out_cc->println("throw e;");
+        // TODO(rpang): shall we throw exception again? If so, where
+        // shall we catch it?
+       	out_cc->println("throw e;");
 	out_cc->println("}");
 	out_cc->dec_indent();
 
@@ -275,11 +277,9 @@ void FlowDecl::GenCodeFlowUnit(Output *out_cc)
 		env_->RValue(begin_of_data), 
 		env_->RValue(end_of_data)); 
 
-	out_cc->println("while ( %s->data_available() && ",
+	out_cc->println("while ( %s->ready() )",
 		env_->LValue(flow_buffer_id));
 	out_cc->inc_indent();
-	out_cc->println("( !%s->have_pending_request() || %s->ready() ) )",
-		env_->LValue(flow_buffer_id), env_->LValue(flow_buffer_id));
 	out_cc->println("{");
 
 	// Generate a new dataunit if necessary
@@ -327,7 +327,7 @@ void FlowDecl::GenCodeDatagram(Output *out_cc)
 		env_->RValue(begin_of_data), 
 		env_->RValue(end_of_data)); 
 
-	if ( RequiresAnalyzerContext::compute(unit_datatype) )
+	if ( RequiresAnalyzerContext::Compute(unit_datatype, env_) )
 		{
 		parse_params += ", ";
 		parse_params += env_->RValue(analyzer_context_id);

@@ -43,7 +43,7 @@ public:
 
 	virtual ~Field();
 
-	FieldType tof() const 	{ return tof_; }
+	const FieldType tof() const 	{ return tof_; }
 	const ID* id() const		{ return id_; }
 	Type *type() const		{ return type_; }
 	const ID* decl_id() const	{ return decl_id_; }
@@ -69,7 +69,7 @@ protected:
 	int ValueVarType() const;
 	bool ToBeParsed() const;
 
-	bool DoTraverse(DataDepVisitor *visitor);
+  virtual bool TraverseDataDependency(DataDepVisitor *visitor, Env *env);
 
 protected:
 	FieldType tof_;

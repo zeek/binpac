@@ -6,34 +6,9 @@
 #include "pac_type.h"
 #include "pac_utils.h"
 
-const ID *default_value_var = 0;
-const ID *null_id = 0;
-const ID *null_byteseg_id = 0;
-const ID *null_decl_id = 0;
-const ID *begin_of_data = 0;
-const ID *end_of_data = 0;
-const ID *len_of_data = 0;
-const ID *byteorder_id = 0;
-const ID *bigendian_id = 0;
-const ID *littleendian_id = 0;
-const ID *unspecified_byteorder_id = 0;
-const ID *const_true_id = 0;
-const ID *const_false_id = 0;
-const ID *analyzer_context_id = 0;
-const ID *context_macro_id = 0;
-const ID *this_id = 0;
-const ID *sourcedata_id = 0;
-const ID *connection_id = 0;
-const ID *upflow_id = 0;
-const ID *downflow_id = 0;
-const ID *dataunit_id = 0;
-const ID *flow_buffer_id = 0;
-const ID *element_macro_id = 0;
-const ID *input_macro_id = 0;
-const ID *cxt_connection_id = 0;
-const ID *cxt_flow_id = 0;
-const ID *parsing_state_id = 0;
-const ID *buffering_state_id = 0;
+#define DEFINE_ID(id_var, id_name) const ID *id_var = 0;
+#include "pac_builtin_id.def"
+#undef DEFINE_ID
 
 int ID::anonymous_id_seq = 0;
 
@@ -52,6 +27,9 @@ IDRecord::IDRecord(Env *arg_env, const ID* arg_id, IDType arg_id_type)
 	setfunc = "";  // except for STATE_VAR
 	switch (id_type)
 		{
+                case ID_NOT_FOUND:
+                  ASSERT(id_type != ID_NOT_FOUND);
+                  break;
 		case MEMBER_VAR:
 			rvalue = strfmt("%s()", id->Name());
 			lvalue = strfmt("%s_", id->Name());
@@ -223,7 +201,7 @@ ID *Env::AddTempID(Type *type)
 	return id;
 	}
 
-IDRecord* Env::lookup(const ID* id, bool recursive, bool raise_exception) const
+IDRecord* Env::LookUp(const ID* id, bool recursive, bool raise_exception) const
 	{
 	ASSERT(id);
 
@@ -232,7 +210,7 @@ IDRecord* Env::lookup(const ID* id, bool recursive, bool raise_exception) const
 		return it->second;
 
 	if ( recursive && parent )
-		return parent->lookup(id, recursive, raise_exception);
+		return parent->LookUp(id, recursive, raise_exception);
 
 	if ( raise_exception )
 		throw ExceptionIDNotFound(id);
@@ -242,12 +220,17 @@ IDRecord* Env::lookup(const ID* id, bool recursive, bool raise_exception) const
 
 IDType Env::GetIDType(const ID* id) const
 	{
-	return lookup(id, true, true)->GetType();
+          IDRecord *r = LookUp(id, RECURSIVE, !RAISE_EXCEPTION);
+          if (!r) {
+            return ID_NOT_FOUND;
+          } else {
+            return r->GetType();
+          }
 	}
 
 const char* Env::RValue(const ID* id) const
 	{
-	IDRecord *r = lookup(id, true, false);
+	IDRecord *r = LookUp(id, RECURSIVE, !RAISE_EXCEPTION);
 	if ( r )
 		return r->RValue();
 	else
@@ -261,24 +244,24 @@ const char* Env::RValue(const ID* id) const
 
 const char* Env::LValue(const ID* id) const
 	{
-	return lookup(id, true, true)->LValue();
+	return LookUp(id, RECURSIVE, RAISE_EXCEPTION)->LValue();
 	}
 
 void Env::SetEvalMethod(const ID* id, Evaluatable* eval)
 	{
-	lookup(id, true, true)->SetEvalMethod(eval);
+	LookUp(id, RECURSIVE, RAISE_EXCEPTION)->SetEvalMethod(eval);
 	}
 
 void Env::Evaluate(Output* out, const ID* id)
 	{
-	IDRecord *r = lookup(id, true, !allow_undefined_id());
+	IDRecord *r = LookUp(id, RECURSIVE, !allow_undefined_id());
 	if ( r )
 		r->Evaluate(out, this);
 	}
 
 bool Env::Evaluated(const ID* id) const
 	{
-	IDRecord *r = lookup(id, true, !allow_undefined_id());
+	IDRecord *r = LookUp(id, RECURSIVE, !allow_undefined_id());
 	if ( r )
 		return r->Evaluated();
 	else
@@ -306,7 +289,7 @@ void Env::SetEvaluated(const ID* id, bool v)
 			}
 		}
 
-	IDRecord *r = lookup(id, false, false);
+	IDRecord *r = LookUp(id, !RECURSIVE, !RAISE_EXCEPTION);
 	if ( r )
 		r->SetEvaluated(v);
 	else if ( parent )
@@ -317,22 +300,26 @@ void Env::SetEvaluated(const ID* id, bool v)
 
 void Env::SetField(const ID* id, Field* field)
 	{
-	lookup(id, false, true)->SetField(field);
+	LookUp(id, !RECURSIVE, RAISE_EXCEPTION)->SetField(field);
 	}
 
 Field* Env::GetField(const ID* id) const
 	{
-	return lookup(id, true, true)->GetField();
+	IDRecord *r = LookUp(id, RECURSIVE, !RAISE_EXCEPTION);
+        if (r)
+          return r->GetField();
+        else
+          return 0;
 	}
 
 void Env::SetDataType(const ID* id, Type* type)
 	{
-	lookup(id, true, true)->SetDataType(type);
+	LookUp(id, RECURSIVE, RAISE_EXCEPTION)->SetDataType(type);
 	}
 
 Type* Env::GetDataType(const ID* id) const
 	{
-	IDRecord *r = lookup(id, true, false);
+	IDRecord *r = LookUp(id, RECURSIVE, !RAISE_EXCEPTION);
 	if ( r )
 		return r->GetDataType();
 	else
@@ -349,14 +336,14 @@ string Env::DataTypeStr(const ID *id) const
 
 void Env::SetConstant(const ID* id, int constant)
 	{
-	lookup(id, false, true)->SetConstant(constant);
+	LookUp(id, !RECURSIVE, RAISE_EXCEPTION)->SetConstant(constant);
 	}
 
 bool Env::GetConstant(const ID* id, int* pc) const
 	{
 	ASSERT(pc);
 	// lookup without raising exception
-	IDRecord* r = lookup(id, true, false);
+	IDRecord* r = LookUp(id, RECURSIVE, !RAISE_EXCEPTION);
 	if ( r )
 		return r->GetConstant(pc);
 	else
@@ -365,43 +352,20 @@ bool Env::GetConstant(const ID* id, int* pc) const
 
 void Env::SetMacro(const ID* id, Expr *macro)
 	{
-	lookup(id, true, true)->SetMacro(macro);
+	LookUp(id, RECURSIVE, RAISE_EXCEPTION)->SetMacro(macro);
 	}
 
 Expr* Env::GetMacro(const ID* id) const
 	{
-	return lookup(id, true, true)->GetMacro();
+	return LookUp(id, RECURSIVE, RAISE_EXCEPTION)->GetMacro();
 	}
 
 void init_builtin_identifiers()
 	{
-	default_value_var = new ID("val");
-	null_id = new ID("NULL");
-	null_byteseg_id = new ID("null_byteseg");
-	begin_of_data = new ID("begin_of_data");
-	end_of_data = new ID("end_of_data");
-	len_of_data = new ID("length_of_data");
-	byteorder_id = new ID("byteorder");
-	bigendian_id = new ID("bigendian");
-	littleendian_id = new ID("littleendian");
-	unspecified_byteorder_id = new ID("unspecified_byteorder");
-	const_true_id = new ID("true");
-	const_false_id = new ID("false");
-	analyzer_context_id = new ID("context");
-	this_id = new ID("this");
-	sourcedata_id = new ID("sourcedata");
-	connection_id = new ID("connection");
-	upflow_id = new ID("upflow");
-	downflow_id = new ID("downflow");
-	dataunit_id = new ID("dataunit");
-	flow_buffer_id = new ID("flow_buffer");
-	element_macro_id = new ID("$element");
-	input_macro_id = new ID("$input"); 
-	context_macro_id = new ID("$context"); 
-	parsing_state_id = new ID("parsing_state");
-	buffering_state_id = new ID("buffering_state");
+#define DEFINE_ID(id_var, id_name) id_var = new ID(id_name);
+#include "pac_builtin_id.def"
+#undef DEFINE_ID
 
-	null_decl_id = new ID("<null-decl>");
 	current_decl_id = null_decl_id;
 	}
 
@@ -424,11 +388,8 @@ Env* global_env()
 		the_global_env->AddConstID(this_id, 0);
 		the_global_env->AddConstID(null_id, 0, extern_type_nullptr);
 
-#if 0
-		the_global_env->AddID(null_byteseg_id, 
-			GLOBAL_VAR, 
-			extern_type_const_byteseg);
-#endif
+                the_global_env->AddID(const_bytestring_cstr_id, FUNC_ID, extern_type_const_bytestring);
+                the_global_env->SetEvaluated(const_bytestring_cstr_id);
 		}
 
 	return the_global_env;

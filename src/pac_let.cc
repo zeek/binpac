@@ -29,11 +29,10 @@ LetField::~LetField()
 	delete expr_;
 	}
 
-bool LetField::DoTraverse(DataDepVisitor *visitor)
-	{ 
-	return Field::DoTraverse(visitor) &&
-	       expr()->Traverse(visitor); 
-	}
+bool LetField::TraverseDataDependency(DataDepVisitor *visitor, Env *env) { 
+  return Field::TraverseDataDependency(visitor, env) &&
+    expr()->Traverse(visitor, env); 
+}
 
 bool LetField::RequiresAnalyzerContext() const 
 	{ 

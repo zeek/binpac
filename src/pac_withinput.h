@@ -29,7 +29,7 @@ public:
 	bool RequiresAnalyzerContext() const;
 
 protected:
-	bool DoTraverse(DataDepVisitor *visitor);
+  virtual bool TraverseDataDependency(DataDepVisitor *visitor, Env *env);
 
 protected:
 	InputBuffer *input_;

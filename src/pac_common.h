@@ -3,16 +3,11 @@
 
 #include "pac_utils.h"
 
-#include <vector>
-
 #include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
-
+#include <vector>
 using namespace std;
 
 extern bool FLAGS_pac_debug;
-extern bool FLAGS_quiet;
 extern vector<string> FLAGS_include_directories;
 extern string input_filename;
 extern int line_number;
