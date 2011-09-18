@@ -1,0 +1,13 @@
+======
+BinPAC
+======
+
+BinPAC is a high level language for describing protocol parsers and
+generates C++ code.  It is currently maintained and distributed with the
+Bro Network Security Monitor distribution, however, the generated parsers
+may be used with other programs besides Bro.
+
+Please see the INSTALL file for installation instructions. Documentation
+and publications regarding BinPAC can be found through the Bro website:
+
+    http://www.bro-ids.org
