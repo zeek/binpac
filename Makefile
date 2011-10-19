@@ -6,6 +6,9 @@
 #
 
 BUILD=build
+VERSION_FULL=`basename \`pwd\``-`cat VERSION`
+VERSION_MIN=`basename \`pwd\``-`cat VERSION`-minimal
+HAVE_MODULES=git submodule | grep -v cmake >/dev/null
 
 all: configured
 	( cd $(BUILD) && make )
@@ -16,11 +19,18 @@ install: configured
 clean: configured
 	( cd $(BUILD) && make clean )
 
-dist: configured
-	( cd $(BUILD) && make package_source )
+dist:
+	@rm -rf $(VERSION_FULL) $(VERSION_FULL).tgz
+	@rm -rf $(VERSION_MIN) $(VERSION_MIN).tgz
+	@mkdir $(VERSION_FULL)
+	@tar --exclude=$(VERSION_FULL)* --exclude=$(VERSION_MIN)* --exclude=.git -cf - . | ( cd $(VERSION_FULL) && tar -xpf - )
+	@tar -czf $(VERSION_FULL).tgz $(VERSION_FULL) && echo Package: $(VERSION_FULL).tgz && rm -rf $(VERSION_FULL)
+	@$(HAVE_MODULES) && mkdir $(VERSION_MIN) || exit 0
+	@$(HAVE_MODULES) && tar --exclude=$(VERSION_FULL)* --exclude=$(VERSION_MIN)* --exclude=.git `git submodule | awk '{print "--exclude="$$2}' | grep -v cmake | tr '\n' ' '` -cf - . | ( cd $(VERSION_MIN) && tar -xpf - ) || exit 0
+	@$(HAVE_MODULES) && tar -czf $(VERSION_MIN).tgz $(VERSION_MIN) && echo Package: $(VERSION_MIN).tgz && rm -rf $(VERSION_MIN) || exit 0
 
 distclean:
-	rm -rf $(BUILD)
+	git reset --hard HEAD && git clean -xdf
 
 .PHONY : configured
 configured:
