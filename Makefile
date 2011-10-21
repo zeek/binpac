@@ -32,7 +32,7 @@ dist:
 	@$(HAVE_MODULES) && tar -czf $(VERSION_MIN).tgz $(VERSION_MIN) && echo Package: $(VERSION_MIN).tgz && rm -rf $(VERSION_MIN) || exit 0
 
 distclean:
-	git reset --hard HEAD && git clean -xdf
+	rm -rf $(BUILD)
 
 .PHONY : configured
 configured:
