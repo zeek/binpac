@@ -1,5 +1,5 @@
 
-0.3 | 2011-10-24 18:16:22 -0700
+0.3 | 2011-10-25 17:41:31 -0700
 
   * Change distclean to only remove build dir. (Jon Siwek)
 
