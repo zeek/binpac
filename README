@@ -7,7 +7,7 @@
 BinPAC
 ======
 
-.. class:: opening
+.. rst-class:: opening
 
     BinPAC is a high level language for describing protocol parsers and
     generates C++ code.  It is currently maintained and distributed with the
@@ -24,8 +24,8 @@ BinPAC's git repository is located at `git://git.bro-ids.org/binpac.git
 <git://git.bro-ids.org/binpac.git>`__. You can browse the repository
 `here <http://git.bro-ids.org/binpac.git>`__.
 
-This document describes BinPAC |version|. See the `CHANGES
-<{{git('binpac:CHANGES')}}>`__ file for version history.
+This document describes BinPAC |version|. See the ``CHANGES``
+file for version history.
 
 Prerequisites
 -------------
@@ -52,18 +52,19 @@ installed before you begin:
 Installation
 ------------
 
-To build and install into /usr/local::
+To build and install into ``/usr/local``::
 
-    > ./configure
-    > cd build
-    > make
-    > make install
+    ./configure
+    cd build
+    make
+    make install
 
-This will perform an out-of-source build into the build directory using the
-default build options and then install the binpac binary into /usr/local/bin.
+This will perform an out-of-source build into the build directory using
+the default build options and then install the binpac binary into
+``/usr/local/bin``.
 
 You can specify a different installation directory with::
 
-   > ./configure --prefix=<dir>
+   ./configure --prefix=<dir>
 
 Run ``./configure --help`` for more options.
