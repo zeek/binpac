@@ -1,7 +1,7 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.3-4
+.. |version| replace:: 0.31
 
 ======
 BinPAC
@@ -32,8 +32,6 @@ Prerequisites
 
 BinPAC relies on the following libraries and tools, which need to be
 installed before you begin:
-
-    * A C/C++ compiler
 
     * Flex (Fast Lexical Analyzer)
        Flex is already installed on most systems, so with luck you can

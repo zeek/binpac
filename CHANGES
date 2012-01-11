@@ -1,4 +1,10 @@
 
+0.31 | 2012-01-09 16:11:01 -0800
+
+  * Submodule README conformity changes. (Jon Siwek)
+
+  * Fix parallel make portability. (Jon Siwek)
+
 0.3 | 2011-10-25 17:41:31 -0700
 
   * Change distclean to only remove build dir. (Jon Siwek)
