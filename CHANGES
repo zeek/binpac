@@ -1,3 +1,30 @@
+
+0.31 | 2012-01-09 16:11:01 -0800
+
+  * Submodule README conformity changes. (Jon Siwek)
+
+  * Fix parallel make portability. (Jon Siwek)
+
+0.3 | 2011-10-25 17:41:31 -0700
+
+  * Change distclean to only remove build dir. (Jon Siwek)
+
+  * Make dist now cleans the copied source. (Jon Siwek)
+
+  * Distribution cleanup. (Jon Siwek and Robin Sommer)
+
+  * Arrays now suport the &transient attribute.
+
+    If set, parsed elements won't actually be added to the array, and
+    read access to the array aren't permitted. This is helpful to save
+    memory in the case of large arrays for which elements don't need
+    (or can't) be buffered. (Robin Sommer)
+
+  * Install binaries with an RPATH. (Jon Siwek)
+
+  * Workaround for FreeBSD CMake port missing debug flags. (Jon Siwek)
+
+
 0.2 | 2011-04-18 12:50:21 -0700
 
   * Converting build process to CMake (Jon Siwek).
