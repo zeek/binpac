@@ -21,6 +21,7 @@ extern void switch_to_file(FILE* fp_input);
 string input_filename;
 
 bool FLAGS_pac_debug = false;
+bool FLAGS_quiet = false;
 string FLAGS_output_directory;
 vector<string> FLAGS_include_directories;
 
@@ -67,9 +68,13 @@ void insert_basictype_defs(Output* out)
 	out->println("typedef char int8;");
 	out->println("typedef short int16;");
 	out->println("typedef long int32;");
+	out->println("typedef long long int64;");
+	
 	out->println("typedef unsigned char uint8;");
 	out->println("typedef unsigned short uint16;");
 	out->println("typedef unsigned long uint32;");
+	out->println("typedef unsigned long long uint64;");
+	
 	out->println("");
 	out->println("#endif /* pac_type_defs */");
 	out->println("");
@@ -79,6 +84,7 @@ void insert_byteorder_macros(Output* out)
 	{
 	out->println("#define FixByteOrder16(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap16(x))");
 	out->println("#define FixByteOrder32(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap32(x))");
+	out->println("#define FixByteOrder64(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap64(x))");
 	out->println("");
 	}
 
@@ -192,6 +198,7 @@ void usage()
 	fprintf(stderr, "     <pac files>           | pac-language input files\n");
 	fprintf(stderr, "     -d <dir>              | use given directory for compiler output\n");
 	fprintf(stderr, "     -D                    | enable debugging output\n");
+	fprintf(stderr, "     -q                    | stay quiet\n");
 	fprintf(stderr, "     -h                    | show command line help\n");
 	fprintf(stderr, "     -I <dir>              | include <dir> in input file search path\n");
 	exit(1);
@@ -203,7 +210,7 @@ int main(int argc, char* argv[])
 	extern char *malloc_options;
 #endif
 	int o;
-	while ( (o = getopt(argc, argv, "DI:d:h")) != -1 )
+	while ( (o = getopt(argc, argv, "DqI:d:h")) != -1 )
 		{
 		switch(o)
 			{
@@ -213,6 +220,10 @@ int main(int argc, char* argv[])
 #ifdef HAVE_MALLOC_OPTIONS
 				malloc_options = "A";
 #endif
+				break;
+				
+			case 'q':
+				FLAGS_quiet = true;
 				break;
 
 			case 'I':
