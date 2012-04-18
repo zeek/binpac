@@ -40,7 +40,7 @@ void add_to_include_directories(string dirs)
 		// Add a trailing '/' if necessary
 		if ( dir.length() > 0 && *(dir.end() - 1) != '/' )
 			dir += '/';
-			
+
 		FLAGS_include_directories.push_back(dir);
 		dir_begin = dir_end + 1;
 		}
@@ -66,9 +66,13 @@ void insert_basictype_defs(Output* out)
 	out->println("typedef char int8;");
 	out->println("typedef short int16;");
 	out->println("typedef long int32;");
+	out->println("typedef long long int64;");
+
 	out->println("typedef unsigned char uint8;");
 	out->println("typedef unsigned short uint16;");
 	out->println("typedef unsigned long uint32;");
+	out->println("typedef unsigned long long uint64;");
+
 	out->println("");
 	out->println("#endif /* pac_type_defs */");
 	out->println("");
@@ -78,6 +82,7 @@ void insert_byteorder_macros(Output* out)
 	{
 	out->println("#define FixByteOrder16(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap16(x))");
 	out->println("#define FixByteOrder32(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap32(x))");
+	out->println("#define FixByteOrder64(x)	(byteorder == HOST_BYTEORDER ? (x) : pac_swap64(x))");
 	out->println("");
 	}
 
@@ -88,7 +93,7 @@ const char* to_id(const char* s)
 	for ( i = 0; s[i] && i < (int) sizeof(t) - 1; ++i )
 		t[i] = isalnum(s[i]) ? s[i] : '_';
 	if ( isdigit(t[0]) )
-		t[0] = '_'; 
+		t[0] = '_';
 	t[i] = '\0';
 	return t;
 	}
@@ -131,7 +136,7 @@ int compile(const char* filename)
 
 	int ret = 0;
 
-	try 
+	try
 		{
 		switch_to_file(fp_input);
 		if ( yyparse() )
@@ -161,8 +166,8 @@ int compile(const char* filename)
 		Decl::ProcessDecls(&out_h, &out_cc);
 
 		out_h.println("#endif /* %s_h */", filename_id);
-		} 
-	catch ( OutputException& e ) 
+		}
+	catch ( OutputException& e )
 		{
 		fprintf(stderr, "Error in compiling %s: %s\n",
 			filename, e.errmsg());
@@ -207,14 +212,14 @@ int main(int argc, char* argv[])
 		{
 		switch(o)
 			{
-			case 'D': 
+			case 'D':
 				yydebug = 1;
 				FLAGS_pac_debug = true;
 #ifdef HAVE_MALLOC_OPTIONS
 				malloc_options = "A";
 #endif
 				break;
-				
+
 			case 'q':
 				FLAGS_quiet = true;
 				break;
@@ -224,7 +229,7 @@ int main(int argc, char* argv[])
 				add_to_include_directories(optarg);
 				break;
 
-			case 'd': 
+			case 'd':
 				FLAGS_output_directory = optarg;
 				break;
 
