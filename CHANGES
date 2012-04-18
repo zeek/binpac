@@ -1,4 +1,13 @@
 
+0.31-9 | 2012-04-17 17:38:02 -0700
+
+  * Change binpac.h integral typedefs and reimplement 64-bit
+    pac_swap(). Addresses #761. (Jon Siwek)
+
+  * Adding int64 and uint64 types to binpac. (Seth Hall)
+
+  * Raise minimum required CMake version to 2.6.3 (Jon Siwek)
+
 0.31 | 2012-01-09 16:11:01 -0800
 
   * Submodule README conformity changes. (Jon Siwek)

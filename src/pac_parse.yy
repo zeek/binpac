@@ -1,29 +1,29 @@
 %token TOK_TYPE TOK_RECORD TOK_CASE TOK_ENUM TOK_LET TOK_FUNCTION
 %token TOK_REFINE TOK_CASEFUNC TOK_CASETYPE TOK_TYPEATTR
 %token TOK_HELPERHEADER TOK_HELPERCODE
-%token TOK_RIGHTARROW TOK_DEFAULT TOK_OF 
+%token TOK_RIGHTARROW TOK_DEFAULT TOK_OF
 %token TOK_PADDING TOK_TO TOK_ALIGN
 %token TOK_WITHINPUT
-%token TOK_INT8 TOK_INT16 TOK_INT32
-%token TOK_UINT8 TOK_UINT16 TOK_UINT32
+%token TOK_INT8 TOK_INT16 TOK_INT32 TOK_INT64
+%token TOK_UINT8 TOK_UINT16 TOK_UINT32 TOK_UINT64
 %token TOK_ID TOK_NUMBER TOK_REGEX TOK_STRING
 %token TOK_BEGIN_RE TOK_END_RE
 %token TOK_ATTR_ALSO
-%token TOK_ATTR_BYTEORDER TOK_ATTR_CHECK TOK_ATTR_CHUNKED 
+%token TOK_ATTR_BYTEORDER TOK_ATTR_CHECK TOK_ATTR_CHUNKED
 %token TOK_ATTR_EXPORTSOURCEDATA TOK_ATTR_IF
-%token TOK_ATTR_LENGTH TOK_ATTR_LET 
+%token TOK_ATTR_LENGTH TOK_ATTR_LET
 %token TOK_ATTR_LINEBREAKER TOK_ATTR_MULTILINE TOK_ATTR_ONELINE
-%token TOK_ATTR_REFCOUNT TOK_ATTR_REQUIRES 
+%token TOK_ATTR_REFCOUNT TOK_ATTR_REQUIRES
 %token TOK_ATTR_RESTOFDATA TOK_ATTR_RESTOFFLOW
 %token TOK_ATTR_TRANSIENT TOK_ATTR_UNTIL
-%token TOK_ANALYZER TOK_CONNECTION TOK_FLOW 
-%token TOK_STATE TOK_ACTION TOK_WHEN TOK_HELPER 
+%token TOK_ANALYZER TOK_CONNECTION TOK_FLOW
+%token TOK_STATE TOK_ACTION TOK_WHEN TOK_HELPER
 %token TOK_DATAUNIT TOK_FLOWDIR TOK_WITHCONTEXT
-%token TOK_LPB_EXTERN TOK_LPB_HEADER TOK_LPB_CODE 
+%token TOK_LPB_EXTERN TOK_LPB_HEADER TOK_LPB_CODE
 %token TOK_LPB_MEMBER TOK_LPB_INIT TOK_LPB_CLEANUP TOK_LPB_EOF
-%token TOK_LPB TOK_RPB 
+%token TOK_LPB TOK_RPB
 %token TOK_EMBEDDED_ATOM TOK_EMBEDDED_STRING
-%token TOK_PAC_VAL TOK_PAC_SET TOK_PAC_TYPE TOK_PAC_TYPEOF TOK_PAC_CONST_DEF 
+%token TOK_PAC_VAL TOK_PAC_SET TOK_PAC_TYPE TOK_PAC_TYPEOF TOK_PAC_CONST_DEF
 %token TOK_END_PAC
 %token TOK_EXTERN
 
@@ -35,7 +35,7 @@
 %left TOK_AND
 %nonassoc TOK_EQUAL TOK_NEQ TOK_LE TOK_GE '<' '>'
 %left '&' '|' '^'
-%left TOK_LSHIFT TOK_RSHIFT 
+%left TOK_LSHIFT TOK_RSHIFT
 %left '+' '-'
 %left '*' '/' '%'
 %right '~' '!'
@@ -64,13 +64,13 @@
 %type <field> withinputfield letfield
 %type <fieldlist> letfieldlist
 %type <function> funcproto function
-%type <id> TOK_ID tok_id optfieldid 
+%type <id> TOK_ID tok_id optfieldid
 %type <input> input
 %type <num> TOK_NUMBER
 %type <pacprimitive> embedded_pac_primitive
 %type <param> param
 %type <paramlist> optparams paramlist
-%type <recordfield> recordfield recordfield0 padding 
+%type <recordfield> recordfield recordfield0 padding
 %type <recordfieldlist> recordfieldlist
 %type <regex> regex
 %type <statevar> statevar
@@ -360,7 +360,7 @@ optparams	:	'(' paramlist ')'
 				}
 		;
 
-paramlist	:	paramlist ',' param 
+paramlist	:	paramlist ',' param
 				{
 				$1->push_back($3);
 				$$ = $1;
@@ -462,7 +462,7 @@ recordfieldlist	:	recordfieldlist recordfield ';'
 				$1->push_back($2);
 				$$ = $1;
 				}
-		|	/* empty */	
+		|	/* empty */
 				{
 				$$ = new RecordFieldList();
 				}
@@ -523,7 +523,7 @@ casefieldlist	:	casefieldlist casefield ';'
 				$1->push_back($2);
 				$$ = $1;
 				}
-		|	/* empty */	
+		|	/* empty */
 				{
 				$$ = new CaseFieldList();
 				}
@@ -531,7 +531,7 @@ casefieldlist	:	casefieldlist casefield ';'
 
 casefield	:	casefield0 optattrs
 				{
-				$1->AddAttr($2);	
+				$1->AddAttr($2);
 				$$ = $1;
 				}
 		;
@@ -598,8 +598,8 @@ expr		:	tok_id
 				}
 		|	expr '(' optexprlist ')'
 				{
-				$$ = new Expr(Expr::EXPR_CALL, 
-				              $1, 
+				$$ = new Expr(Expr::EXPR_CALL,
+				              $1,
 				              new Expr($3));
 				}
 		|	'-' expr
@@ -690,7 +690,7 @@ expr		:	tok_id
 				{
 				$$ = new Expr(Expr::EXPR_COND, $1, $3, $5);
 				}
-		|	TOK_CASE expr TOK_OF '{' caseexprlist '}' 
+		|	TOK_CASE expr TOK_OF '{' caseexprlist '}'
 				{
 				$$ = new Expr($2, $5);
 				}
@@ -711,8 +711,8 @@ cstr		:	TOK_STRING
 		;
 
 regex		: 	TOK_BEGIN_RE TOK_REGEX TOK_END_RE
-				{ 
-				$$ = new RegEx($2); 
+				{
+				$$ = new RegEx($2);
 				}
 		;
 
@@ -816,8 +816,8 @@ sah		:	TOK_LPB_MEMBER embedded_code TOK_RPB
 		|	TOK_DATAUNIT '=' tok_id optargs TOK_WITHCONTEXT '(' optexprlist ')' ';'
 				{
 				$$ = new AnalyzerDataUnit(
-					(AnalyzerDataUnit::DataUnitType) $1, 
-					$3, 
+					(AnalyzerDataUnit::DataUnitType) $1,
+					$3,
 					$4,
 					$7);
 				}
@@ -917,7 +917,7 @@ optargs		:	/* empty */
 				}
 		;
 
-letfieldlist	:	letfieldlist letfield ';' 
+letfieldlist	:	letfieldlist letfield ';'
 				{
 				$1->push_back($2);
 				$$ = $1;
@@ -954,7 +954,7 @@ input		:	expr
 				}
 		;
 
-optattrs	:	/* empty */	
+optattrs	:	/* empty */
 				{
 				$$ = 0;
 				}
@@ -986,7 +986,7 @@ attr		:	TOK_ATTR_BYTEORDER '=' expr
 				{
 				$$ = new Attr(ATTR_BYTEORDER, $3);
 				}
-		|	TOK_ATTR_CHECK expr 
+		|	TOK_ATTR_CHECK expr
 				{
 				$$ = new Attr(ATTR_CHECK, $2);
 				}
@@ -998,7 +998,7 @@ attr		:	TOK_ATTR_BYTEORDER '=' expr
 				{
 				$$ = new Attr(ATTR_EXPORTSOURCEDATA);
 				}
-		|	TOK_ATTR_IF expr 
+		|	TOK_ATTR_IF expr
 				{
 				$$ = new Attr(ATTR_IF, $2);
 				}
@@ -1064,7 +1064,7 @@ const ID* current_decl_id = 0;
 
 int yyerror(const char msg[])
 	{
-	char* msgbuf = 
+	char* msgbuf =
 		new char[strlen(msg) + yyleng + 64];
 
 	if ( ! yychar || ! yytext || yytext[0] == '\0' )
