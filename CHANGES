@@ -1,5 +1,5 @@
 
-0.31-9 | 2012-04-17 17:38:02 -0700
+0.32 | 2012-06-11 17:25:04 -0700
 
   * Change binpac.h integral typedefs and reimplement 64-bit
     pac_swap(). Addresses #761. (Jon Siwek)
