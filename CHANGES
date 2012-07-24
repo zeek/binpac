@@ -1,4 +1,9 @@
 
+0.32-1 | 2012-07-24 09:00:12 -0700
+
+  * Silence warning for generated code when compiling with clang.
+    (Robin Sommer)
+
 0.32 | 2012-06-11 17:25:04 -0700
 
   * Change binpac.h integral typedefs and reimplement 64-bit
