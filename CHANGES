@@ -1,4 +1,9 @@
 
+0.34 | 2012-08-01 13:54:39 -0500
+
+  * Fix configure script to exit with non-zero status on error (Jon
+    Siwek)
+
 0.33 | 2012-07-24 09:05:37 -0700
 
   * Silence warning for generated code when compiling with clang.
