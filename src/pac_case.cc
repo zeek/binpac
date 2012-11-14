@@ -9,7 +9,7 @@
 #include "pac_case.h"
 
 CaseType::CaseType(Expr* index_expr, CaseFieldList* cases)
-	: Type(CASE), index_expr_(index_expr), cases_(cases) 
+	: Type(CASE), index_expr_(index_expr), cases_(cases)
 	{
 	index_var_ = 0;
 	foreach(i, CaseFieldList, cases_)
@@ -67,7 +67,7 @@ void CaseType::Prepare(Env* env, int flags)
 	env->AddID(index_var_, MEMBER_VAR, extern_type_int);
 
 	// Sort the cases_ to put the default case at the end of the list
-	CaseFieldList::iterator default_case_it = 
+	CaseFieldList::iterator default_case_it =
 		cases_->end(); // to avoid warning
 	CaseField *default_case = 0;
 
@@ -146,10 +146,10 @@ void CaseType::DoGenParseCode(Output* out_cc, Env* env,
 	if ( ! incremental_input() )
 		compute_size_var = AddSizeVar(out_cc, env);
 
-	out_cc->println("%s = %s;", 
+	out_cc->println("%s = %s;",
 		env->LValue(index_var_), index_expr_->EvalExpr(out_cc, env));
 	env->SetEvaluated(index_var_);
-	
+
 	env->set_in_branch(true);
 	out_cc->println("switch ( %s )", env->RValue(index_var_));
 	out_cc->inc_indent();
@@ -158,7 +158,7 @@ void CaseType::DoGenParseCode(Output* out_cc, Env* env,
 	foreach (i, CaseFieldList, cases_)
 		{
 		CaseField *c = *i;
-		c->GenParseCode(out_cc, env, data, 
+		c->GenParseCode(out_cc, env, data,
 			compute_size_var ? size_var() : 0);
 		if ( c->IsDefaultCase() )
 			has_default_case = true;
@@ -168,7 +168,7 @@ void CaseType::DoGenParseCode(Output* out_cc, Env* env,
 		{
 		out_cc->println("default:");
 		out_cc->inc_indent();
-		out_cc->println("throw ExceptionInvalidCaseIndex(\"%s\", %s);", 
+		out_cc->println("throw binpac::ExceptionInvalidCaseIndex(\"%s\", %s);",
 			decl_id()->Name(), env->RValue(index_var_));
 		out_cc->println("break;");
 		out_cc->dec_indent();
@@ -232,9 +232,9 @@ bool CaseType::ByteOrderSensitive() const
 	}
 
 CaseField::CaseField(ExprList* index, ID* id, Type* type)
-	: Field(CASE_FIELD, 
-		TYPE_TO_BE_PARSED | CLASS_MEMBER | PUBLIC_READABLE, 
-		id, type), 
+	: Field(CASE_FIELD,
+		TYPE_TO_BE_PARSED | CLASS_MEMBER | PUBLIC_READABLE,
+		id, type),
 	  index_(index)
 	{
 	ASSERT(type_);
@@ -255,7 +255,7 @@ void GenCaseStr(ExprList *index_list, Output *out_cc, Env *env)
 			{
 			Expr *index_expr = *i;
 			int index_const;
-			
+
 			if ( ! index_expr->ConstFold(env, &index_const) )
 				throw ExceptionNonConstExpr(index_expr);
 			out_cc->println("case %d:", index_const);
@@ -302,10 +302,11 @@ void CaseField::GenPubDecls(Output* out_h, Env* env)
 
 		out_h->println("default:");
 		out_h->inc_indent();
-		out_h->println("throw ExceptionInvalidCase(\"%s\", %s, \"%s\");", 
-		               id_->LocName(), 
-		               env->RValue(index_var_), 
-		               OrigExprList(index_).c_str());
+		out_h->println(
+			"throw binpac::ExceptionInvalidCase(\"%s\", %s, \"%s\");",
+			id_->LocName(),
+			env->RValue(index_var_),
+			OrigExprList(index_).c_str());
 		out_h->println("break;");
 		out_h->dec_indent();
 
@@ -344,14 +345,14 @@ void CaseField::GenCleanUpCode(Output* out_cc, Env* env)
 	out_cc->dec_indent();
 	}
 
-void CaseField::GenParseCode(Output* out_cc, Env* env, 
+void CaseField::GenParseCode(Output* out_cc, Env* env,
 		const DataPtr& data, const ID* size_var)
 	{
 	GenCaseStr(index_, out_cc, env);
 	out_cc->inc_indent();
 	out_cc->println("// Parse \"%s\"", id_->Name());
 	out_cc->println("{");
-	
+
 	{
 	Env case_env(env, this);
 	Env *env = &case_env;
@@ -360,14 +361,14 @@ void CaseField::GenParseCode(Output* out_cc, Env* env,
 	type_->GenParseCode(out_cc, env, data, 0);
 	if ( size_var )
 		{
-		out_cc->println("%s = %s;", 
+		out_cc->println("%s = %s;",
 			env->LValue(size_var),
 			type_->DataSize(out_cc, env, data).c_str());
 		}
 	if ( type_->incremental_input() )
 		{
 		ASSERT(case_type()->parsing_complete_var());
-		out_cc->println("%s = %s;", 
+		out_cc->println("%s = %s;",
 			env->LValue(case_type()->parsing_complete_var()),
 			env->RValue(type_->parsing_complete_var()));
 		}
@@ -379,13 +380,13 @@ void CaseField::GenParseCode(Output* out_cc, Env* env,
 	}
 
 bool CaseField::DoTraverse(DataDepVisitor *visitor)
-	{ 
+	{
 	return Field::DoTraverse(visitor) &&
-	       type()->Traverse(visitor); 
+	       type()->Traverse(visitor);
 	}
 
-bool CaseField::RequiresAnalyzerContext() const 
-	{ 
+bool CaseField::RequiresAnalyzerContext() const
+	{
 	return Field::RequiresAnalyzerContext() ||
-	       type()->RequiresAnalyzerContext(); 
+	       type()->RequiresAnalyzerContext();
 	}
