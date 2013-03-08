@@ -18,11 +18,11 @@ Download
 --------
 
 You can find the latest BinPAC release for download at
-http://www.bro-ids.org/download.
+http://www.bro.org/download.
 
-BinPAC's git repository is located at `git://git.bro-ids.org/binpac.git
-<git://git.bro-ids.org/binpac.git>`__. You can browse the repository
-`here <http://git.bro-ids.org/binpac.git>`__.
+BinPAC's git repository is located at `git://git.bro.org/binpac.git
+<git://git.bro.org/binpac.git>`__. You can browse the repository
+`here <http://git.bro.org/binpac.git>`__.
 
 This document describes BinPAC |version|. See the ``CHANGES``
 file for version history.
