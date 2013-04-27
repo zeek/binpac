@@ -1,4 +1,11 @@
 
+0.34-8 | 2013-04-27 15:04:23 -0700
+
+  * Fix an exception slicing issue in binpac generated cleanup code.
+    (Jon Siwek)
+
+  * s/bro-ids.org/bro.org/g (Robin Sommer)
+    
 0.34-3 | 2012-11-13 17:24:24 -0800
 
   * Add scoping to usages of binpac::Exception classes in generated
