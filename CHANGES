@@ -1,4 +1,24 @@
 
+0.34-11 | 2013-07-24 18:35:28 -0700
+
+  * Adding an interface to manually control the buffering for
+    generated parsers. (Robin Sommer)
+
+    This consists of two parts:
+
+        1. The generated Flow classes expose their flow buffers via a new
+           method flow_buffer().
+
+        2. Flow buffers get two new methods:
+
+            // Interface for delayed parsing. Sometimes BinPAC doesn't get the
+            // buffering right and then one can use these to feed parts
+            // individually and assemble them internally. After calling
+            // FinishBuffer(), one can send the uppper-layer flow an FlowEOF()
+            // to trigger parsing.
+            void BufferData(const_byteptr data, const_byteptr end);
+            void FinishBuffer(); (Robin Sommer)
+
 0.34-8 | 2013-04-27 15:04:23 -0700
 
   * Fix an exception slicing issue in binpac generated cleanup code.
