@@ -1038,11 +1038,7 @@ Q & A
 
 * Clarification on "connection" keyword (binpac paper).
 
-  What are the specific questions?
-
 * Need a new way to attach hook additional code to each class beside &let.
-
-  Why? Can you describe a scenario?
 
 * &transient, how is this different from declaring anonymous field? and
   currently it doesn't seem to do much
@@ -1075,8 +1071,6 @@ Q & A
     name_.init(t_begin_of_data, t_name_string_length);
 
 * Detail on the globals ($context, $element, $input...etc)
-
-  Again, what are the specific questions?
 
 * How does BinPAC work with dynamic protocol detection?
 
