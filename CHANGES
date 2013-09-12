@@ -1,4 +1,20 @@
 
+0.34-24 | 2013-09-12 15:49:51 -0500
+
+  * Add missing break to switch statement case. (Jon Siwek)
+
+  * Remove unreachable code. (Jon Siwek)
+
+  * Add missing va_end()'s to match va_start()'s. (Jon Siwek)
+
+  * Fix two use-after-free bugs. (Jon Siwek)
+
+  * Fix double-free. (Jon Siwek)
+
+  * Remove some answers from the Q&A section of README (Daniel Thayer)
+
+  * Add BinPAC documentation from the old Bro wiki (Daniel Thayer)
+
 0.34-11 | 2013-07-24 18:35:28 -0700
 
   * Adding an interface to manually control the buffering for
