@@ -1,4 +1,8 @@
 
+0.34-26 | 2013-09-19 15:13:28 -0700
+
+  * Add virtual dtor to RefCount base class. (Jon Siwek)
+
 0.34-24 | 2013-09-12 15:49:51 -0500
 
   * Add missing break to switch statement case. (Jon Siwek)
