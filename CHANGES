@@ -1,5 +1,9 @@
 
-0.4 | 2013-09-19 15:13:38 -0700
+0.4 | 2013-09-23 14:43:11 -0500
+
+  * Update 'make dist' target. (Jon Siwek)
+
+  * Change submodules to fixed URL. (Jon Siwek)
 
   * Add virtual dtor to RefCount base class. (Jon Siwek)
 
