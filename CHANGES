@@ -1,4 +1,15 @@
 
+0.4-5 | 2013-10-02 10:33:05 -0700
+
+  * Fix uninitialized (or unused) fields. (Jon Siwek)
+
+  * Generate initialization code for external types. Numeric/pointer
+    types can be initialized to 0. (Jon Siwek)
+
+  * Optimize negative string length check. (Jon Siwek)
+    
+  * Fix for setting REPO in Makefile. (Robin Sommer)
+
 0.4 | 2013-09-23 20:56:19 -0700
 
   * Update 'make dist' target. (Jon Siwek)

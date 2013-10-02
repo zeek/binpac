@@ -90,24 +90,27 @@ IDRecord::IDRecord(Env *arg_env, const ID* arg_id, IDType arg_id_type)
 			lvalue = "@FUNC_PARAM@";
 			break;
 		}
+
+	data_type = 0;
 	field = 0;
-	constant_set = false;
+	constant = constant_set = false;
+	macro = 0;
 	}
 
 IDRecord::~IDRecord()
 	{
 	}
 
-void IDRecord::SetConstant(int c)			
-	{ 
+void IDRecord::SetConstant(int c)
+	{
 	ASSERT(id_type == CONST);
 	constant_set = true;
-	constant = c; 
+	constant = c;
 	}
 
 bool IDRecord::GetConstant(int *pc) const
-	{ 
-	if ( constant_set ) 
+	{
+	if ( constant_set )
 		*pc = constant;
 	return constant_set;
 	}
@@ -131,8 +134,8 @@ void IDRecord::SetEvaluated(bool v)
 	evaluated = v;
 	}
 
-void IDRecord::Evaluate(Output* out, Env* env)	
-	{ 
+void IDRecord::Evaluate(Output* out, Env* env)
+	{
 	if ( evaluated )
 		return;
 
@@ -141,12 +144,12 @@ void IDRecord::Evaluate(Output* out, Env* env)
 
 	if ( ! eval )
 		throw Exception(id, "no evaluation method");
-		
+
 	if ( in_evaluation )
 		throw ExceptionCyclicDependence(id);
 
 	in_evaluation = true;
-	eval->GenEval(out, env); 
+	eval->GenEval(out, env);
 	in_evaluation = false;
 
 	evaluated = true;
@@ -283,7 +286,7 @@ bool Env::Evaluated(const ID* id) const
 		return r->Evaluated();
 	else
 		// Assume undefined variables are already evaluated
-		return true;  
+		return true;
 	}
 
 void Env::SetEvaluated(const ID* id, bool v)
@@ -336,7 +339,7 @@ Type* Env::GetDataType(const ID* id) const
 	if ( r )
 		return r->GetDataType();
 	else
-		return 0;  
+		return 0;
 	}
 
 string Env::DataTypeStr(const ID *id) const
@@ -396,8 +399,8 @@ void init_builtin_identifiers()
 	dataunit_id = new ID("dataunit");
 	flow_buffer_id = new ID("flow_buffer");
 	element_macro_id = new ID("$element");
-	input_macro_id = new ID("$input"); 
-	context_macro_id = new ID("$context"); 
+	input_macro_id = new ID("$input");
+	context_macro_id = new ID("$context");
 	parsing_state_id = new ID("parsing_state");
 	buffering_state_id = new ID("buffering_state");
 
@@ -425,8 +428,8 @@ Env* global_env()
 		the_global_env->AddConstID(null_id, 0, extern_type_nullptr);
 
 #if 0
-		the_global_env->AddID(null_byteseg_id, 
-			GLOBAL_VAR, 
+		the_global_env->AddID(null_byteseg_id,
+			GLOBAL_VAR,
 			extern_type_const_byteseg);
 #endif
 		}
