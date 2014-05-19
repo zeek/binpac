@@ -1,4 +1,8 @@
 
+0.42 | 2014-04-08 15:24:11 -0700
+
+  * Release 0.42.
+
 0.41-5 | 2014-04-08 15:23:48 -0700
 
   * Request format macros from inttypes.h explicitly. This helps
