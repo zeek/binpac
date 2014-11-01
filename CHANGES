@@ -1,4 +1,11 @@
 
+0.42-6 | 2014-10-31 17:42:21 -0700
+
+  * Adding a new binpac::init() function that must be called by the
+    host before anything else. Internally, this function compiles all
+    regular expressions, avoiding to do that inside the regexp
+    constructor. (Robin Sommer)
+
 0.42 | 2014-04-08 15:24:11 -0700
 
   * Release 0.42.
