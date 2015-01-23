@@ -1,4 +1,10 @@
 
+0.43 | 2015-01-23 09:56:59 -0600
+
+  * Fix potential out-of-bounds memory reads in generated code.
+    CVE-2014-9586.  (John Villamil and Chris Rohlf - Yahoo Paranoids,
+    Jon Siwek)
+
 0.42-9 | 2014-11-03 10:05:17 -0600
 
   * Separate declaration of binpac::init from definition. (Jon Siwek)
