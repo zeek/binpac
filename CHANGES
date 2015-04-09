@@ -1,4 +1,9 @@
 
+0.43-5 | 2015-04-09 12:09:04 -0700
+
+  * BIT-1361: Improve boundary checks of records that use &length.
+    (Jon Siwek)
+
 0.43 | 2015-01-23 09:56:59 -0600
 
   * Fix potential out-of-bounds memory reads in generated code.
