@@ -21,6 +21,8 @@
 #include "pac_type.h"
 #include "pac_utils.h"
 
+#include <libgen.h>
+
 int line_number = 1;
 
 int begin_pac_primitive(int tok);
@@ -52,7 +54,7 @@ WS	[ \t]+
 ID	[A-Za-z_][A-Za-z_0-9]*
 D	[0-9]+
 HEX	[0-9a-fA-F]+
-FILE	[A-Za-z._0-9\-]+
+FILE	[^ \t\n]+
 ESCSEQ	(\\([^\n]|[0-7]{3}|x[[:xdigit:]]{2}))
 
 %option nounput
@@ -108,7 +110,7 @@ ESCSEQ	(\\([^\n]|[0-7]{3}|x[[:xdigit:]]{2}))
 				}
 
 <EC>"${"			return begin_pac_primitive(TOK_PAC_VAL);
-<EC>"$set{"			return begin_pac_primitive(TOK_PAC_SET); 
+<EC>"$set{"			return begin_pac_primitive(TOK_PAC_SET);
 <EC>"$type{"			return begin_pac_primitive(TOK_PAC_TYPE);
 <EC>"$typeof{"			return begin_pac_primitive(TOK_PAC_TYPEOF);
 <EC>"$const_def{"		return begin_pac_primitive(TOK_PAC_CONST_DEF);
@@ -293,7 +295,7 @@ void switch_to_file(const char *filename)
 		exit( 1 );
 		}
 
-	IncludeState state = 
+	IncludeState state =
 		{ YY_CURRENT_BUFFER, input_filename, line_number };
 	include_stack[include_stack_ptr++] = state;
 
@@ -301,7 +303,7 @@ void switch_to_file(const char *filename)
 
 	if ( ! fp )
 		{
-		fprintf(stderr, "%s:%d: error: cannot include file \"%s\"\n", 
+		fprintf(stderr, "%s:%d: error: cannot include file \"%s\"\n",
 			input_filename.c_str(), line_number,filename);
 		--include_stack_ptr;
 		return;
@@ -320,15 +322,34 @@ void include_file(const char *filename)
 	ASSERT(filename);
 
 	string full_filename;
-	if ( filename[0] == '/' || filename[0] == '.' )
+	if ( filename[0] == '/' )
 		full_filename = filename;
+    else if ( filename[0] == '.' )
+        {
+        char* tmp = new char[strlen(input_filename.c_str()) + 1];
+        strcpy(tmp, input_filename.c_str());
+        char* dir = dirname(tmp);
+
+        if ( dir )
+            full_filename = string(dir) + "/" + filename;
+        else
+            {
+            fprintf(stderr, "%s:%d error: cannot include file \"%s\": %s\n",
+                    input_filename.c_str(), line_number, filename,
+                    strerror(errno));
+            delete [] tmp;
+            return;
+            }
+
+        delete [] tmp;
+        }
 	else
 		{
 		int i;
 		for ( i = 0; i < (int) FLAGS_include_directories.size(); ++i )
 			{
 			full_filename = FLAGS_include_directories[i] + filename;
-			DEBUG_MSG("Try include file: \"%s\"\n", 
+			DEBUG_MSG("Try include file: \"%s\"\n",
 				full_filename.c_str());
 			if ( access(full_filename.c_str(), R_OK) == 0 )
 				break;

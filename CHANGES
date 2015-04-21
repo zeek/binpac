@@ -1,4 +1,8 @@
 
+0.43-7 | 2015-04-21 13:45:20 -0700
+
+  * BIT-1343: Extend %include to work with relative paths. (Jon Siwek)
+
 0.43-5 | 2015-04-09 12:09:04 -0700
 
   * BIT-1361: Improve boundary checks of records that use &length.
