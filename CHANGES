@@ -1,4 +1,8 @@
 
+0.43-8 | 2015-04-21 20:11:06 -0700
+
+  * Adding missing include. (Robin Sommer)
+
 0.43-7 | 2015-04-21 13:45:20 -0700
 
   * BIT-1343: Extend %include to work with relative paths. (Jon Siwek)
