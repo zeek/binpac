@@ -1,4 +1,8 @@
 
+0.44-3 | 2015-09-11 12:24:21 -0700
+
+  * Add README.rst symlink. Addresses BIT-1413 (Vlad Grigorescu)
+
 0.44 | 2015-04-27 08:25:17 -0700
 
 	* Release 0.44.
