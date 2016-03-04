@@ -79,7 +79,7 @@ while [ $# -ne 0 ]; do
             append_cache_entry ENABLE_DEBUG         BOOL   true
             ;;
         --with-openssl=*)
-            append_cache_entry OpenSSL_ROOT_DIR PATH $optarg
+            append_cache_entry OPENSSL_ROOT_DIR PATH $optarg
             ;;
         --with-bind=*)
             append_cache_entry BIND_ROOT_DIR PATH $optarg
