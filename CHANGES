@@ -1,4 +1,8 @@
 
+0.44-11 | 2016-03-04 12:36:57 -0800
+
+  * Update for new CMake OpenSSL script. (Johanna Amann)
+
 0.44-7 | 2016-01-19 10:05:37 -0800
 
   * Fixed compiler complaining about recursive function. (Seth Hall)
