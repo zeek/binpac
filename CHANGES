@@ -1,4 +1,9 @@
 
+0.44-17 | 2016-05-06 16:52:37 -0700
+
+  * Add a comment in the generated C++ code for fall through in
+    switch. Coverity raised an error about this. (Vlad Grigorescu)
+
 0.44-11 | 2016-03-04 12:36:57 -0800
 
   * Update for new CMake OpenSSL script. (Johanna Amann)
