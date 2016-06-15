@@ -1,4 +1,9 @@
 
+0.44-21 | 2016-06-14 17:41:28 -0700
+
+  * Bug fix for pac_swap function with int32 type of argument.
+    (Bartolo Otrit) e<<<
+
 0.44-18 | 2016-05-23 08:25:49 -0700
 
   * Fixing Coverity warning. (Robin Sommer)
@@ -69,7 +74,7 @@
 0.41 | 2013-10-14 09:24:54 -0700
 
   * Updating copyright notice. (Robin Sommer)
-    
+
 0.4-5 | 2013-10-02 10:33:05 -0700
 
   * Fix uninitialized (or unused) fields. (Jon Siwek)
@@ -78,7 +83,7 @@
     types can be initialized to 0. (Jon Siwek)
 
   * Optimize negative string length check. (Jon Siwek)
-    
+
   * Fix for setting REPO in Makefile. (Robin Sommer)
 
 0.4 | 2013-09-23 20:56:19 -0700
@@ -131,7 +136,7 @@
     (Jon Siwek)
 
   * s/bro-ids.org/bro.org/g (Robin Sommer)
-    
+
 0.34-3 | 2012-11-13 17:24:24 -0800
 
   * Add scoping to usages of binpac::Exception classes in generated
