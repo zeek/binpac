@@ -1,8 +1,12 @@
 
+0.44-24 | 2016-08-02 11:08:13 -0700
+
+  * Fix memory leak in pac_parse.yy. (Bryon Gloden)
+
 0.44-21 | 2016-06-14 17:41:28 -0700
 
   * Bug fix for pac_swap function with int32 type of argument.
-    (Bartolo Otrit) e<<<
+    (Bartolo Otrit)
 
 0.44-18 | 2016-05-23 08:25:49 -0700
 
