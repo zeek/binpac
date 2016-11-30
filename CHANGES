@@ -1,4 +1,8 @@
 
+0.46-1 | 2016-11-30 10:18:23 -0800
+
+  * Allow more than one &require attribute on a field. (François Pennaneach)
+
 0.46 | 2016-10-27 14:41:38 -0700
 
   * Release 0.46.
