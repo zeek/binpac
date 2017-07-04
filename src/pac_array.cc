@@ -628,7 +628,10 @@ void ArrayType::GenUntilCheck(Output *out_cc, Env *env,
 			out_cc->println("%s = 0;", env->LValue(elem_var()));
 		}
 
-	out_cc->println("goto %s;", end_of_array_loop_label_.c_str());
+	out_cc->println("// Handle out-of-bound condition");
+	out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",", elemtype_->DataTypeStr().c_str());
+	out_cc->println("	0, //current_data_pointer- t_begin_of_data+1");
+	out_cc->println(" 0); //(t_end_of_data) - (t_begin_of_data)");
 	out_cc->println("}");
 	out_cc->dec_indent();
 	}
