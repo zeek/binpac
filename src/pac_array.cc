@@ -609,31 +609,44 @@ void ArrayType::GenUntilCheck(Output *out_cc, Env *env,
 			new Expr(elem_input_var()->clone()));
 		}
 
-	out_cc->println("// Check &until(%s)", until_expr->orig());
-	out_cc->println("if ( %s )",
-		until_expr->EvalExpr(out_cc, &check_env));
-	out_cc->inc_indent();
-	out_cc->println("{");
-	if ( parsing_complete_var() )
-		{
-		out_cc->println("%s = true;",
-			env->LValue(parsing_complete_var()));
+		//if the array length is known, check for out-of-bound
+		if(env->Evaluated(arraylength_var())){
+			out_cc->println("if( t_%s__elem__dataptr + 1 > t_end_of_data || t_%s__elem__dataptr + 1 < t_%s__elem__dataptr )", value_var()->Name(), value_var()->Name(), value_var()->Name());
+			out_cc->inc_indent();
+			out_cc->println("{");
+			out_cc->println("// Handle out-of-bound condition");
+			out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",", elemtype_->DataTypeStr().c_str());
+			out_cc->println("	0, //current_data_pointer- t_begin_of_data+1");
+			out_cc->println(" 0); //(t_end_of_data) - (t_begin_of_data)");
+			out_cc->println("}");
+			out_cc->dec_indent();
+			SetBoundaryChecked();	// to evict double checking
 		}
+		//otherwise, check the until condition
+		else{
+			out_cc->println("// Check &until(%s)", until_expr->orig());
+			out_cc->println("if ( %s )",
+				until_expr->EvalExpr(out_cc, &check_env));
+			out_cc->inc_indent();
+			out_cc->println("{");
+			if ( parsing_complete_var() )
+				{
+				out_cc->println("%s = true;",
+					env->LValue(parsing_complete_var()));
+				}
 
-	if ( elemtype_->IsPointerType() )
-		{
-		if ( delete_elem )
-			elemtype_->GenCleanUpCode(out_cc, env);
-		else
-			out_cc->println("%s = 0;", env->LValue(elem_var()));
+			if ( elemtype_->IsPointerType() )
+				{
+				if ( delete_elem )
+					elemtype_->GenCleanUpCode(out_cc, env);
+				else
+					out_cc->println("%s = 0;", env->LValue(elem_var()));
+				}
+
+				out_cc->println("goto %s;", end_of_array_loop_label_.c_str());
+				out_cc->println("}");
+				out_cc->dec_indent();
 		}
-
-	out_cc->println("// Handle out-of-bound condition");
-	out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",", elemtype_->DataTypeStr().c_str());
-	out_cc->println("	0, //current_data_pointer- t_begin_of_data+1");
-	out_cc->println(" 0); //(t_end_of_data) - (t_begin_of_data)");
-	out_cc->println("}");
-	out_cc->dec_indent();
 	}
 
 void ArrayType::GenDynamicSize(Output *out_cc, Env *env,
