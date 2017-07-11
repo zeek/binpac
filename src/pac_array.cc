@@ -609,21 +609,8 @@ void ArrayType::GenUntilCheck(Output *out_cc, Env *env,
 			new Expr(elem_input_var()->clone()));
 		}
 
-		//if the array length is known, check for out-of-bound
-		if(env->Evaluated(arraylength_var())){
-			out_cc->println("if( t_%s__elem__dataptr + 1 > t_end_of_data || t_%s__elem__dataptr + 1 < t_%s__elem__dataptr )", value_var()->Name(), value_var()->Name(), value_var()->Name());
-			out_cc->inc_indent();
-			out_cc->println("{");
-			out_cc->println("// Handle out-of-bound condition");
-			out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",", elemtype_->DataTypeStr().c_str());
-			out_cc->println("	0, //current_data_pointer- t_begin_of_data+1");
-			out_cc->println(" 0); //(t_end_of_data) - (t_begin_of_data)");
-			out_cc->println("}");
-			out_cc->dec_indent();
-			SetBoundaryChecked();	// to evict double checking
-		}
-		//otherwise, check the until condition
-		else{
+		//only if the number of array elements is unknown, set the until check
+		if(!env->Evaluated(arraylength_var())){
 			out_cc->println("// Check &until(%s)", until_expr->orig());
 			out_cc->println("if ( %s )",
 				until_expr->EvalExpr(out_cc, &check_env));
