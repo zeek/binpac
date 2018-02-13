@@ -1,4 +1,11 @@
 
+0.48 | 2018-02-13 09:27:42 -0800
+
+  * Release 0.48
+
+  * Fix integer overflow in binpac generated code
+	  (Philippe Antoince/Catena cyber).
+
 0.47 | 2017-05-26 08:26:05 -0500
 
   * Release 0.47.
