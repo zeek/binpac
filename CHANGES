@@ -1,4 +1,8 @@
 
+0.48-5 | 2018-04-19 11:46:02 -0500
+
+  * Allow arbitrary, single-character &linebreaker expressions (giralt)
+
 0.48 | 2018-02-13 09:27:42 -0800
 
   * Release 0.48
