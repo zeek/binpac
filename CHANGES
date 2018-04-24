@@ -1,4 +1,8 @@
 
+0.48-6 | 2018-04-24 13:01:53 -0500
+
+  * Fix an uninitialized member warning (Corelight)
+
 0.48-5 | 2018-04-19 11:46:02 -0500
 
   * Allow arbitrary, single-character &linebreaker expressions (giralt)
