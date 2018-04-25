@@ -22,6 +22,15 @@ protected:
 	string msg_;
 };
 
+class ExceptionEnforceViolation : public Exception
+{
+public:
+	ExceptionEnforceViolation(const char* where)
+		{
+		append(binpac_fmt("&enforce violation : %s", where));
+		}
+};
+
 class ExceptionOutOfBound : public Exception
 {
 public:

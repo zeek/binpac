@@ -52,6 +52,7 @@ Type::Type(TypeType tot)
 	attrs_ = new AttrList();
 	attr_byteorder_expr_ = 0;
 	attr_checks_ = new ExprList();
+	attr_enforces_ = new ExprList();
 	attr_chunked_ = false;
 	attr_exportsourcedata_ = false;
 	attr_if_expr_ = 0;
@@ -81,6 +82,7 @@ Type::~Type()
 	delete attr_if_expr_;
 	delete attr_length_expr_;
 	delete_list(ExprList, attr_checks_);
+	delete_list(ExprList, attr_enforces_);
 	delete_list(ExprList, attr_requires_);
 	}
 
@@ -157,6 +159,10 @@ void Type::ProcessAttr(Attr* a)
 
 		case ATTR_CHECK:
 			attr_checks_->push_back(a->expr());
+			break;
+
+		case ATTR_ENFORCE:
+			attr_enforces_->push_back(a->expr());
 			break;
 
 		case ATTR_EXPORTSOURCEDATA:
@@ -786,6 +792,20 @@ void Type::GenParseCode3(Output* out_cc, Env* env, const DataPtr& data, int flag
 
 	if ( size_var() )
 		ASSERT(env->Evaluated(size_var()));
+
+	foreach(i, ExprList, attr_enforces_)
+		{
+		Expr* enforce = *i;
+		const char* enforce_expr = enforce->EvalExpr(out_cc, env);
+		out_cc->println("// Evaluate '&enforce' attribute");
+		out_cc->println("if (!%s)", enforce_expr);
+		out_cc->inc_indent();
+		out_cc->println("{");
+		out_cc->println("throw binpac::ExceptionEnforceViolation(\"%s\");", data_id_str_.c_str());
+		out_cc->println("}");
+		out_cc->dec_indent();
+		}
+
 	}
 
 Type *Type::MemberDataType(const ID *member_id) const
