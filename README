@@ -1,7 +1,7 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.48-6
+.. |version| replace:: 0.48-10
 
 ======
 BinPAC
@@ -725,8 +725,17 @@ translates into::
  t_protocol__size = t_protocol_string_length;
  protocol_.init(t_begin_of_data, t_protocol_string_length);
 
+
 &check
 ......
+
+This was originally intended to implement the behavior of the
+superceding "&enforce" attribute.  It always has and always will just be
+a no-op to ensure anything that uses this doesn't suddenly and
+unintentionally break.
+
+&enforce
+........
 
 Check a condition and raise exception if not met.
 
