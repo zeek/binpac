@@ -241,9 +241,9 @@ void ArrayType::Prepare(Env *env, int flags)
 				extern_type_const_byteptr->Clone());
 			elem_dataptr_var_field_->Prepare(env);
 
-			// until(dataptr >= end_of_data)
+			// until(dataptr == end_of_data)
 			elem_dataptr_until_expr_ = new Expr(
-				Expr::EXPR_GE,
+				Expr::EXPR_EQUAL,
 				new Expr(elem_dataptr_var->clone()),
 				new Expr(end_of_data->clone()));
 			}
@@ -527,7 +527,21 @@ void ArrayType::DoGenParseCode(Output *out_cc, Env *env,
 		GenUntilCheck(out_cc, env, attr_generic_until_expr_, true);
 
 	if ( elem_dataptr_var() )
+		{
 		GenUntilCheck(out_cc, env, elem_dataptr_until_expr_, false);
+		out_cc->println("if ( %s > %s )",
+		                env->RValue(elem_dataptr_var()),
+		                env->RValue(end_of_data));
+		out_cc->inc_indent();
+		out_cc->println("{");
+		out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",",
+		                data_id_str_.c_str());
+		out_cc->println("  (%s) - (%s));",
+		                env->RValue(elem_dataptr_var()),
+		                env->RValue(end_of_data));
+		out_cc->println("}");
+		out_cc->dec_indent();
+		}
 
 	elemtype_->GenPreParsing(out_cc, env);
 	elemtype_->GenParseCode(out_cc, env, elem_data, flags);
@@ -548,9 +562,6 @@ void ArrayType::DoGenParseCode(Output *out_cc, Env *env,
 		out_cc->println("%s += %s;",
 			env->LValue(elem_dataptr_var()),
 			elemtype_->DataSize(0, env, elem_data).c_str());
-		out_cc->println("BINPAC_ASSERT(%s <= %s);",
-			env->RValue(elem_dataptr_var()),
-			env->RValue(end_of_data));
 		}
 
 	if ( attr_until_element_expr_ )

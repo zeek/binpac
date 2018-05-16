@@ -34,6 +34,12 @@ public:
 class ExceptionOutOfBound : public Exception
 {
 public:
+	ExceptionOutOfBound(const char* where, int bytes_past_end)
+		{
+		append(binpac_fmt("out_of_bound: %s: %d bytes past end of data",
+			where, bytes_past_end));
+		}
+
 	ExceptionOutOfBound(const char* where, int len_needed, int len_given)
 		{
 		append(binpac_fmt("out_of_bound: %s: %d > %d", 
