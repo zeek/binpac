@@ -306,19 +306,19 @@ void ArrayType::GenArrayLength(Output *out_cc, Env *env, const DataPtr& data)
 		// Boundary check if elements are static size.
 		if ( elemtype_->StaticSize(env) != -1 )
 			{
-			const char * array_size = fmt("((%d) * (%s))",
-			                              elemtype_->StaticSize(env),
-			                              env->RValue(arraylength_var()));
+			string array_size = strfmt("((%d) * (%s))",
+			                           elemtype_->StaticSize(env),
+			                           env->RValue(arraylength_var()));
 			out_cc->println("// Check bounds for static-size array: %s",
 			                data_id_str_.c_str());
 			out_cc->println("if ( t_begin_of_data + %s > t_end_of_data || "
 			                "t_begin_of_data + %s < t_begin_of_data )",
-			                array_size, array_size);
+			                array_size.c_str(), array_size.c_str());
 			out_cc->inc_indent();
 			out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",",
 			                data_id_str_.c_str());
 			out_cc->println("  (%s), (%s) - (%s));",
-			                array_size,
+			                array_size.c_str(),
 			                env->RValue(end_of_data),
 			                env->RValue(begin_of_data));
 			out_cc->dec_indent();
