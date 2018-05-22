@@ -1,4 +1,21 @@
 
+0.48-20 | 2018-05-22 14:59:09 -0500
+
+  * BIT-1829: throw exceptions for negative array length expressions
+   (Corelight)
+
+  * BIT-1829: throw exceptions for excessive array sizes (Corelight)
+
+  * Migrate fmt() usage to strfmt() (Corelight)
+
+  * Improve parsing of known-length, static-size arrays (Corelight)
+
+  * GH-4: fix premature loop termination when parsing known-length arrays
+    (Tomas Bortoli for initial patch proposal and Corelight for adapting it)
+
+  * BIT-1829: fix &length suppressing boundary checks for array elements
+    (Corelight)
+
 0.48-13 | 2018-05-15 15:38:23 +0000
 
   * Updating submodule.

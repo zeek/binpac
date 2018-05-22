@@ -205,9 +205,9 @@ void ArrayType::Prepare(Env *env, int flags)
 	{
 	if ( flags & TO_BE_PARSED )
 		{
-		ID *arraylength_var = new ID(fmt("%s__arraylength", value_var()->Name()));
-		ID *elem_var = new ID(fmt("%s__elem", value_var()->Name()));
-		ID *elem_it_var = new ID(fmt("%s__it", elem_var->Name()));
+		ID *arraylength_var = new ID(strfmt("%s__arraylength", value_var()->Name()));
+		ID *elem_var = new ID(strfmt("%s__elem", value_var()->Name()));
+		ID *elem_it_var = new ID(strfmt("%s__it", elem_var->Name()));
 
 		elem_var_field_ =
 			new ParseVarField(Field::CLASS_MEMBER, elem_var, elemtype_);
@@ -235,7 +235,7 @@ void ArrayType::Prepare(Env *env, int flags)
 
 			// Add elem_dataptr_var only when not parsing incrementally
 			ID *elem_dataptr_var =
-				new ID(fmt("%s__dataptr", elem_var->Name()));
+				new ID(strfmt("%s__dataptr", elem_var->Name()));
 			elem_dataptr_var_field_ = new TempVarField(
 				elem_dataptr_var,
 				extern_type_const_byteptr->Clone());
@@ -278,25 +278,58 @@ void ArrayType::GenArrayLength(Output *out_cc, Env *env, const DataPtr& data)
 
 		env->SetEvaluated(arraylength_var());
 
-		// Check for overlong array length. We cap it at the
-		// maximum data size as we won't store more elements.
-		out_cc->println("if ( t_begin_of_data + %s > t_end_of_data + 1 || t_begin_of_data + %s < t_begin_of_data )",
-			env->LValue(arraylength_var()), env->LValue(arraylength_var()));
-		out_cc->inc_indent();
-		out_cc->println("{");
-		out_cc->println("%s = t_end_of_data - t_begin_of_data + 1;",
-			env->LValue(arraylength_var()));
-		out_cc->println("}");
-		out_cc->dec_indent();
-
 		// Check negative array length
 		out_cc->println("if ( %s < 0 )",
 			env->LValue(arraylength_var()));
 		out_cc->inc_indent();
 		out_cc->println("{");
-		out_cc->println("%s = 0;",
-			env->LValue(arraylength_var()));
+		out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",",
+		                data_id_str_.c_str());
+		out_cc->println("  %s, (%s) - (%s));",
+		                env->LValue(arraylength_var()),
+		                env->RValue(end_of_data),
+		                env->RValue(begin_of_data));
 		out_cc->println("}");
+		out_cc->dec_indent();
+
+		string array_size;
+
+		if ( elemtype_->StaticSize(env) == -1 )
+			{
+			// Check for overlong array quantity.  We cap it at the maximum
+			// array size (assume 1-byte elements * array length) as we can't
+			// possibly store more elements.  e.g. this helps prevent
+			// user-controlled length fields from causing an excessive
+			// iteration and/or memory-allocation (for the array we'll be
+			// parsing into) unless they actually sent enough data to go along
+			// with it.  Note that this check is *not* looking for whether the
+			// contents of the array will extend past the end of the data
+			// buffer.
+			out_cc->println("// Check array element quantity: %s",
+			                data_id_str_.c_str());
+			array_size = strfmt("(%s)", env->RValue(arraylength_var()));
+			}
+		else
+			{
+			// Boundary check the entire array if elements have static size.
+			out_cc->println("// Check bounds for static-size array: %s",
+			                data_id_str_.c_str());
+			elemtype_->SetBoundaryChecked();
+			array_size = strfmt("((%d) * (%s))",
+			                    elemtype_->StaticSize(env),
+			                    env->RValue(arraylength_var()));
+			}
+
+		out_cc->println("if ( t_begin_of_data + %s > t_end_of_data || "
+		                "t_begin_of_data + %s < t_begin_of_data )",
+		                array_size.c_str(), array_size.c_str());
+		out_cc->inc_indent();
+		out_cc->println("throw binpac::ExceptionOutOfBound(\"%s\",",
+		                data_id_str_.c_str());
+		out_cc->println("  %s, (%s) - (%s));",
+		                array_size.c_str(),
+		                env->RValue(end_of_data),
+		                env->RValue(begin_of_data));
 		out_cc->dec_indent();
 		}
 	else if ( attr_restofdata_ )
@@ -357,7 +390,7 @@ void ArrayType::GenCleanUpCode(Output *out_cc, Env *env)
 		{
 		if ( ! elem_var_field_ )
 			{
-			ID *elem_var = new ID(fmt("%s__elem", value_var()->Name()));
+			ID *elem_var = new ID(strfmt("%s__elem", value_var()->Name()));
 			elem_var_field_ =
 				new ParseVarField(
 					Field::NOT_CLASS_MEMBER,
@@ -527,7 +560,22 @@ void ArrayType::DoGenParseCode(Output *out_cc, Env *env,
 		GenUntilCheck(out_cc, env, attr_generic_until_expr_, true);
 
 	if ( elem_dataptr_var() )
-		GenUntilCheck(out_cc, env, elem_dataptr_until_expr_, false);
+		{
+		if ( length_ )
+			{
+			// Array has a known-length expression like uint16[4] vs. uint16[].
+			// Here, arriving at the end of the data buffer should not be a
+			// valid loop-termination condition (which is what the
+			// GenUntilCheck() call produces).  Instead, rely on the loop
+			// counter to terminate iteration or else the parsing code
+			// generated for each element should throw an OOB exception if
+			// there's insufficient data in the buffer.
+			}
+		else
+			{
+			GenUntilCheck(out_cc, env, elem_dataptr_until_expr_, false);
+			}
+		}
 
 	elemtype_->GenPreParsing(out_cc, env);
 	elemtype_->GenParseCode(out_cc, env, elem_data, flags);
@@ -580,7 +628,7 @@ void ArrayType::DoGenParseCode(Output *out_cc, Env *env,
 void ArrayType::GenUntilInputCheck(Output *out_cc, Env *env)
 	{
 	ID *elem_input_var_id = new ID(
-		fmt("%s__elem_input", value_var()->Name()));
+		strfmt("%s__elem_input", value_var()->Name()));
 	elem_input_var_field_ = new TempVarField(
 		elem_input_var_id, extern_type_const_bytestring->Clone());
 	elem_input_var_field_->Prepare(env);
@@ -683,6 +731,17 @@ int ArrayType::StaticSize(Env *env) const
 void ArrayType::SetBoundaryChecked()
 	{
 	Type::SetBoundaryChecked();
+
+	if ( attr_length_expr_ )
+		{
+		// When using &length on an array, only treat its elements as
+		// already-bounds-checked if they are a single byte in length.
+		if ( elemtype_->StaticSize(env()) == 1 )
+			elemtype_->SetBoundaryChecked();
+
+		return;
+		}
+
 	elemtype_->SetBoundaryChecked();
 	}
 
