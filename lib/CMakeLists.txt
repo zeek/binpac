@@ -10,7 +10,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/binpac.h.in
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR})
 set(binpac_headers
-    binpac.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/binpac.h
     binpac_analyzer.h
     binpac_buffer.h
@@ -30,14 +29,8 @@ add_library(binpac_lib STATIC ${binpac_lib_SRCS})
 
 set_target_properties(binpac_lib PROPERTIES OUTPUT_NAME binpac)
 
-if (NOT BinPAC_SKIP_INSTALL)
-    install(TARGETS binpac_lib DESTINATION lib)
-    install(FILES
-                ${binpac_headers}
-            DESTINATION
-                include
-    )
-endif ()
+install(TARGETS binpac_lib DESTINATION lib)
+install(FILES ${binpac_headers} DESTINATION include)
 
 # This is set to assist superprojects that want to build BinPac
 # from source and rely on it as a target
