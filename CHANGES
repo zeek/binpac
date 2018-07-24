@@ -1,4 +1,9 @@
 
+0.48-27 | 2018-07-24 16:33:58 -0500
+
+  * Install headers to alternate path as part of Bro sub-project
+    (Jon Siwek, Corelight)
+
 0.48-25 | 2018-07-24 01:46:05 +0000
 
   * Remove "installation skip" code paths. (Jon Siwek, Corelight)
