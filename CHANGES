@@ -1,4 +1,8 @@
 
+0.48-31 | 2018-08-01 11:22:52 -0500
+
+  * Update BinPAC_EXE CMake variable to be a full path (Jon Siwek, Corelight)
+
 0.48-27 | 2018-07-24 16:33:58 -0500
 
   * Install headers to alternate path as part of Bro sub-project
