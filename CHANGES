@@ -1,4 +1,12 @@
 
+0.50 | 2018-08-28 10:25:02 -0500
+
+  * Fix array bounds checking
+
+    For arrays that are fields within a record, the bounds check was based
+    on a pointer to the start of the record rather than the start of the
+    array field. (Jon Siwek, Corelight)
+
 0.49 | 2018-05-29 18:58:22 -0500
 
   * BIT-1829: throw exceptions for negative array length expressions
