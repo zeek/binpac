@@ -1,4 +1,12 @@
 
+0.48-35 | 2018-08-28 10:23:24 -0500
+
+  * Fix array bounds checking
+
+    For arrays that are fields within a record, the bounds check was based
+    on a pointer to the start of the record rather than the start of the
+    array field. (Jon Siwek, Corelight)
+
 0.48-31 | 2018-08-01 11:22:52 -0500
 
   * Update BinPAC_EXE CMake variable to be a full path (Jon Siwek, Corelight)
