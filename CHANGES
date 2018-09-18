@@ -1,4 +1,8 @@
 
+0.51 | 2018-08-31 15:23:53 -0500
+
+  * Improve `make dist` (Jon Siwek, Corelight)
+
 0.48-35 | 2018-08-28 10:23:24 -0500
 
   * Fix array bounds checking
