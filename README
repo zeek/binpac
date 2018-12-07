@@ -1,7 +1,7 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.51
+.. |version| replace:: 0.51-2
 
 ======
 BinPAC
@@ -20,11 +20,9 @@ Download
 ========
 
 You can find the latest BinPAC release for download at
-http://www.bro.org/download.
+https://www.zeek.org/download.
 
-BinPAC's git repository is located at `git://git.bro.org/binpac.git
-<git://git.bro.org/binpac.git>`__. You can browse the repository
-`here <http://git.bro.org/binpac.git>`__.
+BinPAC's git repository is located at https://github.com/zeek/binpac
 
 This document describes BinPAC |version|. See the ``CHANGES``
 file for version history.
