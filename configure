@@ -18,6 +18,8 @@ Usage: $0 [OPTION]... [VAR=VALUE]...
 
   Build Directory:
     --builddir=DIR         place build files in directory [build]
+    --enable-static        build static libraries (in addition to shared)
+    --enable-static-only   only build static libraries, not shared
 
   Installation Directories:
     --prefix=PREFIX        installation directory [/usr/local]
@@ -81,6 +83,12 @@ while [ $# -ne 0 ]; do
             ;;
         --enable-debug)
             append_cache_entry ENABLE_DEBUG         BOOL   true
+            ;;
+        --enable-static)
+            append_cache_entry ENABLE_STATIC        BOOL   true
+            ;;
+        --enable-static-only)
+            append_cache_entry ENABLE_STATIC_ONLY   BOOL   true
             ;;
         --with-openssl=*)
             append_cache_entry OPENSSL_ROOT_DIR PATH $optarg

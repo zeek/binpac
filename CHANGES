@@ -1,4 +1,8 @@
 
+0.51-11 | 2019-03-18 13:51:03 -0700
+
+  * Build binpac shared lib instead of static by default (Jon Siwek, Corelight)
+
 0.51-9 | 2019-02-15 15:25:03 -0600
 
   * Bump minimum CMake version to 2.8.12 (Jon Siwek, Corelight)
