@@ -11,8 +11,8 @@ BinPAC
 
     BinPAC is a high level language for describing protocol parsers and
     generates C++ code.  It is currently maintained and distributed with the
-    Bro Network Security Monitor distribution, however, the generated parsers
-    may be used with other programs besides Bro.
+    Zeek Network Security Monitor distribution, however, the generated parsers
+    may be used with other programs besides Zeek.
 
 .. contents::
 
@@ -893,7 +893,7 @@ Evaluation Order
 Running Binpac-generated Analyzer Standalone
 ============================================
 
-To run binpac-generated code independent of Bro. Regex library must be
+To run binpac-generated code independent of Zeek. Regex library must be
 substituted. Below is one way of doing it. Use the following three header
 files.
 
@@ -902,7 +902,7 @@ RE.h
 
 .. code::
 
- /*Dummy file to replace bro's file*/
+ /*Dummy file to replace Zeek's file*/
  #include "binpac_pcre.h"
  #include "bro_dummy.h"
 
@@ -914,7 +914,7 @@ bro_dummy.h
  #ifndef BRO_DUMMY
  #define BRO_DUMMY
  #define DEBUG_MSG(x...)  fprintf(stderr, x)
- /*Dummy to link, this function suppose to be in Bro*/
+ /*Dummy to link, this function suppose to be in Zeek*/
  double network_time();
  #endif
 
@@ -995,7 +995,7 @@ In your main source, add this dummy stub.
 
 .. code::
 
- /*Dummy to link, this function suppose to be in Bro*/
+ /*Dummy to link, this function suppose to be in Zeek*/
  double network_time(){
     return 0;
  }
@@ -1041,7 +1041,7 @@ Q & A
 
 * Example usage of composite type array.
 
-  Please see HTTP_Headers in http-protocol.pac in the Bro source code.
+  Please see HTTP_Headers in http-protocol.pac in the Zeek source code.
 
 * Clarification on "connection" keyword (binpac paper).
 
