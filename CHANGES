@@ -1,4 +1,8 @@
 
+0.51-19 | 2019-05-20 13:21:24 -0700
+
+  * Fix C++11 compatibility issue for older compilers (Jon Siwek, Corelight)
+
 0.51-18 | 2019-05-20 09:00:39 -0700
 
   * Improve storage type used for case-type index
