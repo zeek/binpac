@@ -1,4 +1,32 @@
 
+0.51-18 | 2019-05-20 09:00:39 -0700
+
+  * Improve storage type used for case-type index
+
+    The type used to store the index for a case-type now tracks the
+    type of the index expression rather than always using an "int".
+
+    The case fields also now have some checking done at code-gen-time to
+    ensure the constants used for cases does not exceed the numeric limit
+    of the type used in the case's index expression.  Then, assuming, it
+    looks safe, the C++ case labels are generated with casts to the type
+    of the Binpac case's index expression to ensure compilers accept it
+    (since all Binpac numbers use "int" for storage/printing internally). (Jon Siwek, Corelight)
+
+  * Add FlowBuffer policy mechanisms
+
+    This allows for tunability of the following behaviors:
+
+    * Minimum flowbuffer capacity to use when parsing a new unit
+
+    * Threshold at which flowbuffer capacity is contracted back to the
+      minimum after parsing a complete unit and before parsing the next
+
+    * Maximum flowbuffer capacity to allow when parsing a given unit
+
+    Failed flowbuffer allocations due to reaching maximum capacity or any
+    other reason now throw ExceptionFlowBufferAlloc. (Jon Siwek, Corelight)
+
 0.51-11 | 2019-03-18 13:51:03 -0700
 
   * Build binpac shared lib instead of static by default (Jon Siwek, Corelight)
