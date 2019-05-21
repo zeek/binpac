@@ -1,4 +1,8 @@
 
+0.51-22 | 2019-05-20 19:36:17 -0700
+
+  * Rename Bro to Zeek (Daniel Thayer)
+
 0.51-19 | 2019-05-20 13:21:24 -0700
 
   * Fix C++11 compatibility issue for older compilers (Jon Siwek, Corelight)
