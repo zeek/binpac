@@ -1,4 +1,8 @@
 
+0.51-25 | 2019-07-01 10:33:44 -0700
+
+  * Fix a printf format specifier (Jon Siwek, Corelight)
+
 0.51-22 | 2019-05-20 19:36:17 -0700
 
   * Rename Bro to Zeek (Daniel Thayer)
