@@ -1,4 +1,14 @@
 
+0.51-27 | 2019-07-03 02:41:10 +0000
+
+  * Fix signed integer overflow in array bounds checks. (Jon Siwek,
+    Corelight)
+
+    Array lengths use signed integer storage, so multiplication of
+    that by the element size for purpose of bounds checking against
+    available data may produce a signed integer overlow, which is
+    undefined behavior.
+
 0.51-25 | 2019-07-01 10:33:44 -0700
 
   * Fix a printf format specifier (Jon Siwek, Corelight)
