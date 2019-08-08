@@ -1,4 +1,8 @@
 
+0.54 | 2019-07-03 02:41:46 +0000
+
+  * Release 0.54.
+
 0.51-27 | 2019-07-03 02:41:10 +0000
 
   * Fix signed integer overflow in array bounds checks. (Jon Siwek,
