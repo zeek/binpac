@@ -1,4 +1,14 @@
 
+0.54-11 | 2019-11-06 22:26:54 -0800
+
+  * Fix shared library versioning to agree with OpenBSD expectations (Jon Siwek, Corelight)
+
+    OpenBSD shared library names are like "libfoo.so.major.minor" and
+    binpac was previously letting the post-release number into the name
+    like "libbinpac.so.0.54-7", which isn't compatible with that scheme.
+
+    Related to https://github.com/zeek/zeek/issues/649
+
 0.54-7 | 2019-10-28 17:59:21 -0700
 
   * Move CMake project() after cmake_minimum_required() (Jon Siwek, Corelight)
