@@ -1,4 +1,8 @@
 
+0.54-12 | 2019-11-15 17:45:29 -0800
+
+  * Fix Zeek build for multi-config CMake generators (e.g. Xcode) (Jon Siwek, Corelight)
+
 0.54-11 | 2019-11-06 22:26:54 -0800
 
   * Fix shared library versioning to agree with OpenBSD expectations (Jon Siwek, Corelight)
