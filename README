@@ -300,7 +300,7 @@ Syntax:
    <flowunit|datagram> = <top level data unit> withcontext (<context constructor parameter>);
  };
 
-When "flow" is added to top level context analyzer, it enables use of &online
+When "flow" is added to top level context analyzer, it enables use of &oneline
 and &length in "record" type. flow buffers data when there is not enough
 to evaluate the record and dispatchs data for evaluation when the
 threshold is reached.
