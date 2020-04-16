@@ -1,4 +1,8 @@
 
+0.55-8 | 2020-04-16 13:51:03 -0700
+
+  * Remove use of Variable-Length-Arrays. (Jon Siwek, Corelight)
+
 0.55-6 | 2020-03-24 13:39:27 -0700
 
   * Fix incorrect boundary checks in flowbuffer frame length parsing
