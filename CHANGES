@@ -1,4 +1,8 @@
 
+0.55-17 | 2020-07-02 19:22:00 -0700
+
+  * Allow namespaced names as typenames for function return values (Tim Wojtulewicz, Corelight)
+
 0.55-8 | 2020-04-16 13:51:03 -0700
 
   * Remove use of Variable-Length-Arrays. (Jon Siwek, Corelight)
