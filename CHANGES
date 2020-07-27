@@ -1,4 +1,8 @@
 
+0.56.0 | 2020-07-23 10:11:13 -0700
+
+  * Release 0.56.0
+
 0.55-17 | 2020-07-02 19:22:00 -0700
 
   * Allow namespaced names as typenames for function return values (Tim Wojtulewicz, Corelight)
