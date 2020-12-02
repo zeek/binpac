@@ -1,3 +1,8 @@
+
+0.56.0-8 | 2020-12-02 11:05:22 -0800
+
+  * Update minimum required CMake to 3.5 (Jon Siwek, Corelight)
+
 0.56.0-2 | 2020-08-01 09:15:51 -0700
 
   * Move RE_Matcher to zeek namespace (Tim Wojtulewicz, Corelight)
