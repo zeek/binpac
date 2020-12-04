@@ -1,4 +1,26 @@
 
+0.56.0-10 | 2020-12-04 11:25:26 +0000
+
+  * GH-14: Use larger temporary storage for evaluating case-expressions
+
+    For example:
+
+        inum: uint32 = case (ed & 0x0f) of {
+            0x00    -> n_8;  # n_8 is a uint8
+            0x01    -> n_16; # n_16 is a uint16
+            0x02    -> n_32; # n_32 is a uint32
+            default -> 0;
+        };
+
+    Previously, the temporary storage used for evaluating the
+    case-expression was based on whatever type the first case yields, which
+    is a uint8 in the above example.  That behavior can lead to a narrowing
+    conversion whenever the 0x01 or 0x02 cases occur.
+
+    The new behavior is to base the temporary storage's type on the largest
+    numeric type that the case-expression can yield, which is uint32 in the
+    above example. (Jon Siwek, Corelight)
+
 0.56.0-8 | 2020-12-02 11:05:22 -0800
 
   * Update minimum required CMake to 3.5 (Jon Siwek, Corelight)
