@@ -1,4 +1,8 @@
 
+0.57.0 | 2020-12-04 11:14:57 -0800
+
+  * Release 0.57.0
+
 0.56.0-10 | 2020-12-04 11:25:26 +0000
 
   * GH-14: Use larger temporary storage for evaluating case-expressions
