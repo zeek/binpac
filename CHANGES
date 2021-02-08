@@ -1,4 +1,10 @@
 
+0.57.0-4 | 2021-02-08 15:39:25 -0800
+
+  * Remove a useless/empty 'btest' file (Jon Siwek, Corelight)
+
+  * Fix #include of RE.h to use zeek/RE.h (Jon Siwek, Corelight)
+
 0.57.0 | 2020-12-04 11:14:57 -0800
 
   * Release 0.57.0
