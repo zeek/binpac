@@ -1,4 +1,8 @@
 
+0.57.0-6 | 2021-02-24 15:51:00 -0800
+
+  * Remove usage of ZEEK_FORWARD_DECLARE_NAMESPACED macro (Tim Wojtulewicz, Corelight)
+
 0.57.0-4 | 2021-02-08 15:39:25 -0800
 
   * Remove a useless/empty 'btest' file (Jon Siwek, Corelight)
