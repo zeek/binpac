@@ -1,4 +1,8 @@
 
+0.57.0-8 | 2021-03-05 16:56:07 -0800
+
+  * Fix LGTM findings (Tim Wojtulewicz, Corelight)
+
 0.57.0-6 | 2021-02-24 15:51:00 -0800
 
   * Remove usage of ZEEK_FORWARD_DECLARE_NAMESPACED macro (Tim Wojtulewicz, Corelight)
