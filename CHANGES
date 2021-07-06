@@ -1,3 +1,13 @@
+0.57.0-13 | 2021-07-06 08:53:21 -0700
+
+  * CMAKE_CFG_INTDIR is no longer necessary. (Seth Hall, Corelight)
+
+    CMake documentation says that CMAKE_CFG_INTDIR is no longer necessary to
+    find the right binary for the configuration and is in fact deprecated in
+    recent versions of CMake.
+
+  * Updates for building Zeek as a submodule (Seth Hall, Corelight)
+
 0.57.0-10 | 2021-03-17 13:45:00 -0700
 
   * Prevent use of LeakSanitizer on FreeBSD (Jon Siwek, Corelight)
