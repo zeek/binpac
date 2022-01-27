@@ -1,3 +1,9 @@
+0.58.0-4 | 2022-01-27 14:48:01 -0700
+
+  * Have `make dist` cleanup a few more wayward files before tarring (Tim Wojtulewicz, Corelight)
+
+  * Update cmake submodule to latest master (Tim Wojtulewicz, Corelight)
+
 0.58.0 | 2021-07-06 08:54:19 -0700
 
   * Release 0.58.0.
