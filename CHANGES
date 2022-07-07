@@ -1,3 +1,15 @@
+0.59.0-6 | 2022-07-07 12:22:26 -0700
+
+  * Apply bits of nadi-bittorrent patch that aren't applied (Tim Wojtulewicz, Corelight)
+
+  * Add pre-commit hooks and run clang-format on everything (Tim Wojtulewicz, Corelight)
+
+  * Remove already-applied binpac-* patches (Tim Wojtulewicz, Corelight)
+
+  * Rename files in patches to match current directory structure (Tim Wojtulewicz, Corelight)
+
+  * Keep make dist from deleting all paths containing 'build' [skip ci] (Tim Wojtulewicz, Corelight)
+
 0.59.0 | 2022-06-01 09:29:52 -0700
 
   * Release 0.59.0
