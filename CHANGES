@@ -1,3 +1,9 @@
+0.59.0-10 | 2022-10-18 10:14:08 -0700
+
+  * Bumped cmake submodule commit (Tomer Lev)
+
+  * Adapted binpac to compile with MSVC for Windows environment. (Elad Solomon)
+
 0.59.0-6 | 2022-07-07 12:22:26 -0700
 
   * Apply bits of nadi-bittorrent patch that aren't applied (Tim Wojtulewicz, Corelight)
