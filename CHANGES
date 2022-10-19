@@ -1,3 +1,7 @@
+0.59.0-14 | 2022-10-19 14:45:06 -0700
+
+  * Add pre-commit GitHub workflow (Tim Wojtulewicz, Corelight)
+
 0.59.0-12 | 2022-10-19 14:43:43 -0700
 
   * Wrap native dirname() call in ifdef, call std::filesystem on Windows (Tim Wojtulewicz, Corelight)
