@@ -1,3 +1,14 @@
+0.59.0-16 | 2022-10-19 14:46:47 -0700
+
+  * pac_scan: Exit with failure for include errors (Arne Welzel, Corelight)
+
+    Elsewhere (zeek/zeek#2482), it was observed that when binpac encounters
+    include failures, it still exits with 0 indicating success. Subsequent
+    compilation of the produced .h and .cc files likely fails.
+
+    Exit with 1 on include errors to make pin pointing issues easier by
+    having make/ninja stop earlier.
+
 0.59.0-14 | 2022-10-19 14:45:06 -0700
 
   * Add pre-commit GitHub workflow (Tim Wojtulewicz, Corelight)
