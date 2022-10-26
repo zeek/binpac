@@ -1,3 +1,9 @@
+0.59.0-20 | 2022-10-26 07:59:29 -0700
+
+  * Only adding subdir if running standalone (Tomer Lev)
+
+  * Additional Windows fixes. Fixed wrong MSVC macro definition and std::filesystem invocation. Linking to libunistd library (Tomer Lev)
+
 0.59.0-16 | 2022-10-19 14:46:47 -0700
 
   * pac_scan: Exit with failure for include errors (Arne Welzel, Corelight)
