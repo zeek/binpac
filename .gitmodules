@@ -1,3 +1,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://github.com/zeek/cmake
+[submodule "auxil/libunistd"]
+	path = auxil/libunistd
+	url = https://github.com/zeek/libunistd
