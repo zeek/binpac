@@ -1,3 +1,7 @@
+0.59.0-27 | 2022-12-15 14:38:29 -0700
+
+  * address linter warnings about use of sprintf() (Vern Paxson, Corelight)
+
 0.59.0-20 | 2022-10-26 07:59:29 -0700
 
   * Only adding subdir if running standalone (Tomer Lev)
