@@ -308,6 +308,7 @@ const int MAX_INCLUDE_DEPTH = 100;
 struct IncludeState {
 	YY_BUFFER_STATE yystate;
 	string input_filename;
+	string orig_filename;
 	int line_number;
 };
 
@@ -319,7 +320,7 @@ void switch_to_file(FILE *fp)
 	yy_switch_to_buffer(yy_create_buffer(fp, YY_BUF_SIZE));
 	}
 
-void switch_to_file(const char *filename)
+void switch_to_file(const char *filename, const char *orig_filename_arg)
 	{
 	if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
 		{
@@ -328,7 +329,7 @@ void switch_to_file(const char *filename)
 		}
 
 	IncludeState state =
-		{ YY_CURRENT_BUFFER, input_filename, line_number };
+		{ YY_CURRENT_BUFFER, input_filename, orig_filename, line_number };
 	include_stack[include_stack_ptr++] = state;
 
 	FILE *fp = fopen(filename, "r");
@@ -342,6 +343,7 @@ void switch_to_file(const char *filename)
 
 	yyin = fp;
 	input_filename = string(filename);
+	orig_filename = string(orig_filename_arg);
 	line_number = 1;
 	switch_to_file(yyin);
 	if ( ! FLAGS_quiet )
@@ -384,7 +386,7 @@ void include_file(const char *filename)
 			full_filename = filename;
 		}
 
-	switch_to_file(full_filename.c_str());
+	switch_to_file(full_filename.c_str(), filename);
 	}
 
 int yywrap()
@@ -397,6 +399,7 @@ int yywrap()
 	IncludeState state = include_stack[include_stack_ptr];
 	yy_switch_to_buffer(state.yystate);
 	input_filename = state.input_filename;
+	orig_filename = state.orig_filename;
 	line_number = state.line_number;
 	return 0;
 	}

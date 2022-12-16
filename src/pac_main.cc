@@ -15,7 +15,8 @@
 extern int yydebug;
 extern int yyparse();
 extern void switch_to_file(FILE* fp_input);
-string input_filename;
+string input_filename; // tracking current absolute filename of input file
+string orig_filename; // tracking filename as used on command line or #include
 
 bool FLAGS_pac_debug = false;
 bool FLAGS_quiet = false;
@@ -106,6 +107,7 @@ int compile(const char* filename)
 		return -1;
 		}
 	input_filename = filename;
+	orig_filename = filename;
 
 	string basename;
 
@@ -185,6 +187,7 @@ int compile(const char* filename)
 	header_output = 0;
 	source_output = 0;
 	input_filename = "";
+	orig_filename = "";
 	fclose(fp_input);
 
 	return ret;

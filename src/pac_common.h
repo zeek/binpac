@@ -14,6 +14,7 @@ extern bool FLAGS_pac_debug;
 extern bool FLAGS_quiet;
 extern vector<string> FLAGS_include_directories;
 extern string input_filename;
+extern string orig_filename;
 extern int line_number;
 
 // Definition of class Object, which is the base class for all objects
@@ -25,7 +26,7 @@ class Object
 public:
 	Object()
 		{
-		filename = input_filename;
+		filename = orig_filename;
 		line_num = line_number;
 		location = strfmt("%s:%d", filename.c_str(), line_number);
 		}
