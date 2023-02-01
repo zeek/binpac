@@ -1,3 +1,7 @@
+0.60.0 | 2023-02-01 15:43:17 -0700
+
+  * Tag version 0.60.0 (Tim Wojtulewicz, Corelight)
+
 0.59.0-27 | 2022-12-15 14:38:29 -0700
 
   * address linter warnings about use of sprintf() (Vern Paxson, Corelight)
