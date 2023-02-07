@@ -1,3 +1,25 @@
+0.60.0-11 | 2023-02-07 09:39:26 -0700
+
+  * Generate range-based for loops for array cleanup (Tim Wojtulewicz, Corelight)
+
+  * Avoid initializing array length variables twice in generated code (Tim Wojtulewicz, Corelight)
+
+  * Mark overridden methods with 'override' (Tim Wojtulewicz, Corelight)
+
+  * Remove blank setup.py file (Tim Wojtulewicz, Corelight)
+
+  * Fix bad rendering at the top of the README (Tim Wojtulewicz, Corelight)
+
+  * Add final keyword to class definitions (Tim Wojtulewicz, Corelight)
+
+  * Use nullptr in generated code (Tim Wojtulewicz, Corelight)
+
+  * Apply clang-tidy's modernize-use-nullptr check (Tim Wojtulewicz, Corelight)
+
+  * Add clang-tidy configuration (Tim Wojtulewicz, Corelight)
+
+  * Add config for Cirrus (Tim Wojtulewicz, Corelight)
+
 0.60.0 | 2023-02-01 15:43:17 -0700
 
   * Tag version 0.60.0 (Tim Wojtulewicz, Corelight)

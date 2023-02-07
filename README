@@ -1,18 +1,16 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.60.0
+.. |version| replace:: 0.60.0-11
 
 ======
 BinPAC
 ======
 
-.. rst-class:: opening
-
-    BinPAC is a high level language for describing protocol parsers and
-    generates C++ code.  It is currently maintained and distributed with the
-    Zeek Network Security Monitor distribution, however, the generated parsers
-    may be used with other programs besides Zeek.
+BinPAC is a high level language for describing protocol parsers and
+generates C++ code.  It is currently maintained and distributed with the
+Zeek Network Security Monitor distribution, however, the generated parsers
+may be used with other programs besides Zeek.
 
 .. contents::
 
@@ -96,7 +94,7 @@ Defining an analyzer
 --------------------
 
 There are two components to an analyzer definition: the top level context
-and the connection definition. 
+and the connection definition.
 
 
 Context Definition
@@ -164,7 +162,7 @@ PAC grammar::
 
  type myType = record {
     data:uint8;
- };  
+ };
 
 PAC header::
 
@@ -199,7 +197,7 @@ Examples:
 
 .. code::
 
- type foo = record { x: number; }; 
+ type foo = record { x: number; };
 
 is equivalent to:
 
@@ -254,7 +252,7 @@ the following example.
  };
 
 Note that only one field is allowed after a given label. If multiple fields
-are to be specified, they should be packed in another "record" type first. 
+are to be specified, they should be packed in another "record" type first.
 The other usages of `case`_ are described later.
 
 array
@@ -266,10 +264,10 @@ Or an array size can be specified to control the number of
 match. &until can be also conditionally end parsing:
 
 .. code::
- 
+
  # This will match for 10 element only
  type HTTP_Headers = HTTP_Header [10];
- 
+
  # This will match until the condition is met
  type HTTP_Headers = HTTP_Header [] &until(/*Some condition*/);
 
@@ -504,7 +502,7 @@ condition for array parsing.
 &requires
 .........
 
-Process data dependencies before evaluating field. 
+Process data dependencies before evaluating field.
 
 Example: typically, derivative field is evaluated after primary field.
 However "&requires" is used to force evaluate of length before msg_body.
@@ -673,7 +671,7 @@ the compiler will assume the "int" type.
 
 PAC grammar::
 
- let myValue:uint8=10; 
+ let myValue:uint8=10;
 
 PAC source::
 
@@ -852,7 +850,7 @@ it would only mark the start and end pointer instead of copying.
 
 - void **AppendToBuffer**\(const_byteptr data, int len);
 
-  - Reallocate buffer\_ to add new data then copy data 
+  - Reallocate buffer\_ to add new data then copy data
 
 - void **ExpandBuffer**\(int length);
 
@@ -962,7 +960,7 @@ binpac_pcre.h
         }
         return 1;
     }
-    
+
     int MatchPrefix (const char* s, int n){
         const char *err=NULL;
         assert(pcre_);
@@ -971,7 +969,7 @@ binpac_pcre.h
         int ret = pcre_exec(pcre_,
                                     pextra_,  // pcre_extra
                                     //NULL,  // pcre_extra
-                                    s, n,  
+                                    s, n,
                                     0,     // offset
                                     0,     // options
                                     offsets,
@@ -1015,7 +1013,7 @@ Q & A
 
   And the code of flow_buffer_t provides the functionality of buffering up to
   one line. That's why &oneline is only active when "flow" is used and the
-  type requires buffering. 
+  type requires buffering.
 
   In certain cases we would want to use &oneline even if the type does
   not require buffering, binpac currently does not provide such functionality.
@@ -1062,7 +1060,7 @@ Q & A
 
     // Parse "name"
     int t_name_string_length;
-    t_name_string_length = 
+    t_name_string_length =
         HTTP_HEADER_NAME_re_011.MatchPrefix(
             t_begin_of_data,
             t_end_of_data - t_begin_of_data);
@@ -1144,4 +1142,3 @@ Things that compiler should flag out at code generation time
 * Give warning when &oneline, &length is used and flowunit is not.
 
 * Warning when more than one "connection" is defined
-

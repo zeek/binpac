@@ -19,7 +19,7 @@
 TypeDecl::TypeDecl(ID* id, ParamList* params, Type* type)
 	: Decl(id, TYPE), params_(params), type_(type)
 	{
-	env_ = 0;
+	env_ = nullptr;
 	type_->set_type_decl(this, true);
 	}
 
@@ -121,7 +121,7 @@ void TypeDecl::GenCode(Output* out_h, Output* out_cc)
 
 	// The first line of class definition
 	out_h->println("");
-	out_h->print("class %s", class_name().c_str());
+	out_h->print("class %s final", class_name().c_str());
 	bool first = true;
 	vector<string>::iterator i;
 	for ( i = base_classes.begin(); i != base_classes.end(); ++i )
@@ -222,8 +222,8 @@ void TypeDecl::GenDestructorFunc(Output* out_h, Output* out_cc)
 
 string TypeDecl::ParseFuncPrototype(Env* env)
 	{
-	const char* func_name = 0;
-	const char* return_type = 0;
+	const char* func_name = nullptr;
+	const char* return_type = nullptr;
 	string params;
 
 	if ( type_->incremental_input() )
@@ -268,7 +268,7 @@ void TypeDecl::GenParsingEnd(Output* out_cc, Env* env, const DataPtr& data)
 		}
 	else
 		{
-		ret_val_0 = type_->DataSize(0, env, data).c_str();
+		ret_val_0 = type_->DataSize(nullptr, env, data).c_str();
 		ret_val_1 = "@@@";
 
 		out_cc->println("BINPAC_ASSERT(%s + (%s) <= %s);", env->RValue(begin_of_data),
@@ -334,8 +334,8 @@ void TypeDecl::GenParseFunc(Output* out_h, Output* out_cc)
 		out_h->println("// 2. If the input is not complete but the type supports");
 		out_h->println("//    incremental input, returns number of input bytes + 1");
 		out_h->println("//    (%s - %s + 1).",
-			env->LValue(end_of_data), 
-			env->LValue(begin_of_data)); 
+			env->LValue(end_of_data),
+			env->LValue(begin_of_data));
 		out_h->println("// 3. An exception will be thrown on error.");
 		}
 #endif
@@ -347,7 +347,7 @@ void TypeDecl::GenParseFunc(Output* out_h, Output* out_cc)
 	out_cc->inc_indent();
 	out_cc->println("{");
 
-	DataPtr data(env, 0, 0);
+	DataPtr data(env, nullptr, 0);
 
 	if ( ! type_->incremental_input() )
 		data = DataPtr(env, begin_of_data, 0);
@@ -378,7 +378,7 @@ Type* TypeDecl::LookUpType(const ID* id)
 	{
 	Decl* decl = LookUpDecl(id);
 	if ( ! decl )
-		return 0;
+		return nullptr;
 	switch ( decl->decl_type() )
 		{
 		case TYPE:
@@ -388,6 +388,6 @@ Type* TypeDecl::LookUpType(const ID* id)
 		case ENUM:
 			return static_cast<EnumDecl*>(decl)->DataType();
 		default:
-			return 0;
+			return nullptr;
 		}
 	}
