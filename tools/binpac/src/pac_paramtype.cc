@@ -50,7 +50,7 @@ Type* ParameterizedType::MemberDataType(const ID* member_id) const
 	{
 	Type* ref_type = TypeDecl::LookUpType(type_id_);
 	if ( ! ref_type )
-		return 0;
+		return nullptr;
 	return ref_type->MemberDataType(member_id);
 	}
 
@@ -154,7 +154,7 @@ bool ParameterizedType::RequiresAnalyzerContext()
 void ParameterizedType::GenInitCode(Output* out_cc, Env* env)
 	{
 	ASSERT(persistent());
-	out_cc->println("%s = 0;", env->LValue(value_var()));
+	out_cc->println("%s = nullptr;", env->LValue(value_var()));
 	Type::GenInitCode(out_cc, env);
 	}
 
@@ -165,7 +165,7 @@ void ParameterizedType::GenCleanUpCode(Output* out_cc, Env* env)
 		out_cc->println("Unref(%s);", lvalue());
 	else
 		out_cc->println("delete %s;", lvalue());
-	out_cc->println("%s = 0;", lvalue());
+	out_cc->println("%s = nullptr;", lvalue());
 	Type::GenCleanUpCode(out_cc, env);
 	}
 
@@ -206,7 +206,7 @@ void ParameterizedType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& 
 		{
 		ASSERT(! ref_type->incremental_input());
 		parse_func = kParseFuncWithoutBuffer;
-		parse_params = "0, 0";
+		parse_params = "nullptr, nullptr";
 		}
 	else if ( ref_type->incremental_input() )
 		{
