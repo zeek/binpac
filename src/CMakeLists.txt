@@ -10,7 +10,7 @@ else()
     set_property(SOURCE pac_scan.cc APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-sign-compare")
 endif()
 include(RequireCXX17)
-    
+
 include_directories(${PROJECT_SOURCE_DIR}/src
                     ${PROJECT_BINARY_DIR}/src)
 
@@ -105,6 +105,8 @@ set(binpac_SRCS
 
 add_executable(binpac ${binpac_SRCS})
 
+add_executable(Zeek::BinPAC ALIAS binpac)
+
 if ( MSVC )
     # If building separately from zeek, we need to add the libunistd subdirectory so
     # that linking doesn't fail.
@@ -114,7 +116,12 @@ if ( MSVC )
     target_link_libraries(binpac PRIVATE libunistd)
 endif()
 
-install(TARGETS binpac DESTINATION bin)
+install(
+  TARGETS binpac
+  EXPORT ZeekTargets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT BinPAC
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT BinPAC
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT BinPAC)
 
 # This is set to assist superprojects that want to build BinPac
 # from source and rely on it as a target
