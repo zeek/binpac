@@ -1,3 +1,9 @@
+0.60.0-14 | 2023-02-22 07:33:54 -0700
+
+  * Include stdint.h early to prevent redefinition of int type macros (Tim Wojtulewicz)
+
+  * Remove argument from BINPAC_LSAN_DISABLE macro to fix warning on Windows (Tim Wojtulewicz)
+
 0.60.0-11 | 2023-02-07 09:39:26 -0700
 
   * Generate range-based for loops for array cleanup (Tim Wojtulewicz, Corelight)
