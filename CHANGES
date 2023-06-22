@@ -1,3 +1,9 @@
+0.61.0-6 | 2023-06-22 11:02:06 -0700
+
+  * Force -std=c++17 mode for cmake targets, remove use of RequireCXX17.cmake (Tim Wojtulewicz, Corelight)
+
+  * Require CMake 3.15.0 to build, similar to the recent changes to zeek and broker (Tim Wojtulewicz, Corelight)
+
 0.61.0-2 | 2023-05-31 14:19:26 +0200
 
   * Remove vendored CMake files from repo (Tim Wojtulewicz, Corelight)
