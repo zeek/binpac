@@ -1,3 +1,9 @@
+0.61.0-9 | 2023-07-02 14:52:25 -0700
+
+  * Add /J flag on Windows to force unsigned char (Tim Wojtulewicz, Corelight)
+
+  * Pass -funsigned-char flag during compilation (Tim Wojtulewicz, Corelight)
+
 0.61.0-6 | 2023-06-22 11:02:06 -0700
 
   * Force -std=c++17 mode for cmake targets, remove use of RequireCXX17.cmake (Tim Wojtulewicz, Corelight)
