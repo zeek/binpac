@@ -5,7 +5,7 @@
 
 // ExternType represent external C++ types that are not defined in
 // PAC specification (therefore they cannot appear in data layout
-// spefication, e.g., in a record field). The type name is copied
+// specification, e.g., in a record field). The type name is copied
 // literally to the compiled code.
 
 class ExternType : public Type {
