@@ -1,14 +1,12 @@
 
 #include <vector>
 
-namespace zeek
-	{
+namespace zeek {
 class RE_Matcher;
-	}
+}
 
-namespace binpac
-	{
+namespace binpac {
 
 std::vector<zeek::RE_Matcher*>* uncompiled_re_matchers = nullptr;
 
-	}
+}

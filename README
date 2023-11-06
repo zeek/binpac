@@ -1,7 +1,7 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.61.0-11
+.. |version| replace:: 0.61.0-16
 
 ======
 BinPAC
@@ -288,7 +288,7 @@ flow
 
 A "flow" defines how data is fed into the analyzer. It also maintains
 custom state information declared by `%member`_. flow is configured by
-specifiying type of data unit.
+specifying type of data unit.
 
 Syntax:
 
@@ -300,7 +300,7 @@ Syntax:
 
 When "flow" is added to top level context analyzer, it enables use of &oneline
 and &length in "record" type. flow buffers data when there is not enough
-to evaluate the record and dispatchs data for evaluation when the
+to evaluate the record and dispatches data for evaluation when the
 threshold is reached.
 
 flowunit
@@ -392,7 +392,7 @@ reusing and splitting functionality for parallel development.
 Extending record
 ~~~~~~~~~~~~~~~~
 
-Record can be extended to add addtional attribute(s) by
+Record can be extended to add additional attribute(s) by
 using "refine typeattr". One of the typical use is to add &let for split
 protocol parsing from protocol analysis.
 
@@ -726,7 +726,7 @@ translates into::
 ......
 
 This was originally intended to implement the behavior of the
-superceding "&enforce" attribute.  It always has and always will just be
+superseding "&enforce" attribute.  It always has and always will just be
 a no-op to ensure anything that uses this doesn't suddenly and
 unintentionally break.
 

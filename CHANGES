@@ -1,3 +1,13 @@
+0.61.0-16 | 2023-11-06 13:33:30 -0700
+
+  * Remove ubuntu 22.10 build (Tim Wojtulewicz, Corelight)
+
+  * Update .git-blame-ignore-revs (Tim Wojtulewicz, Corelight)
+
+  * Add cmake-format and typos pre-commit configs (Tim Wojtulewicz, Corelight)
+
+  * Reformat C++ code in Spicy style (Tim Wojtulewicz, Corelight)
+
 0.61.0-11 | 2023-08-03 09:35:16 -0700
 
   * Remove usage of FindRequiredPackage (Tim Wojtulewicz, Corelight)

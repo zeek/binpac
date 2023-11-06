@@ -1,0 +1,5 @@
+# Reformat C++ code in Spicy style
+784f552ffc9eabfb14b8429ae892ff8ff8068cab
+
+# Add cmake-format and typos pre-commit configs
+047d69658c3ddb3bd369f9ee499432f9ee158eb4
