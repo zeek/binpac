@@ -1,3 +1,14 @@
+0.61.0-18 | 2023-12-14 19:59:32 -0800
+
+  * CI updates (Christian Kreibich, Corelight)
+
+    - Remove Fedora 36 & 37, add 38 & 39
+    - Remove Ubuntu 18
+    - Remove macOS Monterey, add Sonoma
+    - Remove openSUSE Leap 15.4, add 15.5
+    - Add Debian 12
+    - Take FreeBSD 14 out of test-only mode, bump 13.1 to 13.2, remove 12
+
 0.61.0-16 | 2023-11-06 13:33:30 -0700
 
   * Remove ubuntu 22.10 build (Tim Wojtulewicz, Corelight)
