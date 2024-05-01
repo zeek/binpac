@@ -106,8 +106,10 @@ set(binpac_SRCS
     pac_varfield.h
     pac_withinput.h)
 
+include(${PROJECT_SOURCE_DIR}/cmake/RequireCXXStd.cmake)
+
 add_executable(binpac ${binpac_SRCS})
-target_compile_features(binpac PRIVATE cxx_std_17)
+target_compile_features(binpac PRIVATE ${ZEEK_CXX_STD})
 set_target_properties(binpac PROPERTIES CXX_EXTENSIONS OFF)
 
 if(MSVC)

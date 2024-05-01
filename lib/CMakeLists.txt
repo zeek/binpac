@@ -17,7 +17,7 @@ set(binpac_lib_SRCS binpac_buffer.cc binpac_bytestring.cc binpac_regex.cc
 
 if(ENABLE_SHARED)
   add_library(binpac_lib SHARED ${binpac_lib_SRCS})
-  target_compile_features(binpac_lib PRIVATE cxx_std_17)
+  target_compile_features(binpac_lib PRIVATE cxx_std_20)
   set_target_properties(
     binpac_lib
     PROPERTIES CXX_EXTENSIONS OFF
@@ -30,7 +30,7 @@ endif()
 
 if(ENABLE_STATIC)
   add_library(binpac_static STATIC ${binpac_lib_SRCS})
-  target_compile_features(binpac_static PRIVATE cxx_std_17)
+  target_compile_features(binpac_static PRIVATE cxx_std_20)
   set_target_properties(binpac_static PROPERTIES CXX_EXTENSIONS OFF OUTPUT_NAME
                                                                     binpac)
   install(TARGETS binpac_static DESTINATION ${CMAKE_INSTALL_LIBDIR})
