@@ -1,3 +1,11 @@
+0.61.0-23 | 2024-05-13 17:38:06 -0700
+
+  * CI: Use macOS Sonoma xcode VM to fix problem with missing tools (Tim Wojtulewicz, Corelight)
+
+  * CI: Add Ubuntu 24.04 build (Tim Wojtulewicz, Corelight)
+
+  * CI: Remove CentOS 7 and Debian 10 builds (Christian Kreibich, Corelight)
+
 0.61.0-18 | 2023-12-14 19:59:32 -0800
 
   * CI updates (Christian Kreibich, Corelight)
