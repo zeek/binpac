@@ -1,3 +1,13 @@
+0.61.0-28 | 2024-05-28 15:24:22 -0700
+
+  * CI: update FreeBSD 13 to 13.3 (Christian Kreibich, Corelight)
+
+  * CI: add Opensuse Leap 15.6 (Christian Kreibich, Corelight)
+
+  * CI: remove Centos Stream 8 (Christian Kreibich, Corelight)
+
+  * CI: add Fedora 40, drop 38 (Christian Kreibich, Corelight)
+
 0.61.0-23 | 2024-05-13 17:38:06 -0700
 
   * CI: Use macOS Sonoma xcode VM to fix problem with missing tools (Tim Wojtulewicz, Corelight)
