@@ -1,3 +1,7 @@
+0.61.0-33 | 2024-07-24 13:30:00 -0700
+
+  * Format output closer to what clang-format would output (Tim Wojtulewicz, Corelight)
+
 0.61.0-28 | 2024-05-28 15:24:22 -0700
 
   * CI: update FreeBSD 13 to 13.3 (Christian Kreibich, Corelight)
