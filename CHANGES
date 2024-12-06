@@ -1,3 +1,11 @@
+0.61.0-37 | 2024-12-06 00:04:26 -0800
+
+  * CI: add Ubuntu 24.10 and actually test 24.04 :-) (Christian Kreibich, Corelight)
+
+  * CI: bump FreeBSD to 13.4 and 14.1, respectively (Christian Kreibich, Corelight)
+
+  * CI: drop Fedora 39, add 41 (Christian Kreibich, Corelight)
+
 0.61.0-33 | 2024-07-24 13:30:00 -0700
 
   * Format output closer to what clang-format would output (Tim Wojtulewicz, Corelight)
