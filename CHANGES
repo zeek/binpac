@@ -1,3 +1,11 @@
+0.61.0-42 | 2025-02-07 17:46:08 -0800
+
+  * CI: bump FreeBSD 14 to 14.2, which came out in Dec'24 (Christian Kreibich, Corelight)
+
+  * CI: remove OpenSuSE Leap 15.5, EOL. (Christian Kreibich, Corelight)
+
+  * Updating submodule(s) [nomail] (Tim Wojtulewicz, Corelight)
+
 0.61.0-37 | 2024-12-06 00:04:26 -0800
 
   * CI: add Ubuntu 24.10 and actually test 24.04 :-) (Christian Kreibich, Corelight)
