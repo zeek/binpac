@@ -21,6 +21,7 @@ macos_environment: &MACOS_ENVIRONMENT
   # suggests we can go faster here:
   env:
     ZEEK_CI_CPUS: 12
+    ZEEK_CI_BTEST_JOBS: 12
     # No permission to write to default location of /zeek
     CIRRUS_WORKING_DIR: /tmp/binpac
 
@@ -133,14 +134,6 @@ opensuse_leap_15_6_task:
     << : *RESOURCES_TEMPLATE
   << : *CI_TEMPLATE
 
-opensuse_leap_15_5_task:
-  container:
-    # Opensuse Leap 15.5 EOL: ~Dec 2024
-    dockerfile: ci/opensuse-leap-15.5/Dockerfile
-    << : *RESOURCES_TEMPLATE
-  << : *CI_TEMPLATE
-  << : *SKIP_TASK_ON_PR
-
 opensuse_tumbleweed_task:
   container:
     # Opensuse Tumbleweed has no EOL
@@ -187,28 +180,24 @@ alpine_task:
     << : *RESOURCES_TEMPLATE
   << : *CI_TEMPLATE
 
-# Apple doesn't publish official long-term support timelines.
-# We aim to support both the current and previous macOS release.
+# Cirrus only supports the following macos runner currently, selecting
+# anything else automatically upgrades to this one.
+#
+#    ghcr.io/cirruslabs/macos-runner:sonoma
+#
+# See also: https://cirrus-ci.org/guide/macOS/
 macos_sonoma_task:
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-sonoma-xcode:latest
+    image: ghcr.io/cirruslabs/macos-runner:sonoma
   prepare_script: ./ci/macos/prepare.sh
   << : *CI_TEMPLATE
   << : *MACOS_ENVIRONMENT
-
-macos_ventura_task:
-  macos_instance:
-    image: ghcr.io/cirruslabs/macos-ventura-base:latest
-  prepare_script: ./ci/macos/prepare.sh
-  << : *CI_TEMPLATE
-  << : *MACOS_ENVIRONMENT
-  << : *SKIP_TASK_ON_PR
 
 # FreeBSD EOL timelines: https://www.freebsd.org/security/#sup
 freebsd14_task:
   freebsd_instance:
     # FreeBSD 14 EOL: Nov 30 2028
-    image_family: freebsd-14-1
+    image_family: freebsd-14-2
     << : *FREEBSD_RESOURCES_TEMPLATE
 
   prepare_script: ./ci/freebsd/prepare.sh
