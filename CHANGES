@@ -1,3 +1,7 @@
+0.61.0-44 | 2025-02-24 10:46:51 -0700
+
+  * CI Updates: FreeBSD 14.2, macOS Sonoma, remove Leap 15.5 (Tim Wojtulewicz, Corelight)
+
 0.61.0-42 | 2025-02-07 17:46:08 -0800
 
   * CI: bump FreeBSD 14 to 14.2, which came out in Dec'24 (Christian Kreibich, Corelight)
