@@ -1,3 +1,7 @@
+0.61.0-46 | 2025-04-23 08:26:01 -0700
+
+  * CI: No more Ubuntu 20.04 [skip ci] (Arne Welzel, Corelight)
+
 0.61.0-44 | 2025-02-24 10:46:51 -0700
 
   * CI Updates: FreeBSD 14.2, macOS Sonoma, remove Leap 15.5 (Tim Wojtulewicz, Corelight)
