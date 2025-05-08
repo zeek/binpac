@@ -1,13 +1,14 @@
-FROM fedora:40
+FROM fedora:42
 
 # A version field to invalidate Cirrus's build cache when needed, as suggested in
 # https://github.com/cirruslabs/cirrus-ci-docs/issues/544#issuecomment-566066822
-ENV DOCKERFILE_VERSION 20240524
+ENV DOCKERFILE_VERSION 20250508
 
 RUN dnf -y install \
     bison \
     cmake \
     flex \
+    gawk \
     gcc \
     gcc-c++ \
     git \
