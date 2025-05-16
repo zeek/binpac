@@ -138,6 +138,7 @@ public:
 
     virtual bool IsPointerType() const = 0;
     virtual bool IsNumericType() const { return false; }
+    virtual bool IsBooleanType() const { return false; }
     bool IsEmptyType() const;
 
     ////////////////////////////////////////
