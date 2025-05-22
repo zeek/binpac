@@ -487,6 +487,7 @@ void Type::GenParseBuffer(Output* out_cc, Env* env, int flags) {
 
     if ( attr_length_expr() ) {
         ASSERT(buffer_mode() == BUFFER_BY_LENGTH);
+        out_cc->println("// NOLINTBEGIN(bugprone-branch-clone)");
         out_cc->println("switch ( %s ) {", env->LValue(buffering_state_id));
         out_cc->inc_indent();
         out_cc->println("case 0:");
@@ -537,6 +538,7 @@ void Type::GenParseBuffer(Output* out_cc, Env* env, int flags) {
         out_cc->dec_indent();
         out_cc->dec_indent();
         out_cc->println("}");
+        out_cc->println("// NOLINTEND(bugprone-branch-clone)");
     }
     else if ( attr_restofflow_ ) {
         out_cc->println("BINPAC_ASSERT(%s->eof());", env->RValue(flow_buffer_id));
@@ -885,8 +887,8 @@ bool Type::CompatibleTypes(Type* type1, Type* type2) {
 Type* Type::LookUpByID(ID* id) {
     // 1. Is it a pre-defined type?
     string name = id->Name();
-    if ( type_map_.find(name) != type_map_.end() ) {
-        return type_map_[name]->Clone();
+    if ( auto it = type_map_.find(name); it != type_map_.end() ) {
+        return it->second->Clone();
     }
 
     // 2. Is it a simple declared type?

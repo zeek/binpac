@@ -1,3 +1,30 @@
+0.61.0-56 | 2025-05-22 08:46:29 -0700
+
+  * Reorder the fields in pac_type.h for better packing (Tim Wojtulewicz, Corelight)
+
+  * Make 'nullptr' a keyword, allow values to be set to it and compared against it (Tim Wojtulewicz, Corelight)
+
+    This helps fix 'modernize-use-nullptr' findings in generated code.
+
+  * Make 'bool' a discrete type and handle it differently when generating code (Tim Wojtulewicz, Corelight)
+
+    This fixes clang-tidy modernize-use-bool-literals findings in the generated code
+
+  * Wrap generated switch statements in NOLINTs for bugprone-branch-clone (Tim Wojtulewicz, Corelight)
+
+    Binpac generates a lot of switch statements with repeated blocks in
+    them (typically empty blocks). Running clang-tidy on the generated code
+    with bugprone-branch-clone generates a lot of warnings. Instead of
+    doing a ton of analysis in binpac to avoid generating the duplicates,
+    just mark any switch generated with an annotation to avoid reporting
+    them.
+
+  * Add missing .cmake-format.json, reformat with pre-commit (Tim Wojtulewicz, Corelight)
+
+  * Remove the unused yapf pre-commit (Tim Wojtulewicz, Corelight)
+
+  * CI: Drop Fedora 40, add Fedora 42 (Arne Welzel, Corelight)
+
 0.61.0-46 | 2025-04-23 08:26:01 -0700
 
   * CI: No more Ubuntu 20.04 [skip ci] (Arne Welzel, Corelight)
