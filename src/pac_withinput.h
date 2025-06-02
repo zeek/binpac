@@ -2,8 +2,8 @@
 #define pac_withinput_h
 
 #include "pac_datadep.h"
-#include "pac_decl.h"
 #include "pac_field.h"
+#include "pac_id.h"
 
 class WithInputField : public Field, public Evaluatable {
 public:

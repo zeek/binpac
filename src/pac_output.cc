@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "pac_utils.h"
-
 OutputException::OutputException(const char* arg_msg) { msg = arg_msg; }
 
 OutputException::~OutputException() {}

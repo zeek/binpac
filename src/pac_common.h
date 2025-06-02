@@ -1,9 +1,7 @@
 #ifndef pac_common_h
 #define pac_common_h
 
-#include <ctype.h>
 #include <stdlib.h>
-#include <string.h>
 #include <vector>
 
 #include "pac_utils.h"

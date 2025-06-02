@@ -1,6 +1,5 @@
 #include "pac_record.h"
 
-#include "pac_attr.h"
 #include "pac_dataptr.h"
 #include "pac_exception.h"
 #include "pac_expr.h"
@@ -10,7 +9,6 @@
 #include "pac_type.h"
 #include "pac_typedecl.h"
 #include "pac_utils.h"
-#include "pac_varfield.h"
 
 RecordType::RecordType(RecordFieldList* record_fields) : Type(RECORD) {
     // Here we assume that the type is a standalone type.

@@ -2,7 +2,6 @@
 #define pac_conn_h
 
 #include "pac_analyzer.h"
-#include "pac_decl.h"
 
 class ConnDecl : public AnalyzerDecl {
 public:

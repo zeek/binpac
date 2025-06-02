@@ -1,6 +1,5 @@
 #include "pac_param.h"
 
-#include "pac_decl.h"
 #include "pac_exttype.h"
 #include "pac_field.h"
 #include "pac_id.h"

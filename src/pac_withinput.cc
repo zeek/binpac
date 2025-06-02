@@ -1,7 +1,5 @@
 #include "pac_withinput.h"
 
-#include "pac_dataptr.h"
-#include "pac_expr.h"
 #include "pac_inputbuf.h"
 #include "pac_output.h"
 #include "pac_type.h"

@@ -5,7 +5,6 @@
 #include "pac_common.h"
 #include "pac_decl.h"
 #include "pac_exception.h"
-#include "pac_exttype.h"
 #include "pac_id.h"
 #include "pac_output.h"
 #include "pac_parse.h"
