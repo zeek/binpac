@@ -21,7 +21,7 @@ ConnDecl::~ConnDecl() {
     delete data_type_;
 }
 
-void ConnDecl::AddBaseClass(vector<string>* base_classes) const {
+void ConnDecl::AddBaseClass(std::vector<std::string>* base_classes) const {
     base_classes->push_back("binpac::ConnectionAnalyzer");
 }
 
@@ -57,7 +57,7 @@ void ConnDecl::GenPubDecls(Output* out_h, Output* out_cc) { AnalyzerDecl::GenPub
 void ConnDecl::GenPrivDecls(Output* out_h, Output* out_cc) { AnalyzerDecl::GenPrivDecls(out_h, out_cc); }
 
 void ConnDecl::GenEOFFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("%s(bool is_orig)", kFlowEOF);
+    std::string proto = strfmt("%s(bool is_orig)", kFlowEOF);
 
     out_h->println("void %s;", proto.c_str());
 
@@ -84,7 +84,7 @@ void ConnDecl::GenEOFFunc(Output* out_h, Output* out_cc) {
 }
 
 void ConnDecl::GenGapFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("%s(bool is_orig, int gap_length)", kFlowGap);
+    std::string proto = strfmt("%s(bool is_orig, int gap_length)", kFlowGap);
 
     out_h->println("void %s;", proto.c_str());
 
@@ -106,7 +106,7 @@ void ConnDecl::GenGapFunc(Output* out_h, Output* out_cc) {
 }
 
 void ConnDecl::GenProcessFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("%s(bool is_orig, const_byteptr begin, const_byteptr end)", kNewData);
+    std::string proto = strfmt("%s(bool is_orig, const_byteptr begin, const_byteptr end)", kNewData);
 
     out_h->println("void %s;", proto.c_str());
 

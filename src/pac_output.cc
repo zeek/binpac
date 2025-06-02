@@ -9,7 +9,7 @@ OutputException::OutputException(const char* arg_msg) { msg = arg_msg; }
 
 OutputException::~OutputException() {}
 
-Output::Output(string filename) {
+Output::Output(std::string filename) {
     fp = fopen(filename.c_str(), "w");
     if ( ! fp )
         throw OutputException(strerror(errno));

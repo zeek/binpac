@@ -1,5 +1,7 @@
 #include <ctype.h>
 #include <unistd.h>
+#include <string>
+#include <vector>
 
 #include "config.h"
 #include "pac_common.h"
@@ -14,24 +16,24 @@
 extern int yydebug;
 extern int yyparse();
 extern void switch_to_file(FILE* fp_input);
-string input_filename;
+std::string input_filename;
 
 bool FLAGS_pac_debug = false;
 bool FLAGS_quiet = false;
-string FLAGS_output_directory;
-vector<string> FLAGS_include_directories;
+std::string FLAGS_output_directory;
+std::vector<std::string> FLAGS_include_directories;
 
 Output* header_output = nullptr;
 Output* source_output = nullptr;
 
-void add_to_include_directories(string dirs) {
+void add_to_include_directories(std::string dirs) {
     unsigned int dir_begin = 0, dir_end;
     while ( dir_begin < dirs.length() ) {
         for ( dir_end = dir_begin; dir_end < dirs.length(); ++dir_end )
             if ( dirs[dir_end] == ':' )
                 break;
 
-        string dir = dirs.substr(dir_begin, dir_end - dir_begin);
+        std::string dir = dirs.substr(dir_begin, dir_end - dir_begin);
 
         // Add a trailing '/' if necessary
         if ( dir.length() > 0 && *(dir.end() - 1) != '/' )
@@ -91,13 +93,13 @@ const char* to_id(const char* s) {
 int compile(const char* filename) {
     FILE* fp_input = fopen(filename, "r");
     if ( ! fp_input ) {
-        string tmp = strfmt("Error in opening %s", filename);
+        std::string tmp = strfmt("Error in opening %s", filename);
         perror(tmp.c_str());
         return -1;
     }
     input_filename = filename;
 
-    string basename;
+    std::string basename;
 
     if ( ! FLAGS_output_directory.empty() ) {
         // Strip leading directories of filename

@@ -8,7 +8,7 @@
 const char* RegEx::kREMatcherType = "RegExMatcher";
 const char* RegEx::kMatchPrefix = "MatchPrefix";
 
-string escape_char(const string& s) {
+std::string escape_char(const std::string& s) {
     char* buf = new char[s.length() * 2 + 1];
     int j = 0;
     for ( int i = 0; i < (int)s.length(); ++i ) {
@@ -34,14 +34,14 @@ string escape_char(const string& s) {
 
     buf[j++] = '\0';
 
-    string rval = buf;
+    std::string rval = buf;
     delete[] buf;
     return rval;
 }
 
-RegEx::RegEx(const string& s) {
+RegEx::RegEx(const std::string& s) {
     str_ = escape_char(s);
-    string prefix = strfmt("%s_re_", current_decl_id->Name());
+    std::string prefix = strfmt("%s_re_", current_decl_id->Name());
     matcher_id_ = ID::NewAnonymousID(prefix);
     decl_ = new RegExDecl(this);
 }

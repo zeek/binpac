@@ -13,12 +13,12 @@ ParameterizedType::ParameterizedType(ID* type_id, ExprList* args)
 
 ParameterizedType::~ParameterizedType() {}
 
-string ParameterizedType::EvalMember(const ID* member_id) const {
+std::string ParameterizedType::EvalMember(const ID* member_id) const {
     Type* ty = ReferredDataType(true);
     return strfmt("->%s", ty->env()->RValue(member_id));
 }
 
-string ParameterizedType::class_name() const { return type_id_->Name(); }
+std::string ParameterizedType::class_name() const { return type_id_->Name(); }
 
 Type* ParameterizedType::DoClone() const { return new ParameterizedType(type_id_->clone(), args_); }
 
@@ -26,7 +26,7 @@ void ParameterizedType::AddParamArg(Expr* arg) { args_->push_back(arg); }
 
 bool ParameterizedType::DefineValueVar() const { return true; }
 
-string ParameterizedType::DataTypeStr() const { return strfmt("%s*", type_id_->Name()); }
+std::string ParameterizedType::DataTypeStr() const { return strfmt("%s*", type_id_->Name()); }
 
 Type* ParameterizedType::MemberDataType(const ID* member_id) const {
     Type* ref_type = TypeDecl::LookUpType(type_id_);
@@ -134,8 +134,8 @@ void ParameterizedType::GenCleanUpCode(Output* out_cc, Env* env) {
     Type::GenCleanUpCode(out_cc, env);
 }
 
-string ParameterizedType::EvalParameters(Output* out_cc, Env* env) const {
-    string arg_str;
+std::string ParameterizedType::EvalParameters(Output* out_cc, Env* env) const {
+    std::string arg_str;
 
     int first = 1;
     foreach (i, ExprList, args_) {
@@ -160,7 +160,7 @@ void ParameterizedType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& 
     Type* ref_type = ReferredDataType(true);
 
     const char* parse_func;
-    string parse_params;
+    std::string parse_params;
 
     if ( buffer_mode() == BUFFER_NOTHING ) {
         ASSERT(! ref_type->incremental_input());
@@ -185,9 +185,9 @@ void ParameterizedType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& 
         parse_params += strfmt(", %s", env->RValue(byteorder_id));
     }
 
-    string call_parse_func = strfmt("%s->%s(%s)",
-                                    lvalue(), // parse() needs an LValue
-                                    parse_func, parse_params.c_str());
+    std::string call_parse_func = strfmt("%s->%s(%s)",
+                                         lvalue(), // parse() needs an LValue
+                                         parse_func, parse_params.c_str());
 
     if ( incremental_input() ) {
         if ( buffer_mode() == BUFFER_NOTHING ) {

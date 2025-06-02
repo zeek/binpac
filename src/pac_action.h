@@ -17,7 +17,7 @@ public:
     When when() const { return when_; }
     ActionParam* param() const { return param_; }
     AnalyzerDecl* analyzer() const { return analyzer_; }
-    string action_function() const;
+    std::string action_function() const;
 
     // Generate function prototype and code for the action
     void GenCode(Output* out_h, Output* out_cc, AnalyzerDecl* decl);
@@ -27,7 +27,7 @@ public:
     void InstallHook(AnalyzerDecl* analyzer);
 
 private:
-    string ParamDecls(Env* env) const;
+    std::string ParamDecls(Env* env) const;
 
     ID* action_id_;
     When when_;
@@ -45,7 +45,7 @@ public:
 
     Type* MainDataType() const;
     Type* DataType() const;
-    string DeclStr(Env* env) const;
+    std::string DeclStr(Env* env) const;
 
 private:
     const ID* id_;

@@ -58,7 +58,9 @@ Type* StringType::DoClone() const {
 
 bool StringType::DefineValueVar() const { return true; }
 
-string StringType::DataTypeStr() const { return strfmt("%s", persistent() ? kStringTypeName : kConstStringTypeName); }
+std::string StringType::DataTypeStr() const {
+    return strfmt("%s", persistent() ? kStringTypeName : kConstStringTypeName);
+}
 
 Type* StringType::ElementDataType() const { return elem_datatype_; }
 
@@ -176,7 +178,7 @@ void StringType::GenDynamicSize(Output* out_cc, Env* env, const DataPtr& data) {
     }
 }
 
-string StringType::GenStringSize(Output* out_cc, Env* env, const DataPtr& data) {
+std::string StringType::GenStringSize(Output* out_cc, Env* env, const DataPtr& data) {
     int static_size = StaticSize(env);
     if ( static_size >= 0 )
         return strfmt("%d", static_size);
@@ -185,7 +187,7 @@ string StringType::GenStringSize(Output* out_cc, Env* env, const DataPtr& data) 
 }
 
 void StringType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& data, int flags) {
-    string str_size = GenStringSize(out_cc, env, data);
+    std::string str_size = GenStringSize(out_cc, env, data);
 
     // Generate additional checking
     switch ( type_ ) {
@@ -218,19 +220,19 @@ void StringType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& data, i
     }
 }
 
-void StringType::GenStringMismatch(Output* out_cc, Env* env, const DataPtr& data, string pattern) {
-    string tmp =
+void StringType::GenStringMismatch(Output* out_cc, Env* env, const DataPtr& data, std::string pattern) {
+    std::string tmp =
         strfmt("string((const char *) (%s), (const char *) %s).c_str()", data.ptr_expr(), env->RValue(end_of_data));
     out_cc->println("throw binpac::ExceptionStringMismatch(\"%s\", %s, %s);", Location(), pattern.c_str(), tmp.c_str());
 }
 
-void StringType::GenCheckingCStr(Output* out_cc, Env* env, const DataPtr& data, const string& str_size) {
+void StringType::GenCheckingCStr(Output* out_cc, Env* env, const DataPtr& data, const std::string& str_size) {
     // TODO: extend it for dynamic strings
     ASSERT(type_ == CSTR);
 
     GenBoundaryCheck(out_cc, env, data);
 
-    string str_val = str_->str();
+    std::string str_val = str_->str();
 
     // Compare the string and report error on mismatch
     out_cc->println("if ( memcmp(%s, %s, %s) != 0 ) {", data.ptr_expr(), str_val.c_str(), str_size.c_str());
@@ -262,7 +264,7 @@ void StringType::GenDynamicSizeRegEx(Output* out_cc, Env* env, const DataPtr& da
 
     out_cc->println("if ( %s < 0 ) {", env->RValue(string_length_var()));
     out_cc->inc_indent();
-    string tmp = strfmt("\"%s\"", regex_->str().c_str());
+    std::string tmp = strfmt("\"%s\"", regex_->str().c_str());
     GenStringMismatch(out_cc, env, data, tmp);
     out_cc->dec_indent();
     out_cc->println("}");

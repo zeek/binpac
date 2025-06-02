@@ -76,7 +76,7 @@ protected:
     ID* id_;
     Type* type_;
     const ID* decl_id_;
-    string field_id_str_;
+    std::string field_id_str_;
     AttrList* attrs_;
 };
 

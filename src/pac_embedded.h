@@ -1,22 +1,25 @@
 #ifndef pac_embedded_h
 #define pac_embedded_h
 
+#include <string>
+#include <vector>
+
 #include "pac_common.h"
 
 class EmbeddedCodeSegment {
 public:
-    explicit EmbeddedCodeSegment(const string& s);
+    explicit EmbeddedCodeSegment(const std::string& s);
     explicit EmbeddedCodeSegment(PacPrimitive* primitive);
     ~EmbeddedCodeSegment();
 
-    string ToCode(Env* env);
+    std::string ToCode(Env* env);
 
 private:
-    string s_;
+    std::string s_;
     PacPrimitive* primitive_;
 };
 
-typedef vector<EmbeddedCodeSegment*> EmbeddedCodeSegmentList;
+typedef std::vector<EmbeddedCodeSegment*> EmbeddedCodeSegmentList;
 
 class EmbeddedCode : public Object {
 public:
@@ -33,7 +36,7 @@ public:
     void GenCode(Output* out, Env* env);
 
 private:
-    string current_segment_;
+    std::string current_segment_;
     EmbeddedCodeSegmentList* segments_;
 };
 

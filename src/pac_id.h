@@ -3,7 +3,6 @@
 
 #include <map>
 #include <string>
-using namespace std;
 
 #include "pac_common.h"
 #include "pac_dbg.h"
@@ -42,7 +41,9 @@ class Evaluatable;
 
 class ID : public Object {
 public:
-    ID(string arg_name) : name(arg_name), anonymous_id_(false) { locname = nfmt("%s:%s", Location(), Name()); }
+    ID(std::string arg_name) : name(std::move(arg_name)), anonymous_id_(false) {
+        locname = nfmt("%s:%s", Location(), Name());
+    }
     ~ID() { delete[] locname; }
 
     bool operator==(ID const& x) const { return name == x.Name(); }
@@ -54,13 +55,13 @@ public:
     ID* clone() const { return new ID(Name()); }
 
 protected:
-    string name;
+    std::string name;
     bool anonymous_id_;
     char* locname;
     friend class ID_ptr_cmp;
 
 public:
-    static ID* NewAnonymousID(const string& prefix);
+    static ID* NewAnonymousID(const std::string& prefix);
 
 private:
     static int anonymous_id_seq;
@@ -108,9 +109,9 @@ protected:
     const ID* id;
     IDType id_type;
 
-    string rvalue;
-    string lvalue;
-    string setfunc;
+    std::string rvalue;
+    std::string lvalue;
+    std::string setfunc;
 
     Type* data_type;
 
@@ -178,7 +179,7 @@ public:
 
     Type* GetDataType(const ID* id) const;
 
-    string DataTypeStr(const ID* id) const;
+    std::string DataTypeStr(const ID* id) const;
 
 protected:
     IDRecord* lookup(const ID* id, bool recursive, bool raise_exception) const;
@@ -190,7 +191,7 @@ protected:
 private:
     Env* parent;
     Object* context_object_;
-    typedef map<const ID*, IDRecord*, ID_ptr_cmp> id_map_t;
+    typedef std::map<const ID*, IDRecord*, ID_ptr_cmp> id_map_t;
     id_map_t id_map;
     bool allow_undefined_id_;
     bool in_branch_;
@@ -227,6 +228,6 @@ extern const ID* buffering_state_id;
 extern void init_builtin_identifiers();
 extern Env* global_env();
 
-extern string set_function(const ID* id);
+extern std::string set_function(const ID* id);
 
 #endif // pac_id_h

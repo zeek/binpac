@@ -38,7 +38,7 @@ public:
 protected:
     const ID* id_;
     int offset_;
-    string ptr_expr_;
+    std::string ptr_expr_;
 };
 
 #endif // pac_dataptr_h

@@ -41,12 +41,12 @@ void Function::GenForwardDeclaration(Output* out_h) {
 void Function::GenCode(Output* out_h, Output* out_cc) {
     out_h->println("%s %s(%s);", type_->DataTypeStr().c_str(), id_->Name(), ParamDecls(params_).c_str());
 
-    string class_str = "";
+    std::string class_str = "";
     if ( analyzer_decl_ )
         class_str = strfmt("%s::", analyzer_decl_->id()->Name());
 
-    string proto_str = strfmt("%s %s%s(%s)", type_->DataTypeStr().c_str(), class_str.c_str(), id_->Name(),
-                              ParamDecls(params_).c_str());
+    std::string proto_str = strfmt("%s %s%s(%s)", type_->DataTypeStr().c_str(), class_str.c_str(), id_->Name(),
+                                   ParamDecls(params_).c_str());
 
     ASSERT(! (expr_ && code_));
 

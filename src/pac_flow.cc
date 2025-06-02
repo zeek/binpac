@@ -35,7 +35,9 @@ ParameterizedType* FlowDecl::flow_buffer_type() {
     return flow_buffer_type_;
 }
 
-void FlowDecl::AddBaseClass(vector<string>* base_classes) const { base_classes->push_back("binpac::FlowAnalyzer"); }
+void FlowDecl::AddBaseClass(std::vector<std::string>* base_classes) const {
+    base_classes->push_back("binpac::FlowAnalyzer");
+}
 
 void FlowDecl::ProcessFlowElement(AnalyzerFlow* flow_elem) {
     throw Exception(flow_elem, "flow should be defined in only a connection declaration");
@@ -107,7 +109,7 @@ void FlowDecl::GenCleanUpCode(Output* out_cc) {
 }
 
 void FlowDecl::GenEOFFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("%s()", kFlowEOF);
+    std::string proto = strfmt("%s()", kFlowEOF);
 
     out_h->println("void %s;", proto.c_str());
 
@@ -128,7 +130,7 @@ void FlowDecl::GenEOFFunc(Output* out_h, Output* out_cc) {
 }
 
 void FlowDecl::GenGapFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("%s(int gap_length)", kFlowGap);
+    std::string proto = strfmt("%s(int gap_length)", kFlowGap);
 
     out_h->println("void %s;", proto.c_str());
 
@@ -147,8 +149,8 @@ void FlowDecl::GenProcessFunc(Output* out_h, Output* out_cc) {
     env_->AddID(begin_of_data, TEMP_VAR, extern_type_const_byteptr);
     env_->AddID(end_of_data, TEMP_VAR, extern_type_const_byteptr);
 
-    string proto = strfmt("%s(const_byteptr %s, const_byteptr %s)", kNewData, env_->LValue(begin_of_data),
-                          env_->LValue(end_of_data));
+    std::string proto = strfmt("%s(const_byteptr %s, const_byteptr %s)", kNewData, env_->LValue(begin_of_data),
+                               env_->LValue(end_of_data));
 
     out_h->println("void %s;", proto.c_str());
 
@@ -245,7 +247,7 @@ void FlowDecl::GenCodeDatagram(Output* out_cc) {
     Type* unit_datatype = dataunit_->data_type();
     GenNewDataUnit(out_cc);
 
-    string parse_params = strfmt("%s, %s", env_->RValue(begin_of_data), env_->RValue(end_of_data));
+    std::string parse_params = strfmt("%s, %s", env_->RValue(begin_of_data), env_->RValue(end_of_data));
 
     if ( RequiresAnalyzerContext::compute(unit_datatype) ) {
         parse_params += ", ";

@@ -14,11 +14,11 @@ public:
     ExternType(const ID* id, EXTType ext_type) : Type(EXTERN), id_(id), ext_type_(ext_type) {}
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
+    std::string DataTypeStr() const override;
     int StaticSize(Env* env) const override;
     bool ByteOrderSensitive() const override;
 
-    string EvalMember(const ID* member_id) const override;
+    std::string EvalMember(const ID* member_id) const override;
     bool IsNumericType() const override { return ext_type_ == NUMBER; }
     bool IsPointerType() const override { return ext_type_ == POINTER; }
     bool IsBooleanType() const override { return ext_type_ == BOOLEAN; }

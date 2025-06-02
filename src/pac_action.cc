@@ -17,7 +17,7 @@ AnalyzerAction::~AnalyzerAction() {
     delete code_;
 }
 
-string AnalyzerAction::action_function() const { return strfmt("Action_%s", action_id_->Name()); }
+std::string AnalyzerAction::action_function() const { return strfmt("Action_%s", action_id_->Name()); }
 
 void AnalyzerAction::InstallHook(AnalyzerDecl* analyzer) {
     ASSERT(0);
@@ -30,7 +30,7 @@ void AnalyzerAction::GenCode(Output* out_h, Output* out_cc, AnalyzerDecl* decl) 
     action_func_env.AddID(param_->id(), TEMP_VAR, param_->DataType());
     action_func_env.SetEvaluated(param_->id());
 
-    string action_func_proto = strfmt("%s(%s)", action_function().c_str(), ParamDecls(&action_func_env).c_str());
+    std::string action_func_proto = strfmt("%s(%s)", action_function().c_str(), ParamDecls(&action_func_env).c_str());
 
     out_h->println("void %s;", action_func_proto.c_str());
 
@@ -45,7 +45,7 @@ void AnalyzerAction::GenCode(Output* out_h, Output* out_cc, AnalyzerDecl* decl) 
     out_cc->println("");
 }
 
-string AnalyzerAction::ParamDecls(Env* env) const { return param_->DeclStr(env); }
+std::string AnalyzerAction::ParamDecls(Env* env) const { return param_->DeclStr(env); }
 
 Type* ActionParam::MainDataType() const {
     // Note: this is not equal to DataType()
@@ -74,6 +74,6 @@ Type* ActionParam::DataType() const {
     }
 }
 
-string ActionParam::DeclStr(Env* env) const {
+std::string ActionParam::DeclStr(Env* env) const {
     return strfmt("%s %s", DataType()->DataTypeStr().c_str(), env->LValue(id()));
 }

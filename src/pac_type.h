@@ -4,8 +4,6 @@
 #include <cstdint>
 #include <map>
 
-using namespace std;
-
 #include "pac_common.h"
 #include "pac_datadep.h"
 #include "pac_dbg.h"
@@ -76,10 +74,10 @@ public:
 
     Env* env() const { return env_; }
 
-    string EvalByteOrder(Output* out_cc, Env* env) const;
+    std::string EvalByteOrder(Output* out_cc, Env* env) const;
 
-    virtual string EvalMember(const ID* member_id) const;
-    virtual string EvalElement(const string& array, const string& index) const;
+    virtual std::string EvalMember(const ID* member_id) const;
+    virtual std::string EvalElement(const std::string& array, const std::string& index) const;
 
     // The variable defined by the type
     const ID* value_var() const { return value_var_; }
@@ -106,19 +104,19 @@ public:
     virtual bool DefineValueVar() const = 0;
 
     // Returns C++ datatype string
-    virtual string DataTypeStr() const = 0;
+    virtual std::string DataTypeStr() const = 0;
 
     // Returns const reference of the C++ data type (unless the type
     // is numeric or pointer)
-    string DataTypeConstRefStr() const {
-        string data_type = DataTypeStr();
+    std::string DataTypeConstRefStr() const {
+        std::string data_type = DataTypeStr();
         if ( ! IsPointerType() && ! IsNumericType() && ! IsBooleanType() )
             data_type += " const&";
         return data_type;
     }
 
     // Returns a default value for the type
-    virtual string DefaultValue() const {
+    virtual std::string DefaultValue() const {
         ASSERT(0);
         return "@@@";
     }
@@ -163,7 +161,7 @@ public:
     ////////////////////////////////////////
     // Size and boundary checking
     virtual int StaticSize(Env* env) const = 0;
-    string DataSize(Output* out, Env* env, const DataPtr& data);
+    std::string DataSize(Output* out, Env* env, const DataPtr& data);
 
     bool boundary_checked() const { return boundary_checked_; }
     virtual void SetBoundaryChecked() { boundary_checked_ = true; }
@@ -193,7 +191,7 @@ public:
 
     // Whether parsing of the type is completed
     const ID* parsing_complete_var() const;
-    string parsing_complete(Env* env) const;
+    std::string parsing_complete(Env* env) const;
 
     // Whether the input is bufferable
     bool Bufferable() const;
@@ -228,7 +226,7 @@ protected:
 
     virtual void DoGenParseCode(Output* out, Env* env, const DataPtr& data, int flags) = 0;
 
-    string EvalLengthExpr(Output* out_cc, Env* env);
+    std::string EvalLengthExpr(Output* out_cc, Env* env);
 
     // Generate code for computing the dynamic size of the type
     virtual void GenDynamicSize(Output* out, Env* env, const DataPtr& data) = 0;
@@ -249,11 +247,11 @@ protected:
     bool boundary_checked_;
     TypeType tot_;
 
-    string data_id_str_;
+    std::string data_id_str_;
     int value_var_type_;
     Field* size_var_field_;
     char* size_expr_;
-    string lvalue_;
+    std::string lvalue_;
     FieldList* fields_;
 
     bool incremental_input_;
@@ -298,11 +296,11 @@ protected:
 public:
     static void init();
     static bool CompatibleTypes(Type* type1, Type* type2);
-    static void AddPredefinedType(const string& type_name, Type* type);
+    static void AddPredefinedType(const std::string& type_name, Type* type);
     static Type* LookUpByID(ID* id);
 
 protected:
-    typedef map<string, Type*> type_map_t;
+    typedef std::map<std::string, Type*> type_map_t;
     static type_map_t type_map_;
 };
 

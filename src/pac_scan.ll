@@ -320,7 +320,7 @@ const int MAX_INCLUDE_DEPTH = 100;
 
 struct IncludeState {
 	YY_BUFFER_STATE yystate;
-	string input_filename;
+	std::string input_filename;
 	int line_number;
 };
 
@@ -354,7 +354,7 @@ void switch_to_file(const char *filename)
 		}
 
 	yyin = fp;
-	input_filename = string(filename);
+	input_filename = std::string(filename);
 	line_number = 1;
 	switch_to_file(yyin);
 	if ( ! FLAGS_quiet )
@@ -365,12 +365,12 @@ void include_file(const char *filename)
 	{
 	ASSERT(filename);
 
-	string full_filename;
+	std::string full_filename;
 	if ( filename[0] == '/' )
 		full_filename = filename;
 	else if ( filename[0] == '.' )
 		{
-		string dir = do_dirname(input_filename);
+		std::string dir = do_dirname(input_filename);
 
 		if ( ! dir.empty() )
 			full_filename = dir + "/" + filename;

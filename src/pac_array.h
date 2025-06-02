@@ -12,11 +12,11 @@ public:
     ~ArrayType() override;
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
-    string DefaultValue() const override { return "0"; }
+    std::string DataTypeStr() const override;
+    std::string DefaultValue() const override { return "0"; }
     Type* ElementDataType() const override;
 
-    string EvalElement(const string& array, const string& index) const override;
+    std::string EvalElement(const std::string& array, const std::string& index) const override;
 
     void ProcessAttr(Attr* a) override;
 
@@ -41,8 +41,8 @@ protected:
     void DoGenParseCode(Output* out, Env* env, const DataPtr& data, int flags) override;
     void GenDynamicSize(Output* out, Env* env, const DataPtr& data) override;
     void GenArrayLength(Output* out_cc, Env* env, const DataPtr& data);
-    string GenArrayInit(Output* out_cc, Env* env, bool known_array_length);
-    void GenElementAssignment(Output* out_cc, Env* env, string const& array_str, bool use_vector);
+    std::string GenArrayInit(Output* out_cc, Env* env, bool known_array_length);
+    void GenElementAssignment(Output* out_cc, Env* env, std::string const& array_str, bool use_vector);
     void GenUntilCheck(Output* out_cc, Env* env, Expr* until_condition, bool delete_elem);
 
     bool ByteOrderSensitive() const override { return elemtype_->RequiresByteOrder(); }
@@ -65,9 +65,9 @@ private:
     Type* elemtype_;
     Expr* length_;
 
-    string vector_str_;
-    string datatype_str_;
-    string end_of_array_loop_label_;
+    std::string vector_str_;
+    std::string datatype_str_;
+    std::string end_of_array_loop_label_;
 
     Field* arraylength_var_field_;
     Field* elem_it_var_field_;

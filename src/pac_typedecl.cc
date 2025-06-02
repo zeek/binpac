@@ -62,7 +62,7 @@ void TypeDecl::Prepare() {
     type_->Prepare(env_, Type::TO_BE_PARSED);
 }
 
-string TypeDecl::class_name() const { return id_->Name(); }
+std::string TypeDecl::class_name() const { return id_->Name(); }
 
 void TypeDecl::GenForwardDeclaration(Output* out_h) {
     // Do not generate declaration for external types
@@ -93,7 +93,7 @@ void TypeDecl::GenCode(Output* out_h, Output* out_cc) {
         env_->SetEvaluated(byteorder_id);
     }
 
-    vector<string> base_classes;
+    std::vector<std::string> base_classes;
 
     AddBaseClass(&base_classes);
 
@@ -104,7 +104,7 @@ void TypeDecl::GenCode(Output* out_h, Output* out_cc) {
     out_h->println("");
     out_h->print("class %s final", class_name().c_str());
     bool first = true;
-    vector<string>::iterator i;
+    std::vector<std::string>::iterator i;
     for ( i = base_classes.begin(); i != base_classes.end(); ++i ) {
         if ( first ) {
             out_h->print(" : public %s", i->c_str());
@@ -158,9 +158,9 @@ void TypeDecl::GenInitCode(Output* out_cc) {}
 void TypeDecl::GenCleanUpCode(Output* out_cc) {}
 
 void TypeDecl::GenConstructorFunc(Output* out_h, Output* out_cc) {
-    string params_str = ParamDecls(params_);
+    std::string params_str = ParamDecls(params_);
 
-    string proto = strfmt("%s(%s)", class_name().c_str(), params_str.c_str());
+    std::string proto = strfmt("%s(%s)", class_name().c_str(), params_str.c_str());
 
     out_h->println("%s;", proto.c_str());
 
@@ -177,7 +177,7 @@ void TypeDecl::GenConstructorFunc(Output* out_h, Output* out_cc) {
 }
 
 void TypeDecl::GenDestructorFunc(Output* out_h, Output* out_cc) {
-    string proto = strfmt("~%s()", class_name().c_str());
+    std::string proto = strfmt("~%s()", class_name().c_str());
 
     out_h->println("%s;", proto.c_str());
 
@@ -191,10 +191,10 @@ void TypeDecl::GenDestructorFunc(Output* out_h, Output* out_cc) {
     out_cc->println("}\n");
 }
 
-string TypeDecl::ParseFuncPrototype(Env* env) {
+std::string TypeDecl::ParseFuncPrototype(Env* env) {
     const char* func_name = nullptr;
     const char* return_type = nullptr;
-    string params;
+    std::string params;
 
     if ( type_->incremental_input() ) {
         func_name = kParseFuncWithBuffer;
@@ -223,7 +223,7 @@ string TypeDecl::ParseFuncPrototype(Env* env) {
 }
 
 void TypeDecl::GenParsingEnd(Output* out_cc, Env* env, const DataPtr& data) {
-    string ret_val_0, ret_val_1;
+    std::string ret_val_0, ret_val_1;
 
     if ( type_->incremental_input() ) {
         ret_val_0 = type_->parsing_complete(env).c_str();
@@ -278,7 +278,7 @@ void TypeDecl::GenParseFunc(Output* out_h, Output* out_cc) {
         env->SetEvaluated(end_of_data);
     }
 
-    string proto = ParseFuncPrototype(env);
+    std::string proto = ParseFuncPrototype(env);
 
 #if 0
 	if ( func_type == PARSE )
@@ -296,7 +296,7 @@ void TypeDecl::GenParseFunc(Output* out_h, Output* out_cc) {
 
     out_h->println(proto.c_str(), "", ";");
 
-    string tmp = strfmt("%s::", class_name().c_str());
+    std::string tmp = strfmt("%s::", class_name().c_str());
     out_cc->println(proto.c_str(), tmp.c_str(), " {");
     out_cc->inc_indent();
 
@@ -312,7 +312,7 @@ void TypeDecl::GenParseFunc(Output* out_h, Output* out_cc) {
 }
 
 void TypeDecl::GenInitialBufferLengthFunc(Output* out_h, Output* out_cc) {
-    string func(kInitialBufferLengthFunc);
+    std::string func(kInitialBufferLengthFunc);
 
     int init_buffer_length = type_->InitialBufferLength();
 

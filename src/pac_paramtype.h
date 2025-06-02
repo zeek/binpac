@@ -11,14 +11,14 @@ public:
 
     Type* clone() const;
 
-    string EvalMember(const ID* member_id) const override;
+    std::string EvalMember(const ID* member_id) const override;
     // Env *member_env() const;
 
     void AddParamArg(Expr* arg);
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
-    string DefaultValue() const override { return "0"; }
+    std::string DataTypeStr() const override;
+    std::string DefaultValue() const override { return "0"; }
     Type* MemberDataType(const ID* member_id) const override;
 
     // "throw_exception" specifies whether to throw an exception
@@ -36,8 +36,8 @@ public:
 
     void GenInitCode(Output* out_cc, Env* env) override;
 
-    string class_name() const;
-    string EvalParameters(Output* out_cc, Env* env) const;
+    std::string class_name() const;
+    std::string EvalParameters(Output* out_cc, Env* env) const;
 
     BufferMode buffer_mode() const override;
 

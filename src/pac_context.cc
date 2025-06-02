@@ -81,7 +81,7 @@ void AnalyzerContextDecl::AddFlowBuffer() {
     flow_buffer_added_ = true;
 }
 
-string AnalyzerContextDecl::mb_buffer(Env* env) {
+std::string AnalyzerContextDecl::mb_buffer(Env* env) {
     // A hack. The orthodox way would be to build an Expr of
     // context.flow_buffer_var, and then EvalExpr.
     return strfmt("%s->%s()", env->RValue(analyzer_context_id), kFlowBufferVar);

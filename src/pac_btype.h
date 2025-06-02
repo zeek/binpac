@@ -20,8 +20,8 @@ public:
     bool IsNumericType() const override;
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
-    string DefaultValue() const override { return "0"; }
+    std::string DataTypeStr() const override;
+    std::string DefaultValue() const override { return "0"; }
 
     int StaticSize(Env* env) const override;
 

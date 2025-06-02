@@ -37,7 +37,7 @@ const ID* RecordType::parsing_dataptr_var() const {
 
 bool RecordType::DefineValueVar() const { return false; }
 
-string RecordType::DataTypeStr() const {
+std::string RecordType::DataTypeStr() const {
     ASSERT(type_decl());
     return strfmt("%s*", type_decl()->class_name().c_str());
 }

@@ -18,13 +18,13 @@ Param::Param(ID* id, Type* type) : id_(id), type_(type) {
 
 Param::~Param() {}
 
-const string& Param::decl_str() const {
+const std::string& Param::decl_str() const {
     ASSERT(! decl_str_.empty());
     return decl_str_;
 }
 
-string ParamDecls(ParamList* params) {
-    string param_decls;
+std::string ParamDecls(ParamList* params) {
+    std::string param_decls;
 
     int first = 1;
     foreach (i, ParamList, params) {

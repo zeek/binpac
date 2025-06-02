@@ -15,7 +15,7 @@ public:
     static ParameterizedType* flow_buffer_type();
 
 protected:
-    void AddBaseClass(vector<string>* base_classes) const override;
+    void AddBaseClass(std::vector<std::string>* base_classes) const override;
 
     void GenInitCode(Output* out_cc) override;
     void GenCleanUpCode(Output* out_cc) override;

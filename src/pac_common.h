@@ -6,12 +6,10 @@
 
 #include "pac_utils.h"
 
-using namespace std;
-
 extern bool FLAGS_pac_debug;
 extern bool FLAGS_quiet;
-extern vector<string> FLAGS_include_directories;
-extern string input_filename;
+extern std::vector<std::string> FLAGS_include_directories;
+extern std::string input_filename;
 extern int line_number;
 
 // Definition of class Object, which is the base class for all objects
@@ -31,9 +29,9 @@ public:
     const char* Location() const { return location.c_str(); }
 
 protected:
-    string filename;
+    std::string filename;
     int line_num;
-    string location;
+    std::string location;
 };
 
 class ActionParam;
@@ -83,22 +81,22 @@ class WithInputField;
 // The ID of the current declaration.
 extern const ID* current_decl_id;
 
-typedef vector<ActionParam*> ActionParamList;
-typedef vector<AnalyzerAction*> AnalyzerActionList;
-typedef vector<AnalyzerElement*> AnalyzerElementList;
-typedef vector<Attr*> AttrList;
-typedef vector<CaseExpr*> CaseExprList;
-typedef vector<CaseField*> CaseFieldList;
-typedef vector<ContextField*> ContextFieldList;
-typedef vector<Decl*> DeclList;
-typedef vector<Enum*> EnumList;
-typedef vector<Expr*> ExprList;
-typedef vector<Field*> FieldList;
-typedef vector<LetField*> LetFieldList;
-typedef vector<Number*> NumList;
-typedef vector<Param*> ParamList;
-typedef vector<RecordField*> RecordFieldList;
-typedef vector<StateVar*> StateVarList;
+typedef std::vector<ActionParam*> ActionParamList;
+typedef std::vector<AnalyzerAction*> AnalyzerActionList;
+typedef std::vector<AnalyzerElement*> AnalyzerElementList;
+typedef std::vector<Attr*> AttrList;
+typedef std::vector<CaseExpr*> CaseExprList;
+typedef std::vector<CaseField*> CaseFieldList;
+typedef std::vector<ContextField*> ContextFieldList;
+typedef std::vector<Decl*> DeclList;
+typedef std::vector<Enum*> EnumList;
+typedef std::vector<Expr*> ExprList;
+typedef std::vector<Field*> FieldList;
+typedef std::vector<LetField*> LetFieldList;
+typedef std::vector<Number*> NumList;
+typedef std::vector<Param*> ParamList;
+typedef std::vector<RecordField*> RecordFieldList;
+typedef std::vector<StateVar*> StateVarList;
 
 #define foreach(i, ct, pc)                                                                                             \
     if ( pc )                                                                                                          \

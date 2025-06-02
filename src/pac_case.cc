@@ -34,7 +34,7 @@ void CaseType::AddCaseField(CaseField* f) {
 
 bool CaseType::DefineValueVar() const { return false; }
 
-string CaseType::DataTypeStr() const {
+std::string CaseType::DataTypeStr() const {
     ASSERT(type_decl());
     return strfmt("%s*", type_decl()->class_name().c_str());
 }
@@ -48,7 +48,7 @@ Type* CaseType::ValueType() const {
     return nullptr;
 }
 
-string CaseType::DefaultValue() const { return ValueType()->DefaultValue(); }
+std::string CaseType::DefaultValue() const { return ValueType()->DefaultValue(); }
 
 void CaseType::Prepare(Env* env, int flags) {
     ASSERT(flags & TO_BE_PARSED);

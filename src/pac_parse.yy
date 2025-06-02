@@ -128,7 +128,7 @@ extern int yyleng;
 extern void begin_RE();
 extern void end_RE();
 
-extern string input_filename;
+extern std::string input_filename;
 extern int line_number;
 extern Output* header_output;
 extern Output* source_output;

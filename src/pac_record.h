@@ -12,7 +12,7 @@ public:
     ~RecordType() override;
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
+    std::string DataTypeStr() const override;
 
     void Prepare(Env* env, int flags) override;
 

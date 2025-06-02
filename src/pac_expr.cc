@@ -14,9 +14,9 @@
 #include "pac_typedecl.h"
 #include "pac_utils.h"
 
-string OrigExprList(ExprList* list) {
+std::string OrigExprList(ExprList* list) {
     bool first = true;
-    string str;
+    std::string str;
     foreach (i, ExprList, list) {
         Expr* expr = *i;
         if ( first )
@@ -28,8 +28,8 @@ string OrigExprList(ExprList* list) {
     return str;
 }
 
-string EvalExprList(ExprList* exprlist, Output* out, Env* env) {
-    string val_list("");
+std::string EvalExprList(ExprList* exprlist, Output* out, Env* env) {
+    std::string val_list("");
     bool first = true;
 
     foreach (i, ExprList, exprlist) {
@@ -284,7 +284,7 @@ void Expr::GenEval(Output* out_cc, Env* env) {
                 str_ = strfmt("%s%s", operand_[0]->EvalExpr(out_cc, env), ty0->EvalMember(operand_[1]->id()).c_str());
             }
             else {
-                string tmp = strfmt("->%s()", operand_[1]->id()->Name());
+                std::string tmp = strfmt("->%s()", operand_[1]->id()->Name());
                 str_ = strfmt("%s%s", operand_[0]->EvalExpr(out_cc, env), tmp.c_str());
             }
         } break;
@@ -293,8 +293,8 @@ void Expr::GenEval(Output* out_cc, Env* env) {
             operand_[0]->GenEval(out_cc, env);
             operand_[1]->GenEval(out_cc, env);
 
-            string v0 = operand_[0]->EvalExpr(out_cc, env);
-            string v1 = operand_[1]->EvalExpr(out_cc, env);
+            std::string v0 = operand_[0]->EvalExpr(out_cc, env);
+            std::string v1 = operand_[1]->EvalExpr(out_cc, env);
 
             Type* ty0 = operand_[0]->DataType(env);
             if ( ty0 )
@@ -491,7 +491,7 @@ Type* Expr::DataType(Env* env) const {
     return data_type;
 }
 
-string Expr::DataTypeStr(Env* env) const {
+std::string Expr::DataTypeStr(Env* env) const {
     Type* type = DataType(env);
 
     if ( ! type ) {
@@ -501,12 +501,12 @@ string Expr::DataTypeStr(Env* env) const {
     return type->DataTypeStr();
 }
 
-string Expr::SetFunc(Output* out, Env* env) {
+std::string Expr::SetFunc(Output* out, Env* env) {
     switch ( expr_type_ ) {
         case EXPR_ID: return set_function(id_);
         case EXPR_MEMBER: {
             // Evaluate the parent
-            string parent_val(operand_[0]->EvalExpr(out, env));
+            std::string parent_val(operand_[0]->EvalExpr(out, env));
             return parent_val + "->" + set_function(operand_[1]->id());
         } break;
         default:

@@ -56,7 +56,7 @@ private:
 public:
     static AnalyzerContextDecl* current_analyzer_context() { return current_analyzer_context_; }
 
-    static string mb_buffer(Env* env);
+    static std::string mb_buffer(Env* env);
 
 private:
     static AnalyzerContextDecl* current_analyzer_context_;
@@ -67,7 +67,7 @@ public:
     DummyType() : Type(DUMMY) {}
 
     bool DefineValueVar() const override { return false; }
-    string DataTypeStr() const override {
+    std::string DataTypeStr() const override {
         ASSERT(0);
         return "";
     }

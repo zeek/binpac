@@ -42,7 +42,7 @@ public:
     // operators. For arithmetic operations, we fall back
     // to "int".
     Type* DataType(Env* env) const;
-    string DataTypeStr(Env* env) const;
+    std::string DataTypeStr(Env* env) const;
 
     // Note: EvalExpr() may generate C++ statements in order to evaluate
     // variables in the expression, so the following is wrong:
@@ -63,7 +63,7 @@ public:
 
     // Returns the set_* function of the expression.
     // The expression must be of form ID or x.ID.
-    string SetFunc(Output* out, Env* env);
+    std::string SetFunc(Output* out, Env* env);
 
     // Returns true if the expression folds to an integer
     // constant with env, and puts the constant in *pn.
@@ -104,16 +104,16 @@ private:
     CaseExprList* cases_; // EXPR_CASE
     Nullptr* nullp_;      // EXPR_NULLPTR
 
-    string str_;  // value string
-    string orig_; // original string for debugging info
+    std::string str_;  // value string
+    std::string orig_; // original string for debugging info
 
     void GenStrFromFormat(Env* env);
     void GenEval(Output* out, Env* env);
     void GenCaseEval(Output* out_cc, Env* env);
 };
 
-string OrigExprList(ExprList* exprlist);
-string EvalExprList(ExprList* exprlist, Output* out, Env* env);
+std::string OrigExprList(ExprList* exprlist);
+std::string EvalExprList(ExprList* exprlist, Output* out, Env* env);
 
 // An entry of the case expression, consisting of one or more constant
 // expressions for the case index and a value expression.

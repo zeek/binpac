@@ -38,7 +38,7 @@ const ID* buffering_state_id = nullptr;
 
 int ID::anonymous_id_seq = 0;
 
-ID* ID::NewAnonymousID(const string& prefix) {
+ID* ID::NewAnonymousID(const std::string& prefix) {
     ID* id = new ID(strfmt("%s%03d", prefix.c_str(), ++anonymous_id_seq));
     id->anonymous_id_ = true;
     return id;
@@ -291,7 +291,7 @@ Type* Env::GetDataType(const ID* id) const {
         return nullptr;
 }
 
-string Env::DataTypeStr(const ID* id) const {
+std::string Env::DataTypeStr(const ID* id) const {
     Type* type = GetDataType(id);
     if ( ! type )
         throw Exception(id, "data type not defined");
@@ -372,4 +372,4 @@ Env* global_env() {
     return the_global_env;
 }
 
-string set_function(const ID* id) { return strfmt("set_%s", id->Name()); }
+std::string set_function(const ID* id) { return strfmt("set_%s", id->Name()); }

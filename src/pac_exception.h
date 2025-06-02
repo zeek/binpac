@@ -2,19 +2,18 @@
 #define pac_exception_h
 
 #include <string>
-using namespace std;
 
 #include "pac_common.h"
 
 class Exception {
 public:
-    Exception(const Object* o, string msg = "");
+    Exception(const Object* o, std::string msg = "");
 
     const char* msg() const { return msg_.c_str(); }
-    void append(string s) { msg_ += s; }
+    void append(std::string_view s) { msg_ += s; }
 
 private:
-    string msg_;
+    std::string msg_;
 };
 
 class ExceptionIDNotFound : public Exception {
@@ -55,7 +54,7 @@ private:
 
 class ExceptionPaddingError : public Exception {
 public:
-    ExceptionPaddingError(const Object* o, string msg);
+    ExceptionPaddingError(const Object* o, std::string msg);
 };
 
 class ExceptionIDNotField : public Exception {

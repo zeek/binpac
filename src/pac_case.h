@@ -14,8 +14,8 @@ public:
     void AddCaseField(CaseField* f);
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
-    string DefaultValue() const override;
+    std::string DataTypeStr() const override;
+    std::string DefaultValue() const override;
 
     void Prepare(Env* env, int flags) override;
 
@@ -47,7 +47,7 @@ protected:
     ID* index_var_;
     CaseFieldList* cases_;
 
-    typedef map<const ID*, CaseField*, ID_ptr_cmp> member_map_t;
+    typedef std::map<const ID*, CaseField*, ID_ptr_cmp> member_map_t;
     member_map_t member_map_;
 };
 

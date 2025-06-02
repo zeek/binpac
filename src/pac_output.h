@@ -1,11 +1,9 @@
 #ifndef pac_output_h
 #define pac_output_h
 
-#include <stdarg.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstdio>
 #include <string>
-
-using namespace std;
 
 class OutputException {
 public:
@@ -14,12 +12,12 @@ public:
     const char* errmsg() const { return msg.c_str(); }
 
 protected:
-    string msg;
+    std::string msg;
 };
 
 class Output {
 public:
-    Output(string filename);
+    Output(std::string filename);
     ~Output();
 
     int println(const char* fmt, ...);

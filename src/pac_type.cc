@@ -97,12 +97,12 @@ Type* Type::Clone() const {
     return clone;
 }
 
-string Type::EvalMember(const ID* member_id) const {
+std::string Type::EvalMember(const ID* member_id) const {
     ASSERT(0);
     return "@@@";
 }
 
-string Type::EvalElement(const string& array, const string& index) const {
+std::string Type::EvalElement(const std::string& array, const std::string& index) const {
     return strfmt("%s[%s]", array.c_str(), index.c_str());
 }
 
@@ -185,7 +185,7 @@ void Type::ProcessAttr(Attr* a) {
     attrs_->push_back(a);
 }
 
-string Type::EvalByteOrder(Output* out_cc, Env* env) const {
+std::string Type::EvalByteOrder(Output* out_cc, Env* env) const {
     // If &byteorder is specified for a field, rather
     // than a type declaration, we do not add a byteorder variable
     // to the class, but instead evaluate it directly.
@@ -307,7 +307,7 @@ void Type::GenCleanUpCode(Output* out_cc, Env* env) {
 void Type::GenBufferConfiguration(Output* out_cc, Env* env) {
     ASSERT(buffer_input());
 
-    string frame_buffer_arg;
+    std::string frame_buffer_arg;
 
     switch ( buffer_mode() ) {
         case BUFFER_NOTHING: break;
@@ -564,7 +564,7 @@ void Type::GenParseCode2(Output* out_cc, Env* env, const DataPtr& data, int flag
 
         GenParseCode3(out_cc, env, data, flags);
 
-        string datasize_str = DataSize(out_cc, env, data);
+        std::string datasize_str = DataSize(out_cc, env, data);
         out_cc->println("%s.set_end(%s + %s);", env->LValue(sourcedata_id), data.ptr_expr(), datasize_str.c_str());
     }
     else {
@@ -668,7 +668,7 @@ bool Type::AddSizeVar(Output* out_cc, Env* env) {
     return true;
 }
 
-string Type::EvalLengthExpr(Output* out_cc, Env* env) {
+std::string Type::EvalLengthExpr(Output* out_cc, Env* env) {
     ASSERT(! incremental_input());
     ASSERT(attr_length_expr_);
     int static_length;
@@ -682,7 +682,7 @@ string Type::EvalLengthExpr(Output* out_cc, Env* env) {
     return env->RValue(size_var());
 }
 
-string Type::DataSize(Output* out_cc, Env* env, const DataPtr& data) {
+std::string Type::DataSize(Output* out_cc, Env* env, const DataPtr& data) {
     if ( attr_length_expr_ )
         return EvalLengthExpr(out_cc, env);
 
@@ -823,7 +823,7 @@ const ID* Type::parsing_complete_var() const {
         return nullptr;
 }
 
-string Type::parsing_complete(Env* env) const {
+std::string Type::parsing_complete(Env* env) const {
     ASSERT(parsing_complete_var());
     return env->RValue(parsing_complete_var());
 }
@@ -884,7 +884,7 @@ bool Type::CompatibleTypes(Type* type1, Type* type2) {
 
 Type* Type::LookUpByID(ID* id) {
     // 1. Is it a pre-defined type?
-    string name = id->Name();
+    std::string name = id->Name();
     if ( auto it = type_map_.find(name); it != type_map_.end() ) {
         return it->second->Clone();
     }
@@ -907,7 +907,7 @@ Type* Type::LookUpByID(ID* id) {
     return new ParameterizedType(id, nullptr);
 }
 
-void Type::AddPredefinedType(const string& type_name, Type* type) {
+void Type::AddPredefinedType(const std::string& type_name, Type* type) {
     ASSERT(type_map_.find(type_name) == type_map_.end());
     type_map_[type_name] = type;
 }

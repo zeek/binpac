@@ -8,14 +8,14 @@ class RegExDecl;
 
 class RegEx : public Object {
 public:
-    RegEx(const string& str);
+    RegEx(const std::string& str);
     ~RegEx();
 
-    const string& str() const { return str_; }
+    const std::string& str() const { return str_; }
     ID* matcher_id() const { return matcher_id_; }
 
 private:
-    string str_;
+    std::string str_;
     ID* matcher_id_;
     RegExDecl* decl_;
 

@@ -67,11 +67,11 @@ Type* ArrayType::DoClone() const {
 
 bool ArrayType::DefineValueVar() const { return true; }
 
-string ArrayType::DataTypeStr() const { return datatype_str_; }
+std::string ArrayType::DataTypeStr() const { return datatype_str_; }
 
 Type* ArrayType::ElementDataType() const { return elemtype_; }
 
-string ArrayType::EvalElement(const string& array, const string& index) const {
+std::string ArrayType::EvalElement(const std::string& array, const std::string& index) const {
     if ( attr_transient_ )
         throw Exception(this, "cannot access element in &transient array");
 
@@ -250,7 +250,7 @@ void ArrayType::GenArrayLength(Output* out_cc, Env* env, const DataPtr& data) {
         }
 
         const char* array_ptr_expr = data.ptr_expr();
-        string max_elements_available =
+        std::string max_elements_available =
             strfmt("((%s - %s) / %d)", env->RValue(end_of_data), array_ptr_expr, element_size);
 
         out_cc->println("if ( %s > %s )", env->RValue(arraylength_var()), max_elements_available.c_str());
@@ -322,8 +322,8 @@ void ArrayType::GenCleanUpCode(Output* out_cc, Env* env) {
     out_cc->println("delete %s;", lvalue());
 }
 
-string ArrayType::GenArrayInit(Output* out_cc, Env* env, bool known_array_length) {
-    string array_str;
+std::string ArrayType::GenArrayInit(Output* out_cc, Env* env, bool known_array_length) {
+    std::string array_str;
 
     array_str = lvalue();
     if ( incremental_parsing() ) {
@@ -347,7 +347,7 @@ string ArrayType::GenArrayInit(Output* out_cc, Env* env, bool known_array_length
     return array_str;
 }
 
-void ArrayType::GenElementAssignment(Output* out_cc, Env* env, string const& array_str, bool use_vector) {
+void ArrayType::GenElementAssignment(Output* out_cc, Env* env, std::string const& array_str, bool use_vector) {
     if ( attr_transient_ ) {
         // Just discard.
         out_cc->println("delete %s;", env->LValue(elem_var()));
@@ -402,7 +402,7 @@ void ArrayType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& data, in
     }
 
     bool known_array_length = env->Evaluated(arraylength_var());
-    string array_str = GenArrayInit(out_cc, env, known_array_length);
+    std::string array_str = GenArrayInit(out_cc, env, known_array_length);
 
     bool use_vector = true;
 
@@ -417,9 +417,9 @@ void ArrayType::DoGenParseCode(Output* out_cc, Env* env, const DataPtr& data, in
         elem_data = DataPtr(env, elem_dataptr_var(), 0);
     }
 
-    string for_condition = known_array_length ?
-                               strfmt("%s < %s", env->LValue(elem_it_var()), env->RValue(arraylength_var())) :
-                               "/* forever */";
+    std::string for_condition = known_array_length ?
+                                    strfmt("%s < %s", env->LValue(elem_it_var()), env->RValue(arraylength_var())) :
+                                    "/* forever */";
 
     out_cc->println("for (; %s; ++%s) {", for_condition.c_str(), env->LValue(elem_it_var()));
     out_cc->inc_indent();

@@ -5,12 +5,12 @@
 
 bool ExternType::DefineValueVar() const { return true; }
 
-string ExternType::DataTypeStr() const {
+std::string ExternType::DataTypeStr() const {
     switch ( ext_type_ ) {
         case PLAIN:
         case NUMBER:
         case BOOLEAN: return id_->Name();
-        case POINTER: return string(id_->Name()) + " *";
+        case POINTER: return std::string(id_->Name()) + " *";
         default: ASSERT(0); return "";
     }
 }
@@ -22,7 +22,7 @@ int ExternType::StaticSize(Env* env) const {
 
 bool ExternType::ByteOrderSensitive() const { return false; }
 
-string ExternType::EvalMember(const ID* member_id) const {
+std::string ExternType::EvalMember(const ID* member_id) const {
     return strfmt("%s%s", ext_type_ == POINTER ? "->" : ".", member_id->Name());
 }
 

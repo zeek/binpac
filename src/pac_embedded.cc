@@ -4,13 +4,13 @@
 #include "pac_output.h"
 #include "pac_primitive.h"
 
-EmbeddedCodeSegment::EmbeddedCodeSegment(const string& s) : s_(s), primitive_(nullptr) {}
+EmbeddedCodeSegment::EmbeddedCodeSegment(const std::string& s) : s_(s), primitive_(nullptr) {}
 
 EmbeddedCodeSegment::EmbeddedCodeSegment(PacPrimitive* primitive) : s_(""), primitive_(primitive) {}
 
 EmbeddedCodeSegment::~EmbeddedCodeSegment() { delete primitive_; }
 
-string EmbeddedCodeSegment::ToCode(Env* env) {
+std::string EmbeddedCodeSegment::ToCode(Env* env) {
     if ( primitive_ && s_.empty() )
         s_ = primitive_->ToCode(env);
     return s_;

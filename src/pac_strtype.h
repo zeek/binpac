@@ -14,8 +14,8 @@ public:
     ~StringType() override;
 
     bool DefineValueVar() const override;
-    string DataTypeStr() const override;
-    string DefaultValue() const override { return "0"; }
+    std::string DataTypeStr() const override;
+    std::string DefaultValue() const override { return "0"; }
     Type* ElementDataType() const override;
 
     void Prepare(Env* env, int flags) override;
@@ -39,14 +39,14 @@ protected:
 
     // Generate computation of size of the string and returns the string
     // representing a constant integer or name of the length variable.
-    string GenStringSize(Output* out_cc, Env* env, const DataPtr& data);
+    std::string GenStringSize(Output* out_cc, Env* env, const DataPtr& data);
 
     // Generate a string mismatch exception
-    void GenStringMismatch(Output* out_cc, Env* env, const DataPtr& data, string pattern);
+    void GenStringMismatch(Output* out_cc, Env* env, const DataPtr& data, std::string pattern);
 
     void DoGenParseCode(Output* out, Env* env, const DataPtr& data, int flags) override;
 
-    void GenCheckingCStr(Output* out, Env* env, const DataPtr& data, const string& str_size);
+    void GenCheckingCStr(Output* out, Env* env, const DataPtr& data, const std::string& str_size);
 
     void GenDynamicSize(Output* out, Env* env, const DataPtr& data) override;
     void GenDynamicSizeAnyStr(Output* out_cc, Env* env, const DataPtr& data);

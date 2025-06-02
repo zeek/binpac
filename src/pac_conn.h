@@ -1,6 +1,9 @@
 #ifndef pac_conn_h
 #define pac_conn_h
 
+#include <string>
+#include <vector>
+
 #include "pac_analyzer.h"
 
 class ConnDecl : public AnalyzerDecl {
@@ -13,7 +16,7 @@ public:
     Type* DataType() const { return data_type_; }
 
 protected:
-    void AddBaseClass(vector<string>* base_classes) const override;
+    void AddBaseClass(std::vector<std::string>* base_classes) const override;
 
     void GenProcessFunc(Output* out_h, Output* out_cc) override;
     void GenGapFunc(Output* out_h, Output* out_cc) override;

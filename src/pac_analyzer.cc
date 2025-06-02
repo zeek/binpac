@@ -84,7 +84,7 @@ void AnalyzerDecl::AddElements(AnalyzerElementList* elemlist) {
     }
 }
 
-string AnalyzerDecl::class_name() const { return id_->Name(); }
+std::string AnalyzerDecl::class_name() const { return id_->Name(); }
 
 void AnalyzerDecl::Prepare() {
     TypeDecl::Prepare();

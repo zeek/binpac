@@ -11,13 +11,13 @@ public:
 
     ID* id() const { return id_; }
     Type* type() const { return type_; }
-    const string& decl_str() const;
+    const std::string& decl_str() const;
     Field* param_field() const { return param_field_; }
 
 private:
     ID* id_;
     Type* type_;
-    string decl_str_;
+    std::string decl_str_;
     Field* param_field_;
 };
 
@@ -30,7 +30,7 @@ public:
 };
 
 // Returns the string with a list of param declarations separated by ','.
-string ParamDecls(ParamList* params);
+std::string ParamDecls(ParamList* params);
 
 #if 0
 // Generate assignments to parameters, in the form of "%s_ = %s;" % (id, id).

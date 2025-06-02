@@ -7,12 +7,12 @@ namespace {
 
 class EscapeException {
 public:
-    explicit EscapeException(const string& s) { msg_ = s; }
+    explicit EscapeException(const std::string& s) { msg_ = s; }
 
-    const string& msg() const { return msg_; }
+    const std::string& msg() const { return msg_; }
 
 private:
-    string msg_;
+    std::string msg_;
 };
 
 // Copied from util.cc of Zeek
@@ -75,7 +75,7 @@ int expand_escape(const char*& s) {
 
 } // namespace
 
-ConstString::ConstString(const string& s) : str_(s) {
+ConstString::ConstString(const std::string& s) : str_(s) {
     // Copied from scan.l of Zeek
     try {
         const char* text = str_.c_str();

@@ -11,7 +11,7 @@ public:
     int Num() const { return n; }
 
 protected:
-    const string s;
+    const std::string s;
     const int n;
 };
 

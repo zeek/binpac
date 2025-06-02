@@ -14,8 +14,8 @@ class AnalyzerDataUnit;
 class AnalyzerFunction;
 class ConnDecl;
 class FlowDecl;
-typedef vector<AnalyzerHelper*> AnalyzerHelperList;
-typedef vector<Function*> FunctionList;
+typedef std::vector<AnalyzerHelper*> AnalyzerHelperList;
+typedef std::vector<Function*> FunctionList;
 
 class AnalyzerDecl : public TypeDecl {
 public:
@@ -31,7 +31,7 @@ public:
     void GenInitCode(Output* out_cc) override;
     void GenCleanUpCode(Output* out_cc) override;
 
-    string class_name() const;
+    std::string class_name() const;
     // string cookie_name() const;
 
 protected:

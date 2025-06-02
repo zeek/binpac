@@ -46,7 +46,7 @@ static const char* basic_ctype_name[] = {
 
 bool BuiltInType::DefineValueVar() const { return bit_type_ != EMPTY; }
 
-string BuiltInType::DataTypeStr() const { return basic_ctype_name[bit_type_]; }
+std::string BuiltInType::DataTypeStr() const { return basic_ctype_name[bit_type_]; }
 
 int BuiltInType::StaticSize(Env* /* env */) const {
     static const size_t basic_type_size[] = {

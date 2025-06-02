@@ -49,7 +49,7 @@ public:
 
 private:
     static DeclList* decl_list_;
-    typedef map<const ID*, Decl*, ID_ptr_cmp> DeclMap;
+    typedef std::map<const ID*, Decl*, ID_ptr_cmp> DeclMap;
     static DeclMap decl_map_;
 };
 

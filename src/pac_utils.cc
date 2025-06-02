@@ -1,8 +1,8 @@
 #include "pac_utils.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
 
 char* copy_string(const char* s) {
     char* c = new char[strlen(s) + 1];
@@ -20,12 +20,12 @@ const char* do_fmt(const char* format, va_list ap) {
 
 } // namespace
 
-string strfmt(const char* format, ...) {
+std::string strfmt(const char* format, ...) {
     va_list ap;
     va_start(ap, format);
     const char* r = do_fmt(format, ap);
     va_end(ap);
-    return string(r);
+    return std::string(r);
 }
 
 char* nfmt(const char* format, ...) {
