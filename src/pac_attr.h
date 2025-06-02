@@ -4,7 +4,7 @@
 #include "pac_common.h"
 #include "pac_datadep.h"
 
-enum AttrType {
+enum AttrType : uint8_t {
     ATTR_BYTEORDER,
     ATTR_CHECK,
     ATTR_CHUNKED,

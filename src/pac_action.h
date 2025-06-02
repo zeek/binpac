@@ -8,7 +8,7 @@
 
 class AnalyzerAction : public AnalyzerElement {
 public:
-    enum When { BEFORE, AFTER };
+    enum When : uint8_t { BEFORE, AFTER };
 
     AnalyzerAction(ID* action_id, When when, ActionParam* param, EmbeddedCode* code);
 

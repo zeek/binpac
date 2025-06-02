@@ -6,7 +6,7 @@
 
 // A "field" is a member of class.
 
-enum FieldType {
+enum FieldType : uint8_t {
     CASE_FIELD,
     CONTEXT_FIELD,
     FLOW_FIELD,

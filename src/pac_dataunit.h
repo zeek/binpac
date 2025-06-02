@@ -8,7 +8,7 @@
 
 class AnalyzerDataUnit : public AnalyzerElement {
 public:
-    enum DataUnitType { DATAGRAM, FLOWUNIT };
+    enum DataUnitType : uint8_t { DATAGRAM, FLOWUNIT };
     AnalyzerDataUnit(DataUnitType type, ID* id, ExprList* type_params, ExprList* context_params);
     ~AnalyzerDataUnit() override;
 

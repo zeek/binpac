@@ -8,7 +8,7 @@ class Decl : public Object {
 public:
     // Note: ANALYZER is not for AnalyzerDecl (which is an
     // abstract class) , but for AnalyzerContextDecl.
-    enum DeclType { ENUM, LET, TYPE, FUNC, CONN, FLOW, ANALYZER, HELPER, REGEX };
+    enum DeclType : uint8_t { ENUM, LET, TYPE, FUNC, CONN, FLOW, ANALYZER, HELPER, REGEX };
 
     Decl(ID* id, DeclType decl_type);
     virtual ~Decl();
@@ -55,7 +55,7 @@ private:
 
 class HelperDecl : public Decl {
 public:
-    enum HelperType {
+    enum HelperType : uint8_t {
         HEADER,
         CODE,
         EXTERN,

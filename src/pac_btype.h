@@ -5,7 +5,7 @@
 
 class BuiltInType : public Type {
 public:
-    enum BITType {
+    enum BITType : uint8_t {
 #define TYPE_DEF(name, pactype, ctype, size) name,
 #include "pac_type.def"
 #undef TYPE_DEF

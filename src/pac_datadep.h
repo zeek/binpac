@@ -11,7 +11,7 @@ class DataDepVisitor;
 
 class DataDepElement {
 public:
-    enum DDE_Type {
+    enum DDE_Type : uint8_t {
         ATTR,
         CASEEXPR,
         EXPR,

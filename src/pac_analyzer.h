@@ -82,7 +82,7 @@ protected:
 
 class AnalyzerElement : public Object {
 public:
-    enum ElementType { STATE, ACTION, FUNCTION, HELPER, FLOW, DATAUNIT };
+    enum ElementType : uint8_t { STATE, ACTION, FUNCTION, HELPER, FLOW, DATAUNIT };
     AnalyzerElement(ElementType type) : type_(type) {}
     virtual ~AnalyzerElement() {}
 
@@ -107,7 +107,7 @@ private:
 // A collection of embedded C++ code
 class AnalyzerHelper : public AnalyzerElement {
 public:
-    enum Type {
+    enum Type : uint8_t {
         MEMBER_DECLS,
         INIT_CODE,
         CLEANUP_CODE,
@@ -138,7 +138,7 @@ public:
 
 class AnalyzerFlow : public AnalyzerElement {
 public:
-    enum Direction { UP, DOWN };
+    enum Direction : uint8_t { UP, DOWN };
     AnalyzerFlow(Direction dir, ID* type_id, ExprList* params);
     ~AnalyzerFlow() override;
 

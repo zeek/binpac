@@ -8,7 +8,7 @@ class CaseExpr;
 
 class Expr : public Object, public DataDepElement {
 public:
-    enum ExprType {
+    enum ExprType : uint8_t {
 #define EXPR_DEF(type, x, y) type,
 #include "pac_expr.def"
 #undef EXPR_DEF

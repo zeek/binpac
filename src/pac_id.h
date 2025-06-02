@@ -22,7 +22,7 @@ using namespace std;
 // Env -- a mapping from ID names to their L/R-value expressions and evaluation
 //   methods.
 
-enum IDType {
+enum IDType : uint8_t {
     CONST,
     GLOBAL_VAR,
     TEMP_VAR,
