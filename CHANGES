@@ -1,3 +1,9 @@
+0.61.0-59 | 2025-06-11 10:45:37 -0700
+
+  * Add 'override' to virtual methods in generated code (Tim Wojtulewicz, Corelight)
+
+  * Add NOLINT for clang-tidy performance-enum-size to generated headers (Tim Wojtulewicz, Corelight)
+
 0.61.0-56 | 2025-05-22 08:46:29 -0700
 
   * Reorder the fields in pac_type.h for better packing (Tim Wojtulewicz, Corelight)
