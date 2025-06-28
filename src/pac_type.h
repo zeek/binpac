@@ -100,8 +100,7 @@ public:
 
     void AddField(Field* f);
 
-    void AddCheck(Expr* expr) { /* TODO */
-    }
+    void AddCheck(Expr* expr) { /* TODO */ }
 
     virtual bool DefineValueVar() const = 0;
 

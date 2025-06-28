@@ -23,8 +23,7 @@ public:
     virtual void Prepare() = 0;
 
     // Generate declarations out of the "binpac" namespace
-    virtual void GenExternDeclaration(Output* out_h) { /* do nothing */
-    }
+    virtual void GenExternDeclaration(Output* out_h) { /* do nothing */ }
 
     // Generate declarations before definition of classes
     virtual void GenForwardDeclaration(Output* out_h) = 0;
@@ -65,8 +64,7 @@ public:
 
     void Prepare() override;
     void GenExternDeclaration(Output* out_h) override;
-    void GenForwardDeclaration(Output* out_h) override { /* do nothing */
-    }
+    void GenForwardDeclaration(Output* out_h) override { /* do nothing */ }
     void GenCode(Output* out_h, Output* out_cc) override;
 
 private:
