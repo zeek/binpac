@@ -17,7 +17,7 @@ Param::Param(ID* id, Type* type) : id_(id), type_(type) {
     param_field_ = new ParamField(this);
 }
 
-Param::~Param() {}
+Param::~Param() { delete param_field_; }
 
 const string& Param::decl_str() const {
     ASSERT(! decl_str_.empty());
