@@ -49,6 +49,9 @@ void RequiresAnalyzerContext::ProcessExpr(Expr* expr) {
 
 bool RequiresAnalyzerContext::compute(DataDepElement* element) {
     RequiresAnalyzerContext visitor;
-    element->Traverse(&visitor);
+
+    if ( element->Traverse(&visitor) )
+        return false;
+
     return visitor.requires_analyzer_context_;
 }
