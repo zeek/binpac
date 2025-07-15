@@ -1,3 +1,11 @@
+0.61.0-67 | 2025-07-14 20:34:40 -0700
+
+  * Fix coverity unchecked return warning (Tim Wojtulewicz, Corelight)
+
+  * Use std::move for a string value (Tim Wojtulewicz, Corelight)
+
+  * Make sure pac_expr fields are initialized (Tim Wojtulewicz, Corelight)
+
 0.61.0-63 | 2025-07-09 13:00:07 -0700
 
   * Require C++20 for builds (Tim Wojtulewicz, Corelight)
