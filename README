@@ -3,6 +3,9 @@
 .. Version number is filled in automatically.
 .. |version| replace:: 0.61.0-67
 
+NOTE: This repository was merged into the main Zeek repo as part of Zeek
+8.1. It is now kept as an archive for historical reasons only.
+
 ======
 BinPAC
 ======
