@@ -1,3 +1,9 @@
+0.61.0-70 | 2026-11-19 17:52:01 -0800
+
+  * CI: remove the Cirrus-era CI notifier (Christian Kreibich, Corelight)
+
+  * Add note about repository being archived (Tim Wojtulewicz, Corelight)
+
 0.61.0-67 | 2025-07-14 20:34:40 -0700
 
   * Fix coverity unchecked return warning (Tim Wojtulewicz, Corelight)
